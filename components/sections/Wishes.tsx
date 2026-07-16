@@ -1,0 +1,133 @@
+"use client";
+
+import { useEffect, useState, useCallback } from "react";
+import { WishItem } from "@/types";
+import { getWishes } from "@/services/api";
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageSquare, Heart, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+
+interface WishesProps {
+  refreshTrigger: number;
+}
+
+export function Wishes({ refreshTrigger }: WishesProps) {
+  const [wishes, setWishes] = useState<WishItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(4);
+
+  const fetchWishesList = useCallback(async () => {
+    await Promise.resolve(); // Yield to microtask queue to prevent synchronous setState
+    setLoading(true);
+    const data = await getWishes();
+    
+    // Sort wishes by timestamp descending (newest first)
+    const sortedWishes = [...data].sort((a, b) => {
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+    });
+
+    setWishes(sortedWishes);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchWishesList();
+  }, [fetchWishesList, refreshTrigger]);
+
+  const loadMore = () => {
+    setVisibleCount((prev) => prev + 4);
+  };
+
+  return (
+    <section className="py-24 px-4 bg-[#faf8f5]">
+      <div className="max-w-xl mx-auto">
+        {/* Title */}
+        <div className="text-center mb-12 relative">
+          <div className="gold-border pb-4">
+            <span className="text-[10px] uppercase tracking-[0.4em] text-accent block mb-2">Doa Restu Tamu Undangan</span>
+            <h3 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
+              Kiriman Ucapan
+            </h3>
+          </div>
+          
+          <button
+            onClick={fetchWishesList}
+            disabled={loading}
+            className="absolute top-1/2 -translate-y-1/2 right-0 p-2 text-primary hover:text-primary-hover disabled:opacity-50 transition-all cursor-pointer"
+            title="Refresh ucapan"
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+          </button>
+        </div>
+
+        {/* Wishes List */}
+        <div className="space-y-4 min-h-[200px] relative">
+          {loading && wishes.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <div className="w-8 h-8 rounded-full border-2 border-primary/20 border-t-primary animate-spin mb-3" />
+              <p className="text-xs text-muted">Memuat ucapan doa syahdu...</p>
+            </div>
+          ) : wishes.length === 0 ? (
+            <div className="text-center py-12 bg-white/40 border border-dashed border-border rounded-2xl">
+              <MessageSquare className="w-8 h-8 text-primary/40 mx-auto mb-2" />
+              <p className="text-xs text-muted italic">Belum ada ucapan. Silakan isi form RSVP di atas.</p>
+            </div>
+          ) : (
+            <>
+              <AnimatePresence mode="popLayout">
+                {wishes.slice(0, visibleCount).map((wish, index) => (
+                  <motion.div
+                    key={wish.timestamp + index}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.5, delay: index % 4 * 0.1 }}
+                    className="bg-white/50 backdrop-blur-xs p-5 rounded-2xl border border-white/60 shadow-xs relative overflow-hidden"
+                  >
+                    {/* Corner badge status */}
+                    <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-bold tracking-wider uppercase bg-linear-to-r from-emerald-50 to-emerald-100/50 text-emerald-800 border border-emerald-200/50">
+                      <Heart className="w-2.5 h-2.5 fill-emerald-600 stroke-none" />
+                      {wish.status === "Hadir" ? `${wish.guests} Orang` : "Hadir Virtual"}
+                    </div>
+
+                    <h5 className="font-serif text-sm font-semibold text-accent pr-16">
+                      {wish.name}
+                    </h5>
+                    
+                    <p className="text-[10px] text-muted/80 mt-0.5 pl-0.5">
+                      {new Date(wish.timestamp).toLocaleString("id-ID", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+
+                    <p className="text-xs font-sans text-foreground/90 mt-3 leading-relaxed border-t border-dashed border-border/70 pt-2.5 pl-0.5">
+                      {wish.wish ? wish.wish : "Mengirimkan doa restu terbaik untuk kedua mempelai."}
+                    </p>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+
+              {/* Load More Button */}
+              {visibleCount < wishes.length && (
+                <div className="text-center pt-4">
+                  <Button
+                    onClick={loadMore}
+                    variant="outline"
+                    className="text-[11px] font-sans tracking-widest px-6"
+                  >
+                    Tampilkan Lebih Banyak
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
