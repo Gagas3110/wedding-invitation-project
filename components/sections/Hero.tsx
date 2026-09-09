@@ -94,7 +94,7 @@ export function Hero({ weddingDate }: HeroProps) {
             <MapPin className="w-5 h-5 text-primary shrink-0" />
             <div className="text-left">
               <p className="text-[10px] uppercase text-muted tracking-wider">Lokasi Acara</p>
-              <p className="text-xs font-semibold text-foreground">Hotel Mulia, Jakarta</p>
+              <p className="text-xs font-semibold text-foreground">The Samasta Jatiwarna</p>
             </div>
           </div>
         </motion.div>

@@ -10,10 +10,9 @@ export async function submitRSVP(data: RSVPInput): Promise<{ success: boolean; m
   try {
     await fetch(API_URL, {
       method: "POST",
-      mode: "no-cors", // Apps Script often requires no-cors for direct writes if there's no preflight, but let's check. Wait, no-cors prevents reading the response!
-      // To read responses properly, standard CORS must be configured in GAS, and we make simple JSON POST.
+      mode: "no-cors",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain",
       },
       body: JSON.stringify({
         action: "rsvp",
@@ -21,11 +20,6 @@ export async function submitRSVP(data: RSVPInput): Promise<{ success: boolean; m
       }),
     });
 
-    // If using 'no-cors', response.ok will be false/status 0, but request succeeds. 
-    // Usually with a properly set up Apps Script (with CORS headers returned in HtmlService/TextOutput), we can use standard cors mode.
-    // Let's implement full CORS headers in our Apps Script code to allow clean JSON responses!
-    
-    // We'll try to parse JSON. If no-cors is required or standard redirect block occurs, fallback.
     return { success: true, message: "RSVP Berhasil dikirim" };
   } catch (error) {
     console.error("Error submitting RSVP:", error);
@@ -34,13 +28,8 @@ export async function submitRSVP(data: RSVPInput): Promise<{ success: boolean; m
 }
 
 export async function getWishes(): Promise<WishItem[]> {
-  if (!API_URL) {
-    console.warn("NEXT_PUBLIC_API_URL is not defined, returning mock wishes.");
-    return getMockWishes();
-  }
-
   try {
-    const response = await fetch(`${API_URL}?action=wishes`, {
+    const response = await fetch("/api/wishes", {
       method: "GET",
       headers: {
         "Accept": "application/json",
