@@ -6,7 +6,6 @@ import { OpeningScreen } from "@/components/sections/OpeningScreen";
 import { Hero } from "@/components/sections/Hero";
 import { Story } from "@/components/sections/Story";
 import { Gallery } from "@/components/sections/Gallery";
-import { Event } from "@/components/sections/Event";
 import { RSVP } from "@/components/sections/RSVP";
 import { Wishes } from "@/components/sections/Wishes";
 import { Gift } from "@/components/sections/Gift";
@@ -29,7 +28,6 @@ export default function Home() {
         <Hero weddingDate={weddingDate} />
         <Story />
         <Gallery />
-        <Event />
         <RSVP onSuccessSubmit={handleRSVPSuccess} />
         <Wishes refreshTrigger={refreshTrigger} />
         <Gift />

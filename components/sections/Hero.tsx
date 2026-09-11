@@ -2,8 +2,9 @@
 
 import { useCountdown } from "@/hooks/useCountdown";
 import { motion, Variants } from "framer-motion";
-import { Calendar, MapPin } from "lucide-react";
-
+import { Calendar, Map, CalendarPlus } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { getGoogleCalendarUrl } from "@/utils/calendar";
 
 interface HeroProps {
   weddingDate: string;
@@ -11,6 +12,16 @@ interface HeroProps {
 
 export function Hero({ weddingDate }: HeroProps) {
   const { days, hours, minutes, seconds, isCompleted } = useCountdown(weddingDate);
+
+  const mapUrl = process.env.NEXT_PUBLIC_MAP_URL || "https://maps.google.com/?q=The+Samasta+Jatiwarna";
+
+  const calendarUrl = getGoogleCalendarUrl({
+    title: "The Wedding of Gagas & Akila",
+    description: "Akad: 15.00 - 16.30 WIB | Resepsi: 19.00 - 21.00 WIB di The Samasta Jatiwarna. Terima kasih atas doa dan kehadiran Anda.",
+    location: "The Samasta Jatiwarna",
+    startTime: "20261212T080000Z", // 15:00 WIB (UTC+7)
+    endTime: "20261212T140000Z",   // 21:00 WIB (UTC+7)
+  });
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -78,24 +89,68 @@ export function Hero({ weddingDate }: HeroProps) {
           &ldquo;Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya...&rdquo;
         </motion.p>
 
-        {/* Wedding Info Banner */}
+        {/* Unified Event Card (Waktu & Tempat) */}
         <motion.div
           variants={itemVariants}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-lg mb-10 pl-2 pr-2"
+          className="w-full max-w-xl bg-white/80 backdrop-blur-md rounded-3xl border border-white p-6 md:p-8 shadow-lg relative overflow-hidden text-center mb-8"
         >
-          <div className="flex items-center justify-center gap-3 p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white shadow-xs">
-            <Calendar className="w-5 h-5 text-primary shrink-0" />
-            <div className="text-left">
-              <p className="text-[10px] uppercase text-muted tracking-wider">Hari & Tanggal</p>
-              <p className="text-xs font-semibold text-foreground">Sabtu, 12 Desember 2026</p>
+          {/* Top gold line decorator */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-transparent via-primary/60 to-transparent" />
+
+          {/* Date & Venue Header */}
+          <div className="mb-6">
+            <div className="inline-flex items-center justify-center gap-2 text-primary font-medium text-xs md:text-sm tracking-wider uppercase mb-1.5">
+              <Calendar className="w-4 h-4" />
+              <span>Sabtu, 12 Desember 2026</span>
+            </div>
+            <h4 className="font-serif text-2xl md:text-3xl font-semibold text-foreground tracking-wide mt-1">
+              The Samasta Jatiwarna
+            </h4>
+          </div>
+
+          {/* Akad & Resepsi Two-Column Section with Divider */}
+          <div className="bg-secondary/40 rounded-2xl p-5 md:p-6 border border-white/60 mb-6">
+            <div className="grid grid-cols-2 divide-x divide-[#e2d9cd]">
+              {/* Akad Column */}
+              <div className="px-2 md:px-4 text-center">
+                <h5 className="font-serif text-base md:text-lg font-semibold text-accent mb-1">
+                  Akad
+                </h5>
+                <p className="text-xs md:text-sm font-medium text-foreground/80 tracking-wide">
+                  15.00 – 16.30 WIB
+                </p>
+              </div>
+
+              {/* Resepsi Column */}
+              <div className="px-2 md:px-4 text-center">
+                <h5 className="font-serif text-base md:text-lg font-semibold text-accent mb-1">
+                  Resepsi
+                </h5>
+                <p className="text-xs md:text-sm font-medium text-foreground/80 tracking-wide">
+                  19.00 – 21.00 WIB
+                </p>
+              </div>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-3 p-4 bg-white/50 backdrop-blur-md rounded-xl border border-white shadow-xs">
-            <MapPin className="w-5 h-5 text-primary shrink-0" />
-            <div className="text-left">
-              <p className="text-[10px] uppercase text-muted tracking-wider">Lokasi Acara</p>
-              <p className="text-xs font-semibold text-foreground">The Samasta Jatiwarna</p>
-            </div>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto">
+            <Button
+              onClick={() => window.open(mapUrl, "_blank")}
+              variant="outline"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-full text-xs font-semibold hover:bg-primary/10 transition-all cursor-pointer shadow-xs"
+            >
+              <Map className="w-4 h-4 text-primary" />
+              Google Maps
+            </Button>
+            <Button
+              onClick={() => window.open(calendarUrl, "_blank")}
+              variant="primary"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-full text-xs font-semibold shadow-[0_4px_12px_rgba(197,168,128,0.25)] hover:shadow-[0_4px_18px_rgba(197,168,128,0.35)] transition-all cursor-pointer"
+            >
+              <CalendarPlus className="w-4 h-4" />
+              Save to your calendar
+            </Button>
           </div>
         </motion.div>
 
