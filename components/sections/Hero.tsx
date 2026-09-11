@@ -104,7 +104,7 @@ export function Hero({ weddingDate }: HeroProps) {
             className="relative w-56 h-56 md:w-72 md:h-72 rounded-full border-4 border-white shadow-2xl p-1 bg-secondary mx-auto overflow-hidden animate-float mb-6"
           >
             <div className="w-full h-full rounded-full bg-linear-to-tr from-primary/30 to-accent/40 flex flex-col items-center justify-center relative">
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600')] bg-cover bg-center mix-blend-overlay opacity-80" />
+              <div className="absolute inset-0 bg-[url('/gallery/DSC03112%20(1).jpg')] bg-cover bg-center mix-blend-overlay opacity-80" />
               <div className="p-4 text-center z-10">
                 <span className="font-serif text-3xl text-emerald-950 font-bold block mb-1">G & A</span>
                 <span className="text-[10px] uppercase tracking-widest text-[#635544]">Our Journey Starts Here</span>

@@ -17,34 +17,34 @@ export function Gallery() {
 
   const photos: GalleryImage[] = [
     {
-      src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
-      alt: "Wedding couple hold hands",
-      aspect: "aspect-square",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800",
-      alt: "Bride portrait close up",
+      src: "/gallery/DSC03112 (1).jpg",
+      alt: "Momen Bahagia Gagas & Akila",
       aspect: "aspect-[3/4]",
     },
     {
-      src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800",
-      alt: "Couple smiling looking at each other",
-      aspect: "aspect-[4/3]",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1519225495810-7512c696505a?q=80&w=800",
-      alt: "Wedding ring ceremony details",
+      src: "/gallery/DSC03138 (1).jpg",
+      alt: "Kemesraan Gagas & Akila",
       aspect: "aspect-[3/4]",
     },
     {
-      src: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=800",
-      alt: "Romantic stroll outdoors",
+      src: "/gallery/DSC03153.jpg",
+      alt: "Potret Bahagia",
       aspect: "aspect-square",
     },
     {
-      src: "https://images.unsplash.com/photo-1507504038482-7621c3766e9f?q=80&w=800",
-      alt: "Champagne celebration toast",
-      aspect: "aspect-[4/3]",
+      src: "/gallery/DSC03172.jpg",
+      alt: "Senyuman Hangat",
+      aspect: "aspect-[3/4]",
+    },
+    {
+      src: "/gallery/DSC03223 (1).jpg",
+      alt: "Kenangan Manis",
+      aspect: "aspect-[3/4]",
+    },
+    {
+      src: "/gallery/DSC03248 (1).jpg",
+      alt: "Menatap Masa Depan Bersama",
+      aspect: "aspect-[3/4]",
     },
   ];
 
