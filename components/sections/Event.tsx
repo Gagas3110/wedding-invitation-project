@@ -1,11 +1,28 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import { Clock, MapPin, Calendar, Map } from "lucide-react";
+import { Clock, MapPin, Calendar, Map, CalendarPlus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { getGoogleCalendarUrl } from "@/utils/calendar";
 
 export function Event() {
   const mapUrl = process.env.NEXT_PUBLIC_MAP_URL || "https://maps.google.com";
+
+  const akadCalendarUrl = getGoogleCalendarUrl({
+    title: "Akad Nikah Gagas & Akila",
+    description: "Akad Nikah Gagas & Akila. Terima kasih atas doa dan kehadiran Anda.",
+    location: "Masjid Al-Bina, Jl. Pintu Satu Senayan, Gelora, Tanah Abang, Jakarta Pusat",
+    startTime: "20261212T020000Z", // 09:00 WIB (UTC+7)
+    endTime: "20261212T033000Z",   // 10:30 WIB (UTC+7)
+  });
+
+  const resepsiCalendarUrl = getGoogleCalendarUrl({
+    title: "Resepsi Pernikahan Gagas & Akila",
+    description: "Resepsi Pernikahan Gagas & Akila. Terima kasih atas doa dan kehadiran Anda.",
+    location: "Hotel Mulia Senayan (Grand Ballroom), Jl. Asia Afrika, Gelora, Tanah Abang, Jakarta Pusat",
+    startTime: "20261212T040000Z", // 11:00 WIB (UTC+7)
+    endTime: "20261212T060000Z",   // 13:00 WIB (UTC+7)
+  });
 
   const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
@@ -70,14 +87,24 @@ export function Event() {
               </div>
             </div>
 
-            <Button
-              onClick={() => window.open(mapUrl, "_blank")}
-              variant="outline"
-              className="w-full flex items-center justify-center gap-2 mt-4 hover:bg-primary/10"
-            >
-              <Map className="w-4 h-4" />
-              Petunjuk Lokasi Google Maps
-            </Button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+              <Button
+                onClick={() => window.open(mapUrl, "_blank")}
+                variant="outline"
+                className="w-full flex items-center justify-center gap-2 text-xs hover:bg-primary/10"
+              >
+                <Map className="w-4 h-4" />
+                Google Maps
+              </Button>
+              <Button
+                onClick={() => window.open(akadCalendarUrl, "_blank")}
+                variant="secondary"
+                className="w-full flex items-center justify-center gap-2 text-xs font-semibold shadow-xs"
+              >
+                <CalendarPlus className="w-4 h-4 text-accent" />
+                Simpan Kalender
+              </Button>
+            </div>
           </motion.div>
 
           {/* Resepsi Pernikahan */}
@@ -125,14 +152,24 @@ export function Event() {
               </div>
             </div>
 
-            <Button
-              onClick={() => window.open(mapUrl, "_blank")}
-              variant="outline"
-              className="w-full flex items-center justify-center gap-2 mt-4 hover:bg-primary/10"
-            >
-              <Map className="w-4 h-4" />
-              Petunjuk Lokasi Google Maps
-            </Button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+              <Button
+                onClick={() => window.open(mapUrl, "_blank")}
+                variant="outline"
+                className="w-full flex items-center justify-center gap-2 text-xs hover:bg-primary/10"
+              >
+                <Map className="w-4 h-4" />
+                Google Maps
+              </Button>
+              <Button
+                onClick={() => window.open(resepsiCalendarUrl, "_blank")}
+                variant="secondary"
+                className="w-full flex items-center justify-center gap-2 text-xs font-semibold shadow-xs"
+              >
+                <CalendarPlus className="w-4 h-4 text-accent" />
+                Simpan Kalender
+              </Button>
+            </div>
           </motion.div>
         </div>
       </div>
