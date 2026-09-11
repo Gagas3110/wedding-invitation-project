@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AppProvider } from "@/app/context/AppContext";
 import { OpeningScreen } from "@/components/sections/OpeningScreen";
 import { Hero } from "@/components/sections/Hero";
-import { Story } from "@/components/sections/Story";
 import { Gallery } from "@/components/sections/Gallery";
 import { RSVP } from "@/components/sections/RSVP";
 import { Wishes } from "@/components/sections/Wishes";
@@ -26,7 +25,6 @@ export default function Home() {
       
       <main className="relative z-10 w-full min-h-screen">
         <Hero weddingDate={weddingDate} />
-        <Story />
         <Gallery />
         <RSVP onSuccessSubmit={handleRSVPSuccess} />
         <Wishes refreshTrigger={refreshTrigger} />
