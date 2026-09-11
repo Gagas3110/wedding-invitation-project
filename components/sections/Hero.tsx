@@ -49,47 +49,82 @@ export function Hero({ weddingDate }: HeroProps) {
         viewport={{ once: true }}
         className="w-full max-w-3xl flex flex-col items-center text-center z-10"
       >
-        {/* Save The Date badge */}
-        <motion.span 
-          variants={itemVariants} 
-          className="text-xs uppercase tracking-[0.4em] text-accent font-semibold mb-6 px-4 py-1.5 border border-primary/20 rounded-full bg-white/40 backdrop-blur-xs shadow-xs"
-        >
-          Save the Date
-        </motion.span>
-
-        {/* Floating Ring / Frame for Placeholder image */}
-        <motion.div
+        {/* 1. Countdown Box */}
+        <motion.div 
           variants={itemVariants}
-          className="relative w-64 h-64 md:w-80 md:h-80 rounded-full border-4 border-white shadow-2xl p-1 bg-secondary mx-auto overflow-hidden animate-float mb-8"
+          className="w-full max-w-md bg-white/70 backdrop-blur-md border border-white p-6 rounded-2xl shadow-lg ring-1 ring-primary/5 mb-8"
         >
-          {/* Default beautiful decorative background if image isn't set, otherwise beautiful picture. Let's make it look ready to receive an image. */}
-          <div className="w-full h-full rounded-full bg-linear-to-tr from-primary/30 to-accent/40 flex flex-col items-center justify-center relative">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600')] bg-cover bg-center mix-blend-overlay opacity-80" />
-            <div className="p-4 text-center z-10">
-              <span className="font-serif text-3xl text-emerald-950 font-bold block mb-1">G & A</span>
-              <span className="text-[10px] uppercase tracking-widest text-[#635544]">Our Journey Starts Here</span>
+          <h3 className="text-center font-serif text-lg text-accent italic mb-4">Menuju Hari Bahagia</h3>
+          
+          {isCompleted ? (
+            <div className="py-4 text-center">
+              <p className="font-serif text-xl font-medium text-primary">Acara Sedang Berlangsung / Terima Kasih Atas Doanya</p>
             </div>
-            {/* Elegant luxury overlay grid */}
-            <div className="absolute inset-0 border border-white/20 rounded-full pointer-events-none scale-95" />
-          </div>
+          ) : (
+            <div className="grid grid-cols-4 gap-2">
+              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{days}</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Hari</span>
+              </div>
+              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{hours}</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Jam</span>
+              </div>
+              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{minutes}</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Menit</span>
+              </div>
+              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{seconds}</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Detik</span>
+              </div>
+            </div>
+          )}
         </motion.div>
 
-        {/* Couple Names */}
-        <motion.h2 
+        {/* 2. Ayat Al-Qur'an (QS. Ar-Rum: 21) */}
+        <motion.div 
           variants={itemVariants}
-          className="font-serif text-4xl md:text-6xl font-semibold mb-4 text-[#2d2722] tracking-wide"
+          className="max-w-lg mb-10 px-4 text-center"
         >
-          Gagas & Akila
-        </motion.h2>
+          <p className="text-[#786c5f] text-xs md:text-sm leading-relaxed mb-2 italic">
+            &ldquo;Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.&rdquo;
+          </p>
+          <span className="text-[11px] font-semibold text-accent uppercase tracking-widest">
+            — QS. Ar-Rum: 21 —
+          </span>
+        </motion.div>
 
-        <motion.p 
+        {/* 3. Save The Date & Nama Pengantin */}
+        <motion.div 
           variants={itemVariants}
-          className="text-[#786c5f] max-w-md text-sm md:text-base leading-relaxed mb-8 italic"
+          className="flex flex-col items-center mb-10"
         >
-          &ldquo;Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya...&rdquo;
-        </motion.p>
+          <span 
+            className="text-xs uppercase tracking-[0.4em] text-accent font-semibold mb-6 px-4 py-1.5 border border-primary/20 rounded-full bg-white/40 backdrop-blur-xs shadow-xs"
+          >
+            Save the Date
+          </span>
 
-        {/* Unified Event Card (Waktu & Tempat) */}
+          <div
+            className="relative w-56 h-56 md:w-72 md:h-72 rounded-full border-4 border-white shadow-2xl p-1 bg-secondary mx-auto overflow-hidden animate-float mb-6"
+          >
+            <div className="w-full h-full rounded-full bg-linear-to-tr from-primary/30 to-accent/40 flex flex-col items-center justify-center relative">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600')] bg-cover bg-center mix-blend-overlay opacity-80" />
+              <div className="p-4 text-center z-10">
+                <span className="font-serif text-3xl text-emerald-950 font-bold block mb-1">G & A</span>
+                <span className="text-[10px] uppercase tracking-widest text-[#635544]">Our Journey Starts Here</span>
+              </div>
+              <div className="absolute inset-0 border border-white/20 rounded-full pointer-events-none scale-95" />
+            </div>
+          </div>
+
+          <h2 className="font-serif text-4xl md:text-6xl font-semibold text-[#2d2722] tracking-wide">
+            Gagas & Akila
+          </h2>
+        </motion.div>
+
+        {/* 4. Informasi Acara (Waktu & Tempat) */}
         <motion.div
           variants={itemVariants}
           className="w-full max-w-xl bg-white/80 backdrop-blur-md rounded-3xl border border-white p-6 md:p-8 shadow-lg relative overflow-hidden text-center mb-8"
@@ -152,39 +187,6 @@ export function Hero({ weddingDate }: HeroProps) {
               Save to your calendar
             </Button>
           </div>
-        </motion.div>
-
-        {/* Countdown Box */}
-        <motion.div 
-          variants={itemVariants}
-          className="w-full max-w-md bg-white/60 backdrop-blur-md border border-white p-6 rounded-2xl shadow-lg ring-1 ring-primary/5"
-        >
-          <h3 className="text-center font-serif text-lg text-accent italic mb-4">Menuju Hari Bahagia</h3>
-          
-          {isCompleted ? (
-            <div className="py-4 text-center">
-              <p className="font-serif text-xl font-medium text-primary">Acara Sedang Berlangsung / Terima Kasih Atas Doanya</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-4 gap-2">
-              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{days}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Hari</span>
-              </div>
-              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{hours}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Jam</span>
-              </div>
-              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{minutes}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Menit</span>
-              </div>
-              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{seconds}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Detik</span>
-              </div>
-            </div>
-          )}
         </motion.div>
       </motion.div>
 
