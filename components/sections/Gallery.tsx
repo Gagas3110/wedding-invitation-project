@@ -18,32 +18,32 @@ export function Gallery() {
   const photos: GalleryImage[] = [
     {
       src: "/gallery/DSC03112 (1).jpg",
-      alt: "Momen Bahagia Gagas & Akila",
+      alt: "",
       aspect: "aspect-[3/4]",
     },
     {
       src: "/gallery/DSC03138 (1).jpg",
-      alt: "Kemesraan Gagas & Akila",
+      alt: "",
       aspect: "aspect-[3/4]",
     },
     {
       src: "/gallery/DSC03153.jpg",
-      alt: "Potret Bahagia",
+      alt: "",
       aspect: "aspect-square",
     },
     {
       src: "/gallery/DSC03172.jpg",
-      alt: "Senyuman Hangat",
+      alt: "t",
       aspect: "aspect-[3/4]",
     },
     {
       src: "/gallery/DSC03223 (1).jpg",
-      alt: "Kenangan Manis",
+      alt: "",
       aspect: "aspect-[3/4]",
     },
     {
       src: "/gallery/DSC03248 (1).jpg",
-      alt: "Menatap Masa Depan Bersama",
+      alt: "",
       aspect: "aspect-[3/4]",
     },
   ];
