@@ -20,6 +20,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     // Create audio element
     audioRef.current = new Audio("/music.mp3");
     audioRef.current.loop = true;
+    audioRef.current.volume = 0.4; // 40% volume agar lebih lembut
     
     return () => {
       if (audioRef.current) {
