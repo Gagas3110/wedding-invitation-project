@@ -95,17 +95,11 @@ export function Hero({ weddingDate }: HeroProps) {
           </span>
         </motion.div>
 
-        {/* 3. Save The Date & Nama Pengantin */}
+        {/* 3. Nama Pengantin & Foto Monogram */}
         <motion.div 
           variants={itemVariants}
           className="flex flex-col items-center mb-10"
         >
-          <span 
-            className="text-xs uppercase tracking-[0.4em] text-accent font-semibold mb-6 px-4 py-1.5 border border-primary/20 rounded-full bg-white/40 backdrop-blur-xs shadow-xs"
-          >
-            Save the Date
-          </span>
-
           <div
             className="relative w-56 h-56 md:w-72 md:h-72 rounded-full border-4 border-white shadow-2xl p-1 bg-secondary mx-auto overflow-hidden animate-float mb-6"
           >
