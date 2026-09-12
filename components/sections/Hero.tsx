@@ -48,21 +48,21 @@ export function Hero({ weddingDate }: HeroProps) {
         {/* 1. Ayat Al-Qur'an (QS. Ar-Rum: 21 in Arch Frame) */}
         <motion.div 
           variants={itemVariants}
-          className="w-full max-w-xl bg-white/85 backdrop-blur-md border border-[#E8DECF] p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgba(184,147,88,0.08)] mb-14 text-center relative overflow-hidden"
+          className="w-full max-w-xl bg-white/85 backdrop-blur-md border border-[#CAD4AA]/60 p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgba(59,68,32,0.06)] mb-14 text-center relative overflow-hidden"
         >
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B89358] to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent" />
           
 
-          <p className="text-[#5C5042] text-xs md:text-sm leading-relaxed mb-4 italic font-serif">
+          <p className="text-[#3B4420] text-xs md:text-sm leading-relaxed mb-4 italic font-serif">
             &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;
           </p>
           
           <div className="flex items-center justify-center gap-3 mt-4">
-            <div className="h-px w-8 bg-[#B89358]/50" />
-            <span className="text-[11px] font-semibold text-[#B89358] uppercase tracking-[0.2em] font-sans">
+            <div className="h-px w-8 bg-[#8B9B62]/50" />
+            <span className="text-[11px] font-semibold text-[#4A542C] uppercase tracking-[0.2em] font-sans">
               QS. Ar-Rum: 21
             </span>
-            <div className="h-px w-8 bg-[#B89358]/50" />
+            <div className="h-px w-8 bg-[#8B9B62]/50" />
           </div>
         </motion.div>
 
@@ -76,10 +76,10 @@ export function Hero({ weddingDate }: HeroProps) {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-center mb-10"
           >
-            <h4 className="font-arabic text-2xl md:text-3xl lg:text-4xl text-[#26211C] font-normal mb-3 leading-relaxed" dir="rtl">
+            <h4 className="font-arabic text-2xl md:text-3xl lg:text-4xl text-[#1A1A1A] font-normal mb-3 leading-relaxed" dir="rtl">
               بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
             </h4>
-            <p className="text-xs md:text-sm text-[#786C5E] max-w-lg mx-auto leading-relaxed font-sans">
+            <p className="text-xs md:text-sm text-[#4A542C] max-w-lg mx-auto leading-relaxed font-sans">
               Dengan memohon Rahmat dan Ridho Allah Subhanahu Wa Ta&apos;ala, kami bermaksud untuk mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
             </p>
           </motion.div>
@@ -95,18 +95,18 @@ export function Hero({ weddingDate }: HeroProps) {
               className="flex flex-col items-center text-center w-full max-w-sm"
             >
               {/* Portrait Arch Photo */}
-              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/50 shadow-xl mb-5 bg-[#F3ECE1]/50">
+              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#8B9B62]/60 shadow-xl mb-5 bg-[#EEF2DF]/50">
                 <img
                   src="/gallery/wanita.jpg"
                   alt="Akila Syifa Salsabila"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#26211C] tracking-wide">
+              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#1A1A1A] tracking-wide">
                 Akila Syifa Salsabila
               </h3>
-              <div className="h-px w-12 bg-[#B89358] my-2.5" />
-              <p className="text-xs md:text-sm text-[#5C5042] font-sans leading-relaxed">
+              <div className="h-px w-12 bg-[#8B9B62] my-2.5" />
+              <p className="text-xs md:text-sm text-[#4A542C] font-sans leading-relaxed">
                 Putri dari Bapak Giyanta <br />&amp; Ibu Susi Suryani (Almh.)
               </p>
             </motion.div>
@@ -119,11 +119,11 @@ export function Hero({ weddingDate }: HeroProps) {
               transition={{ duration: 0.7, ease: "easeOut" }}
               className="flex flex-col items-center gap-1.5"
             >
-              <div className="h-7 w-0.5 bg-gradient-to-b from-transparent via-[#B89358]/60 to-[#B89358]" />
-              <span className="font-serif text-4xl md:text-5xl text-[#B89358] font-normal drop-shadow-[0_2px_10px_rgba(184,147,88,0.25)] select-none">
+              <div className="h-7 w-0.5 bg-gradient-to-b from-transparent via-[#8B9B62]/60 to-[#8B9B62]" />
+              <span className="font-serif text-4xl md:text-5xl text-[#3B4420] font-normal drop-shadow-[0_2px_10px_rgba(59,68,32,0.15)] select-none">
                 &amp;
               </span>
-              <div className="h-7 w-0.5 bg-gradient-to-b from-[#B89358] via-[#B89358]/60 to-transparent" />
+              <div className="h-7 w-0.5 bg-gradient-to-b from-[#8B9B62] via-[#8B9B62]/60 to-transparent" />
             </motion.div>
 
             {/* 2. Mempelai Pria (Muncul Saat Di-scroll) */}
@@ -135,18 +135,18 @@ export function Hero({ weddingDate }: HeroProps) {
               className="flex flex-col items-center text-center w-full max-w-sm"
             >
               {/* Portrait Arch Photo */}
-              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/50 shadow-xl mb-5 bg-[#F3ECE1]/50">
+              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#8B9B62]/60 shadow-xl mb-5 bg-[#EEF2DF]/50">
                 <img
                   src="/gallery/pria.jpeg"
                   alt="Gagas Wijaksana Nugraha"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#26211C] tracking-wide">
+              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#1A1A1A] tracking-wide">
                 Gagas Wijaksana Nugraha
               </h3>
-              <div className="h-px w-12 bg-[#B89358] my-3" />
-              <p className="text-xs md:text-sm text-[#5C5042] font-sans leading-relaxed">
+              <div className="h-px w-12 bg-[#8B9B62] my-3" />
+              <p className="text-xs md:text-sm text-[#4A542C] font-sans leading-relaxed">
                 Putra dari Bapak Nedy Winuza (Alm.) <br />&amp; Ibu Nelzi Fati
               </p>
             </motion.div>

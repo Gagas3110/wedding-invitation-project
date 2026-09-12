@@ -87,7 +87,7 @@ export function Event() {
             <Button
               onClick={() => window.open(calendarUrl, "_blank")}
               variant="primary"
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-xs font-semibold shadow-[0_4px_12px_rgba(197,168,128,0.25)] hover:shadow-[0_4px_18px_rgba(197,168,128,0.35)] transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-xs font-semibold shadow-[0_4px_12px_rgba(59,68,32,0.25)] hover:shadow-[0_4px_18px_rgba(59,68,32,0.35)] transition-all cursor-pointer"
             >
               <CalendarPlus className="w-4 h-4" />
               Save to your calendar

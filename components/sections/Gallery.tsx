@@ -78,13 +78,14 @@ export function Gallery() {
     <section className="py-24 px-4 bg-[#FAF7F2]/60">
       <div className="max-w-5xl mx-auto">
         {/* Title */}
-        <div className="text-center mb-16 gold-border pb-4">
-          <span className="text-[10px] uppercase tracking-[0.4em] text-[#B89358] font-semibold block mb-2">
+        <div className="text-center mb-16 relative pb-2">
+          <span className="text-[10px] uppercase tracking-[0.4em] text-[#4A542C] font-semibold block mb-2">
             Momen Bahagia Kami
           </span>
-          <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#26211C]">
+          <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#1A1A1A]">
             Galeri Pernikahan
           </h3>
+          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
         </div>
 
         {/* Gallery Grid with Arch styling */}

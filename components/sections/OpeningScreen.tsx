@@ -48,7 +48,7 @@ function OpeningContent() {
               {guestName}
             </h3>
             <Button
-              className="mt-4 bg-gradient-to-r from-[#B89358] via-[#CBB07E] to-[#B89358] text-white hover:brightness-105 py-3 px-8 rounded-full font-semibold text-xs tracking-widest uppercase shadow-[0_4px_20px_rgba(184,147,88,0.35)] transition-all transform hover:scale-105 cursor-pointer border border-[#F3E2B8]/40"
+              className="mt-4 bg-[#3B4420] hover:bg-[#2D3319] text-white py-3.5 px-8 rounded-full font-semibold text-xs tracking-widest uppercase shadow-[0_4px_20px_rgba(59,68,32,0.3)] transition-all transform hover:scale-105 cursor-pointer border border-[#CAD4AA]/40"
               onClick={openInvitation}
             >
               <MailOpen className="w-4 h-4 mr-2" />
@@ -65,7 +65,7 @@ export function OpeningScreen() {
   return (
     <Suspense fallback={
       <div className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 flex flex-col items-center justify-center bg-[#181411] text-white">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#B89358]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#3B4420]"></div>
       </div>
     }>
       <OpeningContent />
