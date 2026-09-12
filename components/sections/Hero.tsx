@@ -37,7 +37,7 @@ export function Hero({ weddingDate }: HeroProps) {
   };
 
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center py-20 px-4 relative overflow-hidden bg-gradient-to-b from-[#faf8f5] to-[#f3efe9]">
+    <section className="min-h-screen flex flex-col justify-center items-center py-20 px-4 relative overflow-hidden bg-gradient-to-b from-[#faf8f5]/60 to-[#f3efe9]/60">
       {/* Decorative frame vectors */}
       <div className="absolute top-10 left-10 w-32 h-32 border-t-2 border-l-2 border-primary/20 pointer-events-none hidden md:block" />
       <div className="absolute top-10 right-10 w-32 h-32 border-t-2 border-r-2 border-primary/20 pointer-events-none hidden md:block" />

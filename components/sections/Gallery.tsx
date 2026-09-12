@@ -75,7 +75,7 @@ export function Gallery() {
   };
 
   return (
-    <section className="py-24 px-4 bg-[#FAF7F2]">
+    <section className="py-24 px-4 bg-[#FAF7F2]/60">
       <div className="max-w-5xl mx-auto">
         {/* Title */}
         <div className="text-center mb-16 gold-border pb-4">

@@ -40,7 +40,7 @@ export function Wishes({ refreshTrigger }: WishesProps) {
   };
 
   return (
-    <section className="py-24 px-4 bg-[#FAF7F2]">
+    <section className="py-24 px-4 bg-[#FAF7F2]/60">
       <div className="max-w-xl mx-auto">
         {/* Title */}
         <div className="text-center mb-12 relative">

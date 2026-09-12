@@ -85,7 +85,7 @@ export function Story() {
   ];
 
   return (
-    <section className="py-24 px-4 bg-gradient-to-b from-[#f3efe9] to-[#faf8f5] overflow-hidden">
+    <section className="py-24 px-4 bg-gradient-to-b from-[#f3efe9]/60 to-[#faf8f5]/60 overflow-hidden">
       <div className="max-w-4xl mx-auto flex flex-col items-center">
         {/* Title */}
         <div className="text-center mb-16 gold-border pb-4">
