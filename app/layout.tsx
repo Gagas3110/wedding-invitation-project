@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Plus_Jakarta_Sans, Playfair_Display, Inter } from "next/font/google";
+import { Cormorant_Garamond, Plus_Jakarta_Sans, Playfair_Display, Inter, Alex_Brush, Cinzel } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -27,6 +27,18 @@ const inter = Inter({
   variable: "--font-inter" 
 });
 
+const alexBrush = Alex_Brush({
+  subsets: ["latin"],
+  variable: "--font-alex-brush",
+  weight: ["400"],
+});
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  variable: "--font-cinzel",
+  weight: ["400", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "The Wedding Of Gagas & Akila",
   description: "Undangan pernikahan digital Gagas dan Akila.",
@@ -45,7 +57,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth">
       <body
-        className={`${jakarta.variable} ${cormorant.variable} ${inter.variable} ${playfair.variable} antialiased bg-background text-foreground font-sans`}
+        className={`${jakarta.variable} ${cormorant.variable} ${inter.variable} ${playfair.variable} ${alexBrush.variable} ${cinzel.variable} antialiased bg-background text-foreground font-sans`}
       >
         {children}
       </body>

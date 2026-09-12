@@ -14,6 +14,8 @@
   
   --font-serif: var(--font-cormorant), var(--font-playfair), serif;
   --font-sans: var(--font-jakarta), var(--font-inter), sans-serif;
+  --font-script: var(--font-alex-brush), cursive;
+  --font-cinzel: var(--font-cinzel), serif;
 }
 
 @theme {
@@ -30,6 +32,8 @@
   
   --font-serif: var(--font-serif);
   --font-sans: var(--font-sans);
+  --font-script: var(--font-script);
+  --font-cinzel: var(--font-cinzel);
 }
 
 body {
