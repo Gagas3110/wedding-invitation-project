@@ -20,7 +20,7 @@ function OpeningContent() {
           initial={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: "-100%" }}
           transition={{ duration: 1.0, ease: [0.77, 0, 0.175, 1] }}
-          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 h-screen overflow-hidden flex flex-col justify-between items-center py-10 px-6 bg-[#FAF7F2] shadow-2xl select-none"
+          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 h-screen overflow-hidden flex flex-col justify-end items-center pb-12 sm:pb-16 px-6 bg-[#FAF7F2] shadow-2xl select-none"
         >
           {/* Background Video Layer */}
           <video
@@ -34,17 +34,14 @@ function OpeningContent() {
             <source src="/gallery/the_wedding_of_2.mp4" type="video/mp4" />
           </video>
 
-          {/* Top visual spacer */}
-          <div className="h-10 pointer-events-none" />
-
-          {/* Center Guest Card (Sage Green Box matching reference) */}
+          {/* Guest Card (Sage Green Box positioned in lower section) */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.92, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="z-10 w-full max-w-xs my-auto bg-[#D1D9B5]/85 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-[#BFC9A0]/50 text-center flex flex-col items-center"
+            className="z-10 w-full max-w-xs bg-[#D1D9B5]/85 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-[#BFC9A0]/50 text-center flex flex-col items-center"
           >
-            <p className="text-[20px] text-[#2D3319] leading-relaxed font-serif mb-1 font-medium tracking-wide">
+            <p className="text-[18px] md:text-[20px] text-[#2D3319] leading-relaxed font-serif mb-1 font-medium tracking-wide">
               Yth. Bapak/Ibu/Saudara/i
             </p>
             <h3 className="font-serif text-2xl md:text-3xl font-bold text-[#1A1A1A] my-2">
@@ -58,9 +55,6 @@ function OpeningContent() {
               BUKA UNDANGAN
             </Button>
           </motion.div>
-
-          {/* Bottom visual spacer for Rumah Gadang artwork */}
-          <div className="h-14 md:h-16 pointer-events-none" />
         </motion.div>
       )}
     </AnimatePresence>
