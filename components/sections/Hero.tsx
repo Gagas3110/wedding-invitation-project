@@ -115,43 +115,33 @@ export function Hero({ weddingDate }: HeroProps) {
         </motion.div>
 
         {/* 3. Profil Mempelai (The Couple Section) */}
-        <motion.div 
-          variants={itemVariants}
-          className="w-full max-w-2xl mb-14 px-4 flex flex-col items-center"
-        >
+        <div className="w-full max-w-2xl mb-14 px-2 flex flex-col items-center">
           {/* Mukadimah Salam */}
-          <div className="text-center mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-center mb-10"
+          >
             <h4 className="font-serif text-2xl md:text-3xl text-[#26211C] font-medium mb-3">
               Assalamu&apos;alaikum Warahmatullahi Wabarakatuh
             </h4>
             <p className="text-xs md:text-sm text-[#786C5E] max-w-lg mx-auto leading-relaxed font-sans">
               Dengan memohon Rahmat dan Ridho Allah Subhanahu Wa Ta&apos;ala, kami bermaksud untuk mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
             </p>
-          </div>
+          </motion.div>
 
-          {/* Couple Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 w-full items-center">
-            {/* Mempelai Pria */}
-            <div className="flex flex-col items-center text-center bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#E8DECF] shadow-lg">
-              {/* Portrait Arch Photo */}
-              <div className="relative w-44 h-56 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/40 shadow-md mb-5 bg-[#F3ECE1]">
-                <img
-                  src="/gallery/DSC03112 (1).jpg"
-                  alt="Gagas Wijaksana Nugraha"
-                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-              <h3 className="font-serif text-xl md:text-2xl font-semibold text-[#26211C] tracking-wide">
-                Gagas Wijaksana Nugraha
-              </h3>
-              <div className="h-px w-10 bg-[#B89358] my-2" />
-              <p className="text-xs text-[#786C5E] font-sans leading-relaxed">
-                Putra dari Alm. Bapak Nedy Winuza <br />&amp; Ibu Nelzi Fati
-              </p>
-            </div>
-
-            {/* Mempelai Wanita */}
-            <div className="flex flex-col items-center text-center bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#E8DECF] shadow-lg">
+          {/* Couple Cards — Sequential Reveal on Scroll */}
+          <div className="flex flex-col items-center gap-12 w-full">
+            {/* 1. Mempelai Wanita (Muncul Pertama) */}
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="flex flex-col items-center text-center bg-white/85 backdrop-blur-md p-7 sm:p-8 rounded-3xl border border-[#E8DECF] shadow-xl w-full max-w-sm"
+            >
               {/* Portrait Arch Photo */}
               <div className="relative w-44 h-56 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/40 shadow-md mb-5 bg-[#F3ECE1]">
                 <img
@@ -163,13 +153,51 @@ export function Hero({ weddingDate }: HeroProps) {
               <h3 className="font-serif text-xl md:text-2xl font-semibold text-[#26211C] tracking-wide">
                 Akila Syifa Salsabila
               </h3>
-              <div className="h-px w-10 bg-[#B89358] my-2" />
+              <div className="h-px w-10 bg-[#B89358] my-2.5" />
               <p className="text-xs text-[#786C5E] font-sans leading-relaxed">
                 Putri dari Bapak Giyanta <br />&amp; Almh. Ibu Susi Suryani
               </p>
-            </div>
+            </motion.div>
+
+            {/* Ampersand Divider */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="flex flex-col items-center gap-2"
+            >
+              <div className="h-10 w-px bg-gradient-to-b from-transparent to-[#B89358]/60" />
+              <span className="font-serif text-3xl text-[#B89358] font-light">&amp;</span>
+              <div className="h-10 w-px bg-gradient-to-b from-[#B89358]/60 to-transparent" />
+            </motion.div>
+
+            {/* 2. Mempelai Pria (Muncul Saat Di-scroll) */}
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="flex flex-col items-center text-center bg-white/85 backdrop-blur-md p-7 sm:p-8 rounded-3xl border border-[#E8DECF] shadow-xl w-full max-w-sm"
+            >
+              {/* Portrait Arch Photo */}
+              <div className="relative w-44 h-56 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/40 shadow-md mb-5 bg-[#F3ECE1]">
+                <img
+                  src="/gallery/DSC03112 (1).jpg"
+                  alt="Gagas Wijaksana Nugraha"
+                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <h3 className="font-serif text-xl md:text-2xl font-semibold text-[#26211C] tracking-wide">
+                Gagas Wijaksana Nugraha
+              </h3>
+              <div className="h-px w-10 bg-[#B89358] my-2.5" />
+              <p className="text-xs text-[#786C5E] font-sans leading-relaxed">
+                Putra dari Alm. Bapak Nedy Winuza <br />&amp; Ibu Nelzi Fati
+              </p>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
 
         {/* 4. Informasi Acara (Waktu & Tempat) */}
         <motion.div
