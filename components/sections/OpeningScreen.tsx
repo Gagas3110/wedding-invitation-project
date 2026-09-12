@@ -32,9 +32,15 @@ function OpeningContent() {
           >
             {/* Arched 'The Wedding of' */}
             <div className="flex justify-center -mb-2 w-full">
-              <svg viewBox="0 0 300 45" className="w-52 h-10 overflow-visible">
+              <svg viewBox="0 0 300 45" className="w-56 h-10 overflow-visible">
                 <path id="wedding-arch-curve" d="M 30 40 Q 150 8 270 40" fill="transparent" />
-                <text className="font-serif text-[24px] tracking-[0.16em] fill-[#1A1A1A] italic" textAnchor="middle">
+                <text 
+                  className="font-serif text-[28px] md:text-[30px] font-bold tracking-[0.14em] fill-[#1A1A1A] italic" 
+                  fontWeight="bold"
+                  stroke="#1A1A1A"
+                  strokeWidth="0.5"
+                  textAnchor="middle"
+                >
                   <textPath href="#wedding-arch-curve" startOffset="50%">
                     The Wedding of
                   </textPath>
@@ -60,7 +66,7 @@ function OpeningContent() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="z-10 w-full max-w-xs my-auto bg-[#D1D9B5]/85 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-[#BFC9A0]/50 text-center flex flex-col items-center"
           >
-            <p className="text-[12px] text-[#2D3319] leading-relaxed font-serif mb-1 font-medium tracking-wide">
+            <p className="text-[20px] text-[#2D3319] leading-relaxed font-serif mb-1 font-medium tracking-wide">
               Yth. Bapak/Ibu/Saudara/i
             </p>
             <h3 className="font-serif text-2xl md:text-3xl font-bold text-[#1A1A1A] my-2">
