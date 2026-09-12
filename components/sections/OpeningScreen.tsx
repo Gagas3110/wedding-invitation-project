@@ -34,7 +34,7 @@ function OpeningContent() {
             <div className="flex justify-center -mb-2 w-full">
               <svg viewBox="0 0 300 45" className="w-52 h-10 overflow-visible">
                 <path id="wedding-arch-curve" d="M 30 40 Q 150 8 270 40" fill="transparent" />
-                <text className="font-serif text-[17px] tracking-[0.16em] fill-[#1A1A1A] italic" textAnchor="middle">
+                <text className="font-serif text-[24px] tracking-[0.16em] fill-[#1A1A1A] italic" textAnchor="middle">
                   <textPath href="#wedding-arch-curve" startOffset="50%">
                     The Wedding of
                   </textPath>

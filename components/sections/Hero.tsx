@@ -96,10 +96,6 @@ export function Hero({ weddingDate }: HeroProps) {
         >
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B89358] to-transparent" />
           
-          {/* Basmalah Calligraphy Style */}
-          <div className="font-serif text-xl md:text-2xl text-[#785A34] mb-4 tracking-widest">
-            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-          </div>
 
           <p className="text-[#5C5042] text-xs md:text-sm leading-relaxed mb-4 italic font-serif">
             &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;
