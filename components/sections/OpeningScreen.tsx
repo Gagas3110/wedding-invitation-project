@@ -32,7 +32,6 @@ function OpeningContent() {
             className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
           >
             <source src="/gallery/the_wedding_of.mp4" type="video/mp4" />
-            <source src="/gallery/The Wedding of.mp4" type="video/mp4" />
           </video>
           {/* Top Header: Arched 'The Wedding of', Akila & Gagas, Date */}
           <motion.div 
