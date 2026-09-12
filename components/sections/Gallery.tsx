@@ -79,11 +79,8 @@ export function Gallery() {
       <div className="max-w-5xl mx-auto">
         {/* Title */}
         <div className="text-center mb-16 relative pb-2">
-          <span className="text-[10px] uppercase tracking-[0.4em] text-[#4A542C] font-semibold block mb-2">
-            Momen Bahagia Kami
-          </span>
           <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#1A1A1A]">
-            Galeri Pernikahan
+             Momen Bahagia Kami
           </h3>
           <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
         </div>

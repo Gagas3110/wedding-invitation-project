@@ -80,7 +80,7 @@ export function Hero({ weddingDate }: HeroProps) {
               بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
             </h4>
             <p className="text-xs md:text-sm text-[#4A542C] max-w-lg mx-auto leading-relaxed font-sans">
-              Dengan memohon Rahmat dan Ridho Allah Subhanahu Wa Ta&apos;ala, kami bermaksud untuk mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
+              Dengan memohon Rahmat dan Ridho Allah Subhanahu Wa Ta&apos;ala, bermaksud untuk mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
             </p>
           </motion.div>
 

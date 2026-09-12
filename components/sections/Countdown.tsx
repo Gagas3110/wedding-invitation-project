@@ -22,10 +22,6 @@ export function Countdown({ weddingDate }: CountdownProps) {
         {/* Countdown Box */}
         <div className="w-full bg-[#DCE3C2]/90 backdrop-blur-md rounded-3xl p-7 md:p-9 shadow-xl border border-[#CAD4AA]/60 relative overflow-hidden text-center">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent" />
-
-          <span className="text-[10px] uppercase tracking-[0.35em] text-[#4A542C] font-semibold block mb-1.5">
-            Save The Date
-          </span>
           <h3 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] font-semibold mb-7">
             Menuju Hari Bahagia
           </h3>
