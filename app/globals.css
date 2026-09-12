@@ -45,6 +45,22 @@ body {
   background-size: 24px 24px;
 }
 
+.font-script {
+  font-family: var(--font-alex-brush), "Great Vibes", "Alex Brush", "Brush Script MT", cursive !important;
+}
+
+.font-cinzel {
+  font-family: var(--font-cinzel), "Cinzel", "Cormorant Garamond", Georgia, serif !important;
+}
+
+.font-serif {
+  font-family: var(--font-cormorant), var(--font-playfair), "Cormorant Garamond", Georgia, serif !important;
+}
+
+.font-sans {
+  font-family: var(--font-jakarta), var(--font-inter), "Plus Jakarta Sans", sans-serif !important;
+}
+
 /* Luxury arch frames */
 .arch-frame {
   border-top-left-radius: 9999px;

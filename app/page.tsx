@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AppProvider } from "@/app/context/AppContext";
+import { PersistentLeftBackdrop } from "@/components/layout/PersistentLeftBackdrop";
 import { OpeningScreen } from "@/components/sections/OpeningScreen";
 import { Hero } from "@/components/sections/Hero";
 import { Gallery } from "@/components/sections/Gallery";
@@ -21,18 +22,24 @@ export default function Home() {
 
   return (
     <AppProvider>
-      <OpeningScreen />
-      
-      <main className="relative z-10 w-full min-h-screen">
-        <Hero weddingDate={weddingDate} />
-        <Gallery />
-        <RSVP onSuccessSubmit={handleRSVPSuccess} />
-        <Wishes refreshTrigger={refreshTrigger} />
-        <Gift />
-        <Footer />
-      </main>
+      {/* 1. Persistent Left Photo on Desktop */}
+      <PersistentLeftBackdrop />
 
-      <MusicToggleButton />
+      {/* 2. Right Side Invitation Column (or Full Page on Mobile) */}
+      <div className="w-full lg:w-[480px] xl:w-[520px] min-h-screen lg:ml-auto relative z-10 bg-[#FAF7F2] shadow-2xl lg:border-l lg:border-[#E8DECF]">
+        <OpeningScreen />
+        
+        <main className="relative z-10 w-full min-h-screen">
+          <Hero weddingDate={weddingDate} />
+          <Gallery />
+          <RSVP onSuccessSubmit={handleRSVPSuccess} />
+          <Wishes refreshTrigger={refreshTrigger} />
+          <Gift />
+          <Footer />
+        </main>
+
+        <MusicToggleButton />
+      </div>
     </AppProvider>
   );
 }
