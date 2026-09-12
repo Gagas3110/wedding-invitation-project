@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, GiftIcon, QrCode } from "lucide-react";
+import { Copy, Check, GiftIcon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
 
@@ -35,7 +35,7 @@ export function Gift() {
 
         {/* Caption */}
         <p className="text-center text-xs text-[#786C5E] leading-relaxed max-w-sm mx-auto mb-10 font-sans">
-          Kehadiran dan doa restu Anda adalah kado terindah bagi kami. Namun apabila Anda ingin mengirimkan tanda kasih, Anda dapat menyalurkannya melalui rekening/QRIS berikut:
+          Kehadiran dan doa restu Anda adalah kado terindah bagi kami. Namun apabila Anda ingin mengirimkan tanda kasih, Anda dapat menyalurkannya melalui rekening berikut:
         </p>
 
         {/* Gift Options Grid */}
@@ -82,44 +82,6 @@ export function Gift() {
               </Button>
             </motion.div>
           ))}
-
-          {/* QRIS Option */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E8DECF] p-6 md:p-8 shadow-[0_8px_30px_rgba(184,147,88,0.08)] text-center flex flex-col items-center"
-          >
-            <div className="w-12 h-12 bg-[#FAF7F2] border border-[#E8DECF] rounded-2xl flex items-center justify-center text-[#B89358] mb-4">
-              <QrCode className="w-5 h-5" />
-            </div>
-
-            <span className="text-[10px] uppercase font-bold tracking-widest text-[#B89358] block mb-1 font-sans">
-              QRIS Pembayaran
-            </span>
-            <p className="text-xs text-[#786C5E] mb-5 font-sans">Scan QRIS atas nama Gagas Wijaksana Nugraha</p>
-
-            {/* Simulated QR Code Wrapper */}
-            <div className="relative w-44 h-44 bg-white border border-[#E8DECF] rounded-2xl p-3 flex items-center justify-center shadow-inner">
-              <div className="w-full h-full border border-[#B89358]/20 rounded-xl p-2 flex flex-col items-center justify-center relative bg-[#FAF7F2]/40">
-                <span className="text-[8px] font-sans text-[#827568] tracking-widest font-semibold uppercase">WEDDING QRIS</span>
-                <div className="w-24 h-24 border-3 border-[#B89358]/40 rounded-lg flex items-center justify-center mt-1 bg-white p-1">
-                  <div className="grid grid-cols-3 gap-1">
-                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
-                    <div className="w-5 h-5 bg-[#785A34]/20 rounded-xs" />
-                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
-                    <div className="w-5 h-5 bg-[#785A34]/10 rounded-xs" />
-                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
-                    <div className="w-5 h-5 bg-[#785A34]/30 rounded-xs" />
-                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
-                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
-                    <div className="w-5 h-5 bg-[#785A34]/10 rounded-xs" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </div>
     </section>
