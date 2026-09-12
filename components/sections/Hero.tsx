@@ -145,7 +145,7 @@ export function Hero({ weddingDate }: HeroProps) {
               {/* Portrait Arch Photo */}
               <div className="relative w-44 h-56 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/40 shadow-md mb-5 bg-[#F3ECE1]">
                 <img
-                  src="/gallery/DSC03138 (1).jpg"
+                  src="/gallery/wanita.jpg"
                   alt="Akila Syifa Salsabila"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 />
@@ -185,7 +185,7 @@ export function Hero({ weddingDate }: HeroProps) {
               {/* Portrait Arch Photo */}
               <div className="relative w-44 h-56 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/40 shadow-md mb-5 bg-[#F3ECE1]">
                 <img
-                  src="/gallery/DSC03112 (1).jpg"
+                  src="/gallery/pria.jpeg"
                   alt="Gagas Wijaksana Nugraha"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 />
