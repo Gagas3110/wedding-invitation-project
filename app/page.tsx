@@ -26,30 +26,27 @@ export default function Home() {
       <PersistentLeftBackdrop />
 
       {/* 2. Right Side Invitation Column (or Full Page on Mobile) */}
-      <div className="w-full lg:w-[480px] xl:w-[520px] min-h-screen lg:ml-auto relative z-10 bg-[#FAF7F2]/80 shadow-2xl lg:border-l lg:border-[#E8DECF]">
+      <div className="w-full lg:w-[480px] xl:w-[520px] min-h-screen lg:ml-auto relative z-10 shadow-2xl lg:border-l lg:border-[#E8DECF]">
+        {/* Fixed decorative background — stays in place while content scrolls */}
+        <div
+          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] pointer-events-none z-0"
+          style={{
+            backgroundImage: "url('/gallery/background_wedding.svg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+
         <OpeningScreen />
         
         <main className="relative z-10 w-full min-h-screen">
-          {/* Global decorative background for all sections */}
-          <div
-            className="absolute inset-0 pointer-events-none z-0"
-            style={{
-              backgroundImage: "url('/gallery/background_wedding.svg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              backgroundAttachment: "local",
-              opacity: 0.45,
-            }}
-          />
-          <div className="relative z-10">
-            <Hero weddingDate={weddingDate} />
-            <Gallery />
-            <RSVP onSuccessSubmit={handleRSVPSuccess} />
-            <Wishes refreshTrigger={refreshTrigger} />
-            <Gift />
-            <Footer />
-          </div>
+          <Hero weddingDate={weddingDate} />
+          <Gallery />
+          <RSVP onSuccessSubmit={handleRSVPSuccess} />
+          <Wishes refreshTrigger={refreshTrigger} />
+          <Gift />
+          <Footer />
         </main>
 
         <MusicToggleButton />
