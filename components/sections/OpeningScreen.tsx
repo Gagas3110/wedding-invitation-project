@@ -23,32 +23,47 @@ function OpeningContent() {
           className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 h-screen overflow-hidden flex flex-col justify-between items-center py-10 px-6 bg-[#FAF7F2] bg-cover bg-center bg-no-repeat shadow-2xl select-none"
           style={{ backgroundImage: "url('/gallery/background_wedding.jpg')" }}
         >
-          {/* Top Header: The Wedding of GAGAS & AKILA */}
+          {/* Top Header: Arched 'The Wedding of', Akila & Gagas, Date */}
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-center pt-20 md:pt-48 z-10"
+            className="text-center pt-16 md:pt-20 z-10 flex flex-col items-center"
           >
-            <span className="font-script text-4xl md:text-5xl text-[#5C4524] block mb-1 drop-shadow-xs">
-              The Wedding of
-            </span>
-            <h2 className="font-cinzel text-3xl md:text-4xl font-semibold tracking-wider text-[#5C4524] uppercase leading-tight drop-shadow-xs">
-              GAGAS<br />&amp; AKILA
-            </h2>
+            {/* Arched 'The Wedding of' */}
+            <div className="flex justify-center -mb-2 w-full">
+              <svg viewBox="0 0 300 45" className="w-52 h-10 overflow-visible">
+                <path id="wedding-arch-curve" d="M 30 40 Q 150 8 270 40" fill="transparent" />
+                <text className="font-serif text-[17px] tracking-[0.16em] fill-[#1A1A1A] italic" textAnchor="middle">
+                  <textPath href="#wedding-arch-curve" startOffset="50%">
+                    The Wedding of
+                  </textPath>
+                </text>
+              </svg>
+            </div>
+
+            {/* Couple Script Names */}
+            <h1 className="font-script text-5xl md:text-6xl text-[#1A1A1A] font-normal leading-tight drop-shadow-xs my-1">
+              Akila &amp; Gagas
+            </h1>
+
+            {/* Wedding Date */}
+            <p className="font-serif text-xs md:text-sm text-[#1A1A1A] tracking-[0.25em] mt-1 font-medium">
+              12 &nbsp;Desember 2026
+            </p>
           </motion.div>
 
-          {/* Center Guest Card (Translucent White Box) */}
+          {/* Center Guest Card (Sage Green Box matching reference) */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="z-10 w-full max-w-xs my-auto bg-white/85 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-white/70 text-center flex flex-col items-center"
+            className="z-10 w-full max-w-xs my-auto bg-[#D1D9B5]/85 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-[#BFC9A0]/50 text-center flex flex-col items-center"
           >
-            <p className="text-[11px] text-[#785A34] leading-relaxed font-sans mb-1 font-medium">
-              Kepada Yth.<br />Bapak/ Ibu/ Saudara/ i
+            <p className="text-[12px] text-[#2D3319] leading-relaxed font-serif mb-1 font-medium tracking-wide">
+              Yth. Bapak/Ibu/Saudara/i
             </p>
-            <h3 className="font-serif text-2xl md:text-3xl font-bold text-[#26211C] my-2">
+            <h3 className="font-serif text-2xl md:text-3xl font-bold text-[#1A1A1A] my-2">
               {guestName}
             </h3>
             <Button
