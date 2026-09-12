@@ -197,71 +197,151 @@ export function Hero({ weddingDate }: HeroProps) {
           </div>
         </div>
 
-        {/* 4. Informasi Acara (Waktu & Tempat) */}
+        {/* 4. Save The Date & Calendar Section */}
         <motion.div
-          variants={itemVariants}
-          className="w-full max-w-xl bg-white/90 backdrop-blur-md rounded-3xl border border-[#E8DECF] p-8 md:p-10 shadow-[0_8px_30px_rgba(184,147,88,0.12)] relative overflow-hidden text-center mb-8"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="w-full max-w-sm flex flex-col items-center mb-10"
         >
-          {/* Top gold line decorator */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B89358] to-transparent" />
+          {/* Section Header */}
+          <h3 className="font-serif italic text-3xl md:text-4xl text-[#1A1A1A] text-center mb-6 drop-shadow-xs">
+            Save The Date!
+          </h3>
 
-          {/* Date & Venue Header */}
-          <div className="mb-8">
-            <span className="text-[10px] uppercase tracking-[0.35em] text-[#B89358] font-semibold block mb-2">
-              Save Our Special Day
-            </span>
-            <div className="inline-flex items-center justify-center gap-2 text-[#785A34] font-medium text-xs md:text-sm tracking-wider uppercase mb-1">
-              <Calendar className="w-4 h-4 text-[#B89358]" />
-              <span>Sabtu, 12 Desember 2026</span>
+          {/* 4A. Calendar Card */}
+          <div className="w-full bg-[#DCE3C2]/90 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-[#CAD4AA]/60 mb-5">
+            {/* Calendar Header: Month & Year */}
+            <div className="flex justify-between items-center mb-4 px-1">
+              <span className="font-serif tracking-[0.2em] uppercase text-sm md:text-base font-semibold text-[#2D3319]">
+                DECEMBER
+              </span>
+              <span className="font-serif text-sm md:text-base font-semibold text-[#2D3319]">
+                2026
+              </span>
             </div>
-            <h4 className="font-serif text-2xl md:text-3xl font-semibold text-[#26211C] tracking-wide mt-1">
-              The Samasta Jatiwarna
-            </h4>
+
+            {/* Days of Week */}
+            <div className="grid grid-cols-7 text-center text-[11px] md:text-xs font-serif italic text-[#4A542C] mb-3">
+              <span>Sun</span>
+              <span>Mon</span>
+              <span>Tue</span>
+              <span>Wed</span>
+              <span>Thu</span>
+              <span>Fri</span>
+              <span>Sat</span>
+            </div>
+
+            {/* Calendar Days Grid */}
+            <div className="grid grid-cols-7 gap-y-3.5 text-center items-center">
+              {/* Row 1 */}
+              <span />
+              <span />
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">1</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">2</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">3</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">4</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">5</span>
+
+              {/* Row 2 */}
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">6</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">7</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">8</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">9</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">10</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">11</span>
+              
+              {/* Day 12 with Animated Love Heart */}
+              <div className="relative flex items-center justify-center font-serif font-bold text-sm md:text-base text-[#1A1A1A]">
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+                  className="absolute -inset-2 flex items-center justify-center pointer-events-none"
+                >
+                  <svg viewBox="0 0 32 32" className="w-9 h-9 fill-none stroke-[#3B4420] stroke-[2.2] drop-shadow-xs">
+                    <path d="M16 28 C16 28 3 19 3 10 C3 5.5 6.5 2 11 2 C13.5 2 15 3.5 16 5 C17 3.5 18.5 2 21 2 C25.5 2 29 5.5 29 10 C29 19 16 28 16 28 Z" />
+                  </svg>
+                </motion.div>
+                <span className="relative z-10 font-bold text-[#1A1A1A]">12</span>
+              </div>
+
+              {/* Row 3 */}
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">13</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">14</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">15</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">16</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">17</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">18</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">19</span>
+
+              {/* Row 4 */}
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">20</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">21</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">22</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">23</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">24</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">25</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">26</span>
+
+              {/* Row 5 */}
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">27</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">28</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">29</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">30</span>
+              <span className="text-xs md:text-sm font-serif text-[#3B4420]">31</span>
+              <span />
+              <span />
+            </div>
           </div>
 
-          {/* Akad & Resepsi Two-Column Section with Divider */}
-          <div className="bg-[#FAF7F2] rounded-2xl p-6 border border-[#E8DECF] mb-8">
-            <div className="grid grid-cols-2 divide-x divide-[#E5DC CE]">
-              {/* Akad Column */}
-              <div className="px-3 md:px-5 text-center">
-                <h5 className="font-serif text-lg md:text-xl font-semibold text-[#785A34] mb-1.5">
+          {/* 4B. Event Details Card */}
+          <div className="w-full bg-[#DCE3C2]/90 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-[#CAD4AA]/60 text-center mb-5">
+            <p className="font-serif text-sm md:text-base text-[#2D3319] font-medium mb-1">
+              Sabtu, 12 Desember 2026
+            </p>
+            <h4 className="font-sans text-xl md:text-2xl font-bold text-[#1A1A1A] tracking-tight mb-2.5">
+              The Samasta Jatiwarna
+            </h4>
+            <p className="text-[11px] md:text-xs text-[#4A542C] font-sans leading-relaxed max-w-xs mx-auto mb-5">
+              Grand Dhika City Jatiwarna, RT.001/RW.005, Jatimelati, Kec. Pd. Melati, Kota Bks, Jawa Barat
+            </p>
+
+            {/* Akad & Resepsi Two-Column Schedule */}
+            <div className="grid grid-cols-2 divide-x divide-[#BCC69B] pt-4 border-t border-[#BCC69B]/60">
+              <div className="text-center px-2">
+                <h5 className="font-serif text-sm md:text-base font-bold text-[#2D3319] mb-1">
                   Akad
                 </h5>
-                <p className="text-xs md:text-sm font-medium text-[#4A3E35] tracking-wide">
+                <p className="text-xs md:text-sm font-sans font-medium text-[#3B4420]">
                   15.00 – 16.30 WIB
                 </p>
               </div>
-
-              {/* Resepsi Column */}
-              <div className="px-3 md:px-5 text-center">
-                <h5 className="font-serif text-lg md:text-xl font-semibold text-[#785A34] mb-1.5">
+              <div className="text-center px-2">
+                <h5 className="font-serif text-sm md:text-base font-bold text-[#2D3319] mb-1">
                   Resepsi
                 </h5>
-                <p className="text-xs md:text-sm font-medium text-[#4A3E35] tracking-wide">
+                <p className="text-xs md:text-sm font-sans font-medium text-[#3B4420]">
                   19.00 – 21.00 WIB
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
-            <Button
+          {/* 4C. Action Buttons Pills */}
+          <div className="flex flex-row gap-3 w-full justify-center">
+            <button
               onClick={() => window.open(mapUrl, "_blank")}
-              variant="outline"
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-xs font-semibold hover:bg-[#FAF7F2] border-[#B89358]/50 text-[#785A34] transition-all cursor-pointer shadow-xs"
+              className="flex-1 py-3 px-4 rounded-full bg-[#EAEFD9] hover:bg-[#DDE4C6] border border-[#CAD4AA] text-xs font-semibold text-[#2D3319] transition-all shadow-sm cursor-pointer text-center"
             >
-              <Map className="w-4 h-4 text-[#B89358]" />
               Google Maps
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => window.open(calendarUrl, "_blank")}
-              variant="primary"
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-xs font-semibold bg-gradient-to-r from-[#B89358] via-[#CBB07E] to-[#B89358] text-white shadow-[0_4px_15px_rgba(184,147,88,0.25)] hover:brightness-105 transition-all cursor-pointer"
+              className="flex-1 py-3 px-4 rounded-full bg-[#EAEFD9] hover:bg-[#DDE4C6] border border-[#CAD4AA] text-xs font-semibold text-[#2D3319] transition-all shadow-sm cursor-pointer text-center"
             >
-              <CalendarPlus className="w-4 h-4" />
               Save to your calendar
-            </Button>
+            </button>
           </div>
         </motion.div>
       </motion.div>
