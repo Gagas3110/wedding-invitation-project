@@ -16,6 +16,7 @@
   --font-sans: var(--font-jakarta), var(--font-inter), sans-serif;
   --font-script: var(--font-alex-brush), cursive;
   --font-cinzel: var(--font-cinzel), serif;
+  --font-arabic: var(--font-amiri), "Amiri", "Traditional Arabic", serif;
 }
 
 @theme {
@@ -34,6 +35,7 @@
   --font-sans: var(--font-sans);
   --font-script: var(--font-script);
   --font-cinzel: var(--font-cinzel);
+  --font-arabic: var(--font-arabic);
 }
 
 body {
@@ -43,6 +45,10 @@ body {
   overflow-x: hidden;
   background-image: radial-gradient(#d8ccb8 0.75px, transparent 0.75px);
   background-size: 24px 24px;
+}
+
+.font-arabic {
+  font-family: var(--font-amiri), "Amiri", "Traditional Arabic", "Scheherazade New", serif !important;
 }
 
 .font-script {

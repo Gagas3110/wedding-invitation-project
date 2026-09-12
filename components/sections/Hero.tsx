@@ -80,8 +80,8 @@ export function Hero({ weddingDate }: HeroProps) {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-center mb-10"
           >
-            <h4 className="font-serif text-2xl md:text-3xl text-[#26211C] font-medium mb-3">
-              Assalamu&apos;alaikum Warahmatullahi Wabarakatuh
+            <h4 className="font-arabic text-2xl md:text-3xl lg:text-4xl text-[#26211C] font-normal mb-3 leading-relaxed" dir="rtl">
+              بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
             </h4>
             <p className="text-xs md:text-sm text-[#786C5E] max-w-lg mx-auto leading-relaxed font-sans">
               Dengan memohon Rahmat dan Ridho Allah Subhanahu Wa Ta&apos;ala, kami bermaksud untuk mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
@@ -89,7 +89,7 @@ export function Hero({ weddingDate }: HeroProps) {
           </motion.div>
 
           {/* Couple Cards — Sequential Reveal on Scroll */}
-          <div className="flex flex-col items-center gap-12 w-full">
+          <div className="flex flex-col items-center gap-6 w-full">
             {/* 1. Mempelai Wanita (Muncul Pertama) */}
             <motion.div
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
@@ -99,7 +99,7 @@ export function Hero({ weddingDate }: HeroProps) {
               className="flex flex-col items-center text-center w-full max-w-sm"
             >
               {/* Portrait Arch Photo */}
-              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/50 shadow-xl mb-6 bg-[#F3ECE1]/50">
+              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/50 shadow-xl mb-5 bg-[#F3ECE1]/50">
                 <img
                   src="/gallery/wanita.jpg"
                   alt="Akila Syifa Salsabila"
@@ -109,9 +109,9 @@ export function Hero({ weddingDate }: HeroProps) {
               <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#26211C] tracking-wide">
                 Akila Syifa Salsabila
               </h3>
-              <div className="h-px w-12 bg-[#B89358] my-3" />
+              <div className="h-px w-12 bg-[#B89358] my-2.5" />
               <p className="text-xs md:text-sm text-[#5C5042] font-sans leading-relaxed">
-                Putri dari Bapak Giyanta <br />&amp; Almh. Ibu Susi Suryani
+                Putri dari Bapak Giyanta <br />&amp; Ibu Susi Suryani (Almh.)
               </p>
             </motion.div>
 
@@ -121,13 +121,13 @@ export function Hero({ weddingDate }: HeroProps) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="flex flex-col items-center gap-3 my-2"
+              className="flex flex-col items-center gap-1.5"
             >
-              <div className="h-16 w-0.5 bg-gradient-to-b from-transparent via-[#B89358]/60 to-[#B89358]" />
-              <span className="font-serif text-5xl md:text-6xl text-[#B89358] font-normal drop-shadow-[0_2px_10px_rgba(184,147,88,0.25)] select-none">
+              <div className="h-7 w-0.5 bg-gradient-to-b from-transparent via-[#B89358]/60 to-[#B89358]" />
+              <span className="font-serif text-4xl md:text-5xl text-[#B89358] font-normal drop-shadow-[0_2px_10px_rgba(184,147,88,0.25)] select-none">
                 &amp;
               </span>
-              <div className="h-16 w-0.5 bg-gradient-to-b from-[#B89358] via-[#B89358]/60 to-transparent" />
+              <div className="h-7 w-0.5 bg-gradient-to-b from-[#B89358] via-[#B89358]/60 to-transparent" />
             </motion.div>
 
             {/* 2. Mempelai Pria (Muncul Saat Di-scroll) */}
@@ -139,7 +139,7 @@ export function Hero({ weddingDate }: HeroProps) {
               className="flex flex-col items-center text-center w-full max-w-sm"
             >
               {/* Portrait Arch Photo */}
-              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/50 shadow-xl mb-6 bg-[#F3ECE1]/50">
+              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/50 shadow-xl mb-5 bg-[#F3ECE1]/50">
                 <img
                   src="/gallery/pria.jpeg"
                   alt="Gagas Wijaksana Nugraha"
@@ -151,7 +151,7 @@ export function Hero({ weddingDate }: HeroProps) {
               </h3>
               <div className="h-px w-12 bg-[#B89358] my-3" />
               <p className="text-xs md:text-sm text-[#5C5042] font-sans leading-relaxed">
-                Putra dari Alm. Bapak Nedy Winuza <br />&amp; Ibu Nelzi Fati
+                Putra dari Bapak Nedy Winuza (Alm.) <br />&amp; Ibu Nelzi Fati
               </p>
             </motion.div>
           </div>

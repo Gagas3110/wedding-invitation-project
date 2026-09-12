@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Plus_Jakarta_Sans, Playfair_Display, Inter, Alex_Brush, Cinzel } from "next/font/google";
+import { Amiri, Cormorant_Garamond, Plus_Jakarta_Sans, Playfair_Display, Inter, Alex_Brush, Cinzel } from "next/font/google";
 import "./globals.css";
+
+const amiri = Amiri({
+  subsets: ["arabic", "latin"],
+  variable: "--font-amiri",
+  weight: ["400", "700"],
+});
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -62,7 +68,7 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/gallery/background_wedding.jpg" />
       </head>
       <body
-        className={`${jakarta.variable} ${cormorant.variable} ${inter.variable} ${playfair.variable} ${alexBrush.variable} ${cinzel.variable} antialiased bg-background text-foreground font-sans`}
+        className={`${jakarta.variable} ${cormorant.variable} ${inter.variable} ${playfair.variable} ${alexBrush.variable} ${cinzel.variable} ${amiri.variable} antialiased bg-background text-foreground font-sans`}
       >
         {children}
       </body>
