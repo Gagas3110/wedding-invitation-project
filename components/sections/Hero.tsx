@@ -49,47 +49,7 @@ export function Hero({ weddingDate }: HeroProps) {
         viewport={{ once: true }}
         className="w-full max-w-3xl flex flex-col items-center text-center z-10"
       >
-        {/* 1. Countdown Box */}
-        <motion.div 
-          variants={itemVariants}
-          className="w-full max-w-md bg-white/90 backdrop-blur-md border border-[#E8DECF] p-6 md:p-8 rounded-3xl shadow-[0_8px_30px_rgba(184,147,88,0.12)] mb-12 relative overflow-hidden"
-        >
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B89358] to-transparent" />
-          
-          <span className="text-[10px] uppercase tracking-[0.35em] text-[#B89358] font-semibold block mb-1">
-            Save The Date
-          </span>
-          <h3 className="font-serif text-xl md:text-2xl text-[#26211C] font-semibold mb-6">
-            Menuju Hari Bahagia
-          </h3>
-          
-          {isCompleted ? (
-            <div className="py-4 text-center">
-              <p className="font-serif text-xl font-medium text-[#B89358]">Acara Sedang Berlangsung / Terima Kasih Atas Doanya</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-4 gap-2.5">
-              <div className="flex flex-col items-center p-3 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF]">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{days}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Hari</span>
-              </div>
-              <div className="flex flex-col items-center p-3 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF]">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{hours}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Jam</span>
-              </div>
-              <div className="flex flex-col items-center p-3 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF]">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{minutes}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Menit</span>
-              </div>
-              <div className="flex flex-col items-center p-3 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF]">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{seconds}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Detik</span>
-              </div>
-            </div>
-          )}
-        </motion.div>
-
-        {/* 2. Ayat Al-Qur'an (QS. Ar-Rum: 21 in Arch Frame) */}
+        {/* 1. Ayat Al-Qur'an (QS. Ar-Rum: 21 in Arch Frame) */}
         <motion.div 
           variants={itemVariants}
           className="w-full max-w-xl bg-white/85 backdrop-blur-md border border-[#E8DECF] p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgba(184,147,88,0.08)] mb-14 text-center relative overflow-hidden"

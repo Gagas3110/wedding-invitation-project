@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AppProvider } from "@/app/context/AppContext";
 import { PersistentLeftBackdrop } from "@/components/layout/PersistentLeftBackdrop";
 import { OpeningScreen } from "@/components/sections/OpeningScreen";
+import { Countdown } from "@/components/sections/Countdown";
 import { Hero } from "@/components/sections/Hero";
 import { Gallery } from "@/components/sections/Gallery";
 import { RSVP } from "@/components/sections/RSVP";
@@ -41,6 +42,7 @@ export default function Home() {
         <OpeningScreen />
         
         <main className="relative z-10 w-full min-h-screen">
+          <Countdown weddingDate={weddingDate} />
           <Hero weddingDate={weddingDate} />
           <Gallery />
           <RSVP onSuccessSubmit={handleRSVPSuccess} />
