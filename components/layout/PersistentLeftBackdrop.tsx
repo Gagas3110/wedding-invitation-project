@@ -9,11 +9,11 @@ export function PersistentLeftBackdrop() {
       className="hidden lg:flex fixed top-0 left-0 bottom-0 w-[calc(100vw-480px)] xl:w-[calc(100vw-520px)] h-screen z-0 flex-col justify-end p-12 xl:p-16 overflow-hidden bg-[#26211C] bg-cover bg-no-repeat select-none"
       style={{ 
         backgroundImage: "url('/gallery/DSC03172.jpg')",
-        backgroundPosition: "center 20%",
+        backgroundPosition: "center 85%",
       }}
     >
       {/* Dark gradient overlay for typography contrast */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
       {/* Persistent typography */}
       <motion.div 

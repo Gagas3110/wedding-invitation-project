@@ -25,6 +25,7 @@ function OpeningContent() {
           {/* Background Video Layer */}
           <video
             autoPlay
+            loop
             muted
             playsInline
             poster="/gallery/background_wedding.jpg"
