@@ -33,7 +33,7 @@ export function Gallery() {
     },
     {
       src: "/gallery/DSC03172.jpg",
-      alt: "t",
+      alt: "",
       aspect: "aspect-[3/4]",
     },
     {

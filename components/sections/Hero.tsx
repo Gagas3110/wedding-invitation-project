@@ -98,10 +98,10 @@ export function Hero({ weddingDate }: HeroProps) {
         {/* 3. Nama Pengantin & Foto Monogram */}
         <motion.div 
           variants={itemVariants}
-          className="flex flex-col items-center mb-10"
+          className="flex flex-col items-center mb-12 max-w-xl w-full px-4"
         >
           <div
-            className="relative w-56 h-56 md:w-72 md:h-72 rounded-full border-4 border-white shadow-2xl p-1 bg-secondary mx-auto overflow-hidden animate-float mb-6"
+            className="relative w-56 h-56 md:w-72 md:h-72 rounded-full border-4 border-white shadow-2xl p-1 bg-secondary mx-auto overflow-hidden animate-float mb-8"
           >
             <div className="w-full h-full rounded-full bg-linear-to-tr from-primary/30 to-accent/40 flex flex-col items-center justify-center relative">
               <div className="absolute inset-0 bg-[url('/gallery/DSC03112%20(1).jpg')] bg-cover bg-center mix-blend-overlay opacity-80" />
@@ -113,9 +113,35 @@ export function Hero({ weddingDate }: HeroProps) {
             </div>
           </div>
 
-          <h2 className="font-serif text-4xl md:text-6xl font-semibold text-[#2d2722] tracking-wide">
-            Gagas & Akila
-          </h2>
+          {/* Details Mempelai Pria & Wanita */}
+          <div className="flex flex-col items-center text-center space-y-5 w-full">
+            {/* Mempelai Pria */}
+            <div>
+              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#2d2722] tracking-wide">
+                Gagas Wijaksana Nugraha
+              </h3>
+              <p className="text-xs md:text-sm text-[#786c5f] mt-1 font-sans leading-relaxed">
+                Putra dari Alm. Bapak Nedy Winuza dan Ibu Nelzi Fati
+              </p>
+            </div>
+
+            {/* Simbol & / Love ornament */}
+            <div className="flex items-center justify-center gap-3 w-full max-w-xs my-0.5">
+              <div className="h-px bg-gradient-to-r from-transparent via-[#c5a880]/60 to-transparent flex-1" />
+              <span className="font-serif text-2xl md:text-3xl text-primary italic font-light">&</span>
+              <div className="h-px bg-gradient-to-r from-transparent via-[#c5a880]/60 to-transparent flex-1" />
+            </div>
+
+            {/* Mempelai Wanita */}
+            <div>
+              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#2d2722] tracking-wide">
+                Akila Syifa Salsabila
+              </h3>
+              <p className="text-xs md:text-sm text-[#786c5f] mt-1 font-sans leading-relaxed">
+                Putri dari Bapak Giyanta dan Almh. Ibu Susi Suryani
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         {/* 4. Informasi Acara (Waktu & Tempat) */}
