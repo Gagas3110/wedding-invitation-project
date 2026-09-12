@@ -20,9 +20,20 @@ function OpeningContent() {
           initial={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: "-100%" }}
           transition={{ duration: 1.0, ease: [0.77, 0, 0.175, 1] }}
-          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 h-screen overflow-hidden flex flex-col justify-between items-center py-10 px-6 bg-[#FAF7F2] bg-cover bg-center bg-no-repeat shadow-2xl select-none"
-          style={{ backgroundImage: "url('/gallery/background_wedding.jpg')" }}
+          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 h-screen overflow-hidden flex flex-col justify-between items-center py-10 px-6 bg-[#FAF7F2] shadow-2xl select-none"
         >
+          {/* Background Video Layer */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/gallery/background_wedding.jpg"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
+          >
+            <source src="/gallery/the_wedding_of.mp4" type="video/mp4" />
+            <source src="/gallery/The Wedding of.mp4" type="video/mp4" />
+          </video>
           {/* Top Header: Arched 'The Wedding of', Akila & Gagas, Date */}
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
