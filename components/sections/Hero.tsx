@@ -96,21 +96,21 @@ export function Hero({ weddingDate }: HeroProps) {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="flex flex-col items-center text-center bg-white/85 backdrop-blur-md p-7 sm:p-8 rounded-3xl border border-[#E8DECF] shadow-xl w-full max-w-sm"
+              className="flex flex-col items-center text-center w-full max-w-sm"
             >
               {/* Portrait Arch Photo */}
-              <div className="relative w-44 h-56 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/40 shadow-md mb-5 bg-[#F3ECE1]">
+              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/50 shadow-xl mb-6 bg-[#F3ECE1]/50">
                 <img
                   src="/gallery/wanita.jpg"
                   alt="Akila Syifa Salsabila"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <h3 className="font-serif text-xl md:text-2xl font-semibold text-[#26211C] tracking-wide">
+              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#26211C] tracking-wide">
                 Akila Syifa Salsabila
               </h3>
-              <div className="h-px w-10 bg-[#B89358] my-2.5" />
-              <p className="text-xs text-[#786C5E] font-sans leading-relaxed">
+              <div className="h-px w-12 bg-[#B89358] my-3" />
+              <p className="text-xs md:text-sm text-[#5C5042] font-sans leading-relaxed">
                 Putri dari Bapak Giyanta <br />&amp; Almh. Ibu Susi Suryani
               </p>
             </motion.div>
@@ -136,21 +136,21 @@ export function Hero({ weddingDate }: HeroProps) {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="flex flex-col items-center text-center bg-white/85 backdrop-blur-md p-7 sm:p-8 rounded-3xl border border-[#E8DECF] shadow-xl w-full max-w-sm"
+              className="flex flex-col items-center text-center w-full max-w-sm"
             >
               {/* Portrait Arch Photo */}
-              <div className="relative w-44 h-56 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/40 shadow-md mb-5 bg-[#F3ECE1]">
+              <div className="relative w-48 h-64 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/50 shadow-xl mb-6 bg-[#F3ECE1]/50">
                 <img
                   src="/gallery/pria.jpeg"
                   alt="Gagas Wijaksana Nugraha"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <h3 className="font-serif text-xl md:text-2xl font-semibold text-[#26211C] tracking-wide">
+              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#26211C] tracking-wide">
                 Gagas Wijaksana Nugraha
               </h3>
-              <div className="h-px w-10 bg-[#B89358] my-2.5" />
-              <p className="text-xs text-[#786C5E] font-sans leading-relaxed">
+              <div className="h-px w-12 bg-[#B89358] my-3" />
+              <p className="text-xs md:text-sm text-[#5C5042] font-sans leading-relaxed">
                 Putra dari Alm. Bapak Nedy Winuza <br />&amp; Ibu Nelzi Fati
               </p>
             </motion.div>
