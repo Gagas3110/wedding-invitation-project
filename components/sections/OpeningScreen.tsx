@@ -20,7 +20,7 @@ function OpeningContent() {
           initial={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: "-100%" }}
           transition={{ duration: 1.0, ease: [0.77, 0, 0.175, 1] }}
-          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 h-screen overflow-hidden flex flex-col justify-between items-center py-10 px-6 bg-cover bg-center bg-no-repeat shadow-2xl select-none"
+          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 h-screen overflow-hidden flex flex-col justify-between items-center py-10 px-6 bg-[#FAF7F2] bg-cover bg-center bg-no-repeat shadow-2xl select-none"
           style={{ backgroundImage: "url('/minang/COVER-MINANG4.jpg')" }}
         >
           {/* Top Header: The Wedding of GAGAS & AKILA */}

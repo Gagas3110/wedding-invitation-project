@@ -26,12 +26,12 @@ export default function Home() {
       <PersistentLeftBackdrop />
 
       {/* 2. Right Side Invitation Column (or Full Page on Mobile) */}
-      <div className="w-full lg:w-[480px] xl:w-[520px] min-h-screen lg:ml-auto relative z-10 shadow-2xl lg:border-l lg:border-[#E8DECF]">
+      <div className="w-full lg:w-[480px] xl:w-[520px] min-h-screen lg:ml-auto relative z-10 bg-[#FAF7F2] shadow-2xl lg:border-l lg:border-[#E8DECF]">
         {/* Fixed decorative background — stays in place while content scrolls */}
         <div
-          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] pointer-events-none z-0"
+          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] pointer-events-none z-0 bg-[#FAF7F2]"
           style={{
-            backgroundImage: "url('/gallery/background_wedding.svg')",
+            backgroundImage: "url('/gallery/background_wedding.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
