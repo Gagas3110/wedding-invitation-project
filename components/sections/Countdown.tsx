@@ -12,10 +12,6 @@ export function Countdown({ weddingDate }: CountdownProps) {
 
   return (
     <section className="min-h-screen flex flex-col justify-center items-center py-20 px-4 relative overflow-hidden">
-      {/* Decorative frame vectors */}
-      <div className="absolute top-10 left-10 w-32 h-32 border-t-2 border-l-2 border-[#B89358]/20 pointer-events-none hidden md:block" />
-      <div className="absolute top-10 right-10 w-32 h-32 border-t-2 border-r-2 border-[#B89358]/20 pointer-events-none hidden md:block" />
-
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -24,39 +20,39 @@ export function Countdown({ weddingDate }: CountdownProps) {
         className="w-full max-w-md z-10 flex flex-col items-center"
       >
         {/* Countdown Box */}
-        <div className="w-full bg-white/90 backdrop-blur-md border border-[#E8DECF] p-7 md:p-9 rounded-3xl shadow-[0_8px_30px_rgba(184,147,88,0.12)] relative overflow-hidden text-center">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B89358] to-transparent" />
+        <div className="w-full bg-[#DCE3C2]/90 backdrop-blur-md rounded-3xl p-7 md:p-9 shadow-xl border border-[#CAD4AA]/60 relative overflow-hidden text-center">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent" />
 
-          <span className="text-[10px] uppercase tracking-[0.35em] text-[#B89358] font-semibold block mb-1.5">
+          <span className="text-[10px] uppercase tracking-[0.35em] text-[#4A542C] font-semibold block mb-1.5">
             Save The Date
           </span>
-          <h3 className="font-serif text-2xl md:text-3xl text-[#26211C] font-semibold mb-7">
+          <h3 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] font-semibold mb-7">
             Menuju Hari Bahagia
           </h3>
 
           {isCompleted ? (
             <div className="py-4 text-center">
-              <p className="font-serif text-xl font-medium text-[#B89358]">
+              <p className="font-serif text-xl font-medium text-[#2D3319]">
                 Acara Sedang Berlangsung / Terima Kasih Atas Doanya
               </p>
             </div>
           ) : (
             <div className="grid grid-cols-4 gap-2.5 sm:gap-3">
-              <div className="flex flex-col items-center p-3 sm:p-3.5 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF] shadow-xs">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{days}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Hari</span>
+              <div className="flex flex-col items-center p-3 sm:p-3.5 bg-[#EEF2DF]/85 backdrop-blur-xs rounded-2xl border border-[#CAD4AA]/70 shadow-xs">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-[#2D3319]">{days}</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Hari</span>
               </div>
-              <div className="flex flex-col items-center p-3 sm:p-3.5 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF] shadow-xs">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{hours}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Jam</span>
+              <div className="flex flex-col items-center p-3 sm:p-3.5 bg-[#EEF2DF]/85 backdrop-blur-xs rounded-2xl border border-[#CAD4AA]/70 shadow-xs">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-[#2D3319]">{hours}</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Jam</span>
               </div>
-              <div className="flex flex-col items-center p-3 sm:p-3.5 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF] shadow-xs">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{minutes}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Menit</span>
+              <div className="flex flex-col items-center p-3 sm:p-3.5 bg-[#EEF2DF]/85 backdrop-blur-xs rounded-2xl border border-[#CAD4AA]/70 shadow-xs">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-[#2D3319]">{minutes}</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Menit</span>
               </div>
-              <div className="flex flex-col items-center p-3 sm:p-3.5 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF] shadow-xs">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{seconds}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Detik</span>
+              <div className="flex flex-col items-center p-3 sm:p-3.5 bg-[#EEF2DF]/85 backdrop-blur-xs rounded-2xl border border-[#CAD4AA]/70 shadow-xs">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-[#2D3319]">{seconds}</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Detik</span>
               </div>
             </div>
           )}
