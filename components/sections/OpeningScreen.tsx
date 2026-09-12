@@ -28,7 +28,7 @@ function OpeningContent() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-center pt-8 md:pt-12 z-10"
+            className="text-center pt-20 md:pt-24 z-10"
           >
             <span className="font-script text-4xl md:text-5xl text-[#5C4524] block mb-1 drop-shadow-xs">
               The Wedding of
