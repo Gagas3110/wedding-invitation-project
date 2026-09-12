@@ -23,8 +23,18 @@ export function Gift() {
   };
 
   return (
-    <section className="py-24 px-4 bg-[#FAF7F2]">
-      <div className="max-w-xl mx-auto">
+    <section className="relative py-24 px-4 bg-[#FAF7F2] overflow-hidden">
+      {/* Decorative background */}
+      <div
+        className="absolute inset-0 opacity-[0.07] pointer-events-none"
+        style={{
+          backgroundImage: "url('/gallery/background_wedding.svg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+      <div className="relative max-w-xl mx-auto">
         {/* Title */}
         <div className="text-center mb-12 gold-border pb-4">
           <span className="text-[10px] uppercase tracking-[0.4em] text-[#B89358] font-semibold block mb-2">Kado Digital</span>
