@@ -49,7 +49,7 @@ function OpeningContent() {
             </div>
 
             {/* Couple Script Names */}
-            <h1 className="font-script text-5xl md:text-6xl text-[#1A1A1A] font-normal leading-tight drop-shadow-xs my-1">
+            <h1 className="font-script text-5xl md:text-6xl text-[#D1D9B5] font-normal leading-tight drop-shadow-xs my-1">
               Akila &amp; Gagas
             </h1>
 
