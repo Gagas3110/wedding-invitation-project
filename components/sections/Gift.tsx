@@ -10,14 +10,9 @@ export function Gift() {
 
   const accounts = [
     {
-      bank: "Bank BCA",
-      number: "8091234567",
-      holder: "Gagas Wijaksana Nugraha",
-    },
-    {
-      bank: "Bank Mandiri",
-      number: "1230009876543",
-      holder: "Gagas Wijaksana Nugraha",
+      bank: "Bank Jago",
+      number: "106456844446",
+      holder: "Akila Syifa Salsabila",
     },
   ];
 
