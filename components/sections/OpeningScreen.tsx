@@ -31,43 +31,11 @@ function OpeningContent() {
             poster="/gallery/background_wedding.jpg"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
           >
-            <source src="/gallery/the_wedding_of.mp4" type="video/mp4" />
+            <source src="/gallery/the_wedding_of_2.mp4" type="video/mp4" />
           </video>
-          {/* Top Header: Arched 'The Wedding of', Akila & Gagas, Date */}
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-center pt-16 md:pt-48 z-10 flex flex-col items-center"
-          >
-            {/* Arched 'The Wedding of' */}
-            <div className="flex justify-center -mb-2 w-full">
-              <svg viewBox="0 0 300 45" className="w-56 h-10 overflow-visible">
-                <path id="wedding-arch-curve" d="M 30 40 Q 150 8 270 40" fill="transparent" />
-                <text 
-                  className="font-serif text-[28px] md:text-[30px] font-bold tracking-[0.14em] fill-[#6E7642] italic" 
-                  fontWeight="bold"
-                  stroke="#6E7642"
-                  strokeWidth="0.5"
-                  textAnchor="middle"
-                >
-                  <textPath href="#wedding-arch-curve" startOffset="50%">
-                    The Wedding of
-                  </textPath>
-                </text>
-              </svg>
-            </div>
 
-            {/* Couple Script Names */}
-            <h1 className="font-script text-5xl md:text-6xl text-[#686E49] font-normal leading-tight drop-shadow-xs my-1">
-              Akila &amp; Gagas
-            </h1>
-
-            {/* Wedding Date */}
-            <p className="font-serif text-xl md:text-2xl text-[#6E7642] tracking-[0.2em] mt-1 font-semibold">
-              12 &nbsp;Desember 2026
-            </p>
-          </motion.div>
+          {/* Top visual spacer */}
+          <div className="h-10 pointer-events-none" />
 
           {/* Center Guest Card (Sage Green Box matching reference) */}
           <motion.div 
