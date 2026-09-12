@@ -16,7 +16,7 @@ export function Hero({ weddingDate }: HeroProps) {
   const mapUrl = process.env.NEXT_PUBLIC_MAP_URL || "https://maps.google.com/?q=The+Samasta+Jatiwarna";
 
   const calendarUrl = getGoogleCalendarUrl({
-    title: "The Wedding of Gagas & Akila",
+    title: "The Wedding of Akila & Gagas",
     description: "Akad: 15.00 - 16.30 WIB | Resepsi: 19.00 - 21.00 WIB di The Samasta Jatiwarna. Terima kasih atas doa dan kehadiran Anda.",
     location: "The Samasta Jatiwarna",
     startTime: "20261212T080000Z", // 15:00 WIB (UTC+7)

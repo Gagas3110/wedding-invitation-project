@@ -101,7 +101,7 @@ export function Gallery() {
             >
               <img
                 src={photo.src}
-                alt={photo.alt || "Galeri Gagas & Akila"}
+                alt={photo.alt || "Galeri Akila & Gagas"}
                 loading="lazy"
                 className="w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />

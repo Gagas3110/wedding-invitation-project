@@ -28,7 +28,7 @@ function OpeningContent() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-center pt-16 md:pt-20 z-10 flex flex-col items-center"
+            className="text-center pt-16 md:pt-48 z-10 flex flex-col items-center"
           >
             {/* Arched 'The Wedding of' */}
             <div className="flex justify-center -mb-2 w-full">

@@ -40,11 +40,11 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
-  title: "The Wedding Of Gagas & Akila",
-  description: "Undangan pernikahan digital Gagas dan Akila.",
+  title: "The Wedding Of Akila & Gagas",
+  description: "Undangan pernikahan digital Akila dan Gagas.",
   openGraph: {
-    title: "The Wedding Of Gagas & Akila",
-    description: "Undangan pernikahan digital Gagas dan Akila.",
+    title: "The Wedding Of Akila & Gagas",
+    description: "Undangan pernikahan digital Akila dan Gagas.",
     type: "website",
   },
 };
