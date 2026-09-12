@@ -75,37 +75,40 @@ export function Gallery() {
   };
 
   return (
-    <section className="py-24 px-4 bg-[#faf8f5]">
+    <section className="py-24 px-4 bg-[#FAF7F2]">
       <div className="max-w-5xl mx-auto">
         {/* Title */}
         <div className="text-center mb-16 gold-border pb-4">
-          <span className="text-[10px] uppercase tracking-[0.4em] text-accent block mb-2">Momen Bahagia Kami</span>
-          <h3 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
+          <span className="text-[10px] uppercase tracking-[0.4em] text-[#B89358] font-semibold block mb-2">
+            Momen Bahagia Kami
+          </span>
+          <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#26211C]">
             Galeri Pernikahan
           </h3>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
+        {/* Gallery Grid with Arch styling */}
+        <div className="columns-1 sm:columns-2 md:columns-3 gap-6 space-y-6">
           {photos.map((photo, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="break-inside-avoid relative overflow-hidden rounded-2xl group cursor-pointer border border-white hover:shadow-lg transition-shadow duration-300"
+              transition={{ duration: 0.7, delay: i * 0.1 }}
+              className="break-inside-avoid relative overflow-hidden rounded-t-[50px] rounded-b-2xl group cursor-pointer border-2 border-white bg-white/70 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
               onClick={() => openLightbox(i)}
             >
-              {/* Unsplash hotlink with next/image or static styling */}
               <img
                 src={photo.src}
-                alt={photo.alt}
+                alt={photo.alt || "Galeri Gagas & Akila"}
                 loading="lazy"
                 className="w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                <span className="text-xs text-white/90 tracking-wide font-sans">{photo.alt}</span>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
+                <span className="text-xs text-white/95 tracking-widest font-sans uppercase font-medium bg-black/30 px-3 py-1 rounded-full backdrop-blur-xs">
+                  Lihat Foto
+                </span>
               </div>
             </motion.div>
           ))}

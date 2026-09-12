@@ -28,23 +28,23 @@ export function Gift() {
   };
 
   return (
-    <section className="py-24 px-4 bg-gradient-to-b from-[#faf8f5] to-[#f3efe9]">
+    <section className="py-24 px-4 bg-[#FAF7F2]">
       <div className="max-w-xl mx-auto">
         {/* Title */}
         <div className="text-center mb-12 gold-border pb-4">
-          <span className="text-[10px] uppercase tracking-[0.4em] text-accent block mb-2">Kado Digital</span>
-          <h3 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
+          <span className="text-[10px] uppercase tracking-[0.4em] text-[#B89358] font-semibold block mb-2">Kado Digital</span>
+          <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#26211C]">
             Tanda Kasih
           </h3>
         </div>
 
         {/* Caption */}
-        <p className="text-center text-xs text-muted leading-relaxed max-w-sm mx-auto mb-10">
+        <p className="text-center text-xs text-[#786C5E] leading-relaxed max-w-sm mx-auto mb-10 font-sans">
           Kehadiran dan doa restu Anda adalah kado terindah bagi kami. Namun apabila Anda ingin mengirimkan tanda kasih, Anda dapat menyalurkannya melalui rekening/QRIS berikut:
         </p>
 
         {/* Gift Options Grid */}
-        <div className="space-y-6 pl-2 pr-2">
+        <div className="space-y-6">
           {/* Account Lists */}
           {accounts.map((acc, i) => (
             <motion.div
@@ -53,35 +53,35 @@ export function Gift() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="bg-white/70 backdrop-blur-md rounded-2xl border border-white p-6 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left"
+              className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E8DECF] p-6 shadow-[0_8px_30px_rgba(184,147,88,0.08)] flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left"
             >
-              <div className="flex items-center gap-3.5 flex-col sm:flex-row">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+              <div className="flex items-center gap-4 flex-col sm:flex-row">
+                <div className="w-12 h-12 bg-[#FAF7F2] border border-[#E8DECF] rounded-2xl flex items-center justify-center text-[#B89358]">
                   <GiftIcon className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-[#a89985] block mb-0.5">
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-[#B89358] block mb-0.5 font-sans">
                     {acc.bank}
                   </span>
-                  <p className="text-sm font-semibold text-[#302a24] font-mono tracking-wide">{acc.number}</p>
-                  <p className="text-xs text-muted mt-0.5">{acc.holder}</p>
+                  <p className="text-base font-semibold text-[#26211C] font-mono tracking-wide">{acc.number}</p>
+                  <p className="text-xs text-[#786C5E] mt-0.5 font-sans">{acc.holder}</p>
                 </div>
               </div>
 
               <Button
                 variant="outline"
-                className="w-full sm:w-auto px-4 py-2 border-primary/20 hover:bg-primary/5 flex items-center justify-center gap-1.5"
+                className="w-full sm:w-auto px-5 py-2.5 border-[#B89358]/40 hover:bg-[#FAF7F2] text-[#785A34] flex items-center justify-center gap-1.5 rounded-full"
                 onClick={() => handleCopy(acc.number)}
               >
                 {copiedAccount === acc.number ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-[10px] text-emerald-700 tracking-wider">SALIN BERHASIL</span>
+                    <Check className="w-3.5 h-3.5 text-[#B89358]" />
+                    <span className="text-[10px] text-[#B89358] tracking-wider font-semibold">SALIN BERHASIL</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5 text-accent" />
-                    <span className="text-[10px] tracking-wider">SALIN REKENING</span>
+                    <Copy className="w-3.5 h-3.5 text-[#B89358]" />
+                    <span className="text-[10px] tracking-wider font-semibold">SALIN REKENING</span>
                   </>
                 )}
               </Button>
@@ -94,34 +94,32 @@ export function Gift() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white/70 backdrop-blur-md rounded-2xl border border-white p-6 shadow-sm text-center flex flex-col items-center"
+            className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E8DECF] p-6 md:p-8 shadow-[0_8px_30px_rgba(184,147,88,0.08)] text-center flex flex-col items-center"
           >
-            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4">
+            <div className="w-12 h-12 bg-[#FAF7F2] border border-[#E8DECF] rounded-2xl flex items-center justify-center text-[#B89358] mb-4">
               <QrCode className="w-5 h-5" />
             </div>
 
-            <span className="text-[10px] uppercase font-bold tracking-widest text-[#a89985] block mb-1">
+            <span className="text-[10px] uppercase font-bold tracking-widest text-[#B89358] block mb-1 font-sans">
               QRIS Pembayaran
             </span>
-            <p className="text-xs text-muted mb-4">Scan QRIS atas nama Gagas Wijaksana Nugraha</p>
+            <p className="text-xs text-[#786C5E] mb-5 font-sans">Scan QRIS atas nama Gagas Wijaksana Nugraha</p>
 
             {/* Simulated QR Code Wrapper */}
-            <div className="relative w-40 h-40 bg-white border border-border rounded-lg p-2 flex items-center justify-center shadow-inner">
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=300')] bg-cover bg-center opacity-10 filter grayscale contrast-200 pointer-events-none" />
-              {/* Inside QR Layout */}
-              <div className="w-full h-full border-2 border-primary/10 p-1 flex flex-col items-center justify-center relative">
-                <span className="text-[8px] font-sans text-muted tracking-widest font-semibold uppercase">WEDDING QRIS</span>
-                <div className="w-24 h-24 border-4 border-accent/40 rounded flex items-center justify-center mt-1">
+            <div className="relative w-44 h-44 bg-white border border-[#E8DECF] rounded-2xl p-3 flex items-center justify-center shadow-inner">
+              <div className="w-full h-full border border-[#B89358]/20 rounded-xl p-2 flex flex-col items-center justify-center relative bg-[#FAF7F2]/40">
+                <span className="text-[8px] font-sans text-[#827568] tracking-widest font-semibold uppercase">WEDDING QRIS</span>
+                <div className="w-24 h-24 border-3 border-[#B89358]/40 rounded-lg flex items-center justify-center mt-1 bg-white p-1">
                   <div className="grid grid-cols-3 gap-1">
-                    <div className="w-5 h-5 bg-accent" />
-                    <div className="w-5 h-5 bg-accent/20" />
-                    <div className="w-5 h-5 bg-accent" />
-                    <div className="w-5 h-5 bg-accent/10" />
-                    <div className="w-5 h-5 bg-accent" />
-                    <div className="w-5 h-5 bg-accent/30" />
-                    <div className="w-5 h-5 bg-accent" />
-                    <div className="w-5 h-5 bg-accent" />
-                    <div className="w-5 h-5 bg-accent/10" />
+                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
+                    <div className="w-5 h-5 bg-[#785A34]/20 rounded-xs" />
+                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
+                    <div className="w-5 h-5 bg-[#785A34]/10 rounded-xs" />
+                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
+                    <div className="w-5 h-5 bg-[#785A34]/30 rounded-xs" />
+                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
+                    <div className="w-5 h-5 bg-[#785A34] rounded-xs" />
+                    <div className="w-5 h-5 bg-[#785A34]/10 rounded-xs" />
                   </div>
                 </div>
               </div>

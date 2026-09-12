@@ -82,13 +82,13 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
   };
 
   return (
-    <section className="py-24 px-4 bg-[#f3efe9]">
+    <section className="py-24 px-4 bg-[#FAF7F2]">
       <div className="max-w-xl mx-auto">
         {/* Title */}
         <div className="text-center mb-12 gold-border pb-4">
-          <span className="text-[10px] uppercase tracking-[0.4em] text-accent block mb-2">Konfirmasi Kehadiran</span>
-          <h3 className="font-serif text-3xl md:text-4xl font-semibold text-foreground">
-            Buku Tamu & RSVP
+          <span className="text-[10px] uppercase tracking-[0.4em] text-[#B89358] font-semibold block mb-2">Konfirmasi Kehadiran</span>
+          <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#26211C]">
+            Buku Tamu &amp; RSVP
           </h3>
         </div>
 
@@ -98,18 +98,21 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-white/80 backdrop-blur-md rounded-3xl border border-white p-8 md:p-10 shadow-lg relative overflow-hidden text-center"
+          className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E8DECF] p-8 md:p-10 shadow-[0_8px_30px_rgba(184,147,88,0.1)] relative overflow-hidden text-center"
         >
+          {/* Top gold line decorator */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B89358] to-transparent" />
+
           {isSuccess ? (
             <div className="py-10 flex flex-col items-center justify-center">
-              <CheckCircle2 className="w-16 h-16 text-emerald-500 mb-4 animate-bounce" />
-              <h4 className="font-serif text-xl font-semibold text-foreground mb-2">Terima Kasih!</h4>
-              <p className="text-xs text-muted max-w-xs leading-relaxed">
+              <CheckCircle2 className="w-16 h-16 text-[#B89358] mb-4 animate-bounce" />
+              <h4 className="font-serif text-2xl font-semibold text-[#26211C] mb-2">Terima Kasih!</h4>
+              <p className="text-xs text-[#786C5E] max-w-xs leading-relaxed font-sans">
                 Konfirmasi kehadiran dan ucapan doa Anda telah tersimpan di daftar tamu kami.
               </p>
               <Button
-                variant="secondary"
-                className="mt-6 font-sans text-xs tracking-wider"
+                variant="outline"
+                className="mt-6 font-sans text-xs tracking-wider border-[#B89358]/50 text-[#785A34]"
                 onClick={() => setIsSuccess(false)}
               >
                 Kirim Pembaharuan RSVP
@@ -127,7 +130,7 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
 
               {/* Status Kehadiran */}
               <div className="text-left">
-                <label className="block text-xs font-medium text-accent uppercase tracking-wider mb-2 pl-1">
+                <label className="block text-xs font-semibold text-[#785A34] uppercase tracking-wider mb-2 pl-1 font-sans">
                   Status Kehadiran
                 </label>
                 <div className="grid grid-cols-2 gap-4">
@@ -136,8 +139,8 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
                     onClick={() => setValue("status", "Hadir")}
                     className={`py-3 px-4 rounded-xl border text-xs tracking-wider font-semibold transition-all duration-300 cursor-pointer ${
                       selectedStatus === "Hadir"
-                        ? "bg-primary border-primary text-primary-foreground shadow-sm"
-                        : "bg-white/50 border-border text-foreground hover:bg-[#faf8f5]"
+                        ? "bg-gradient-to-r from-[#B89358] to-[#A37F45] border-[#B89358] text-white shadow-sm"
+                        : "bg-[#FAF7F2] border-[#E8DECF] text-[#785A34] hover:bg-[#F3ECE1]"
                     }`}
                   >
                     HADIR
@@ -147,8 +150,8 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
                     onClick={() => setValue("status", "Tidak Hadir")}
                     className={`py-3 px-4 rounded-xl border text-xs tracking-wider font-semibold transition-all duration-300 cursor-pointer ${
                       selectedStatus === "Tidak Hadir"
-                        ? "bg-primary border-primary text-primary-foreground shadow-sm"
-                        : "bg-white/50 border-border text-foreground hover:bg-[#faf8f5]"
+                        ? "bg-gradient-to-r from-[#B89358] to-[#A37F45] border-[#B89358] text-white shadow-sm"
+                        : "bg-[#FAF7F2] border-[#E8DECF] text-[#785A34] hover:bg-[#F3ECE1]"
                     }`}
                   >
                     TIDAK HADIR
@@ -185,7 +188,7 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
 
               {/* Error messages */}
               {errorMsg && (
-                <p className="text-xs text-red-500 text-left bg-red-50 p-3 rounded-lg border border-red-100 pl-4 pr-4">
+                <p className="text-xs text-red-600 text-left bg-red-50 p-3 rounded-lg border border-red-200 pl-4 pr-4">
                   {errorMsg}
                 </p>
               )}
@@ -194,10 +197,10 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 mt-2 flex items-center justify-center gap-2 shadow-[0_4px_10px_rgba(197,168,128,0.2)] hover:shadow-[0_4px_15px_rgba(197,168,128,0.3)] transition-all font-semibold cursor-pointer"
+                className="w-full py-4 mt-2 flex items-center justify-center gap-2 bg-gradient-to-r from-[#B89358] via-[#CBB07E] to-[#B89358] text-white shadow-[0_4px_20px_rgba(184,147,88,0.25)] hover:brightness-105 transition-all font-semibold tracking-widest cursor-pointer rounded-full"
               >
                 {isSubmitting ? (
-                  <div className="w-5 h-5 rounded-full border-2 border-foreground/30 border-t-foreground animate-spin" />
+                  <div className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                 ) : (
                   <>
                     <Send className="w-4 h-4" />

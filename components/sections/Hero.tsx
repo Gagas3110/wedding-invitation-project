@@ -52,93 +52,120 @@ export function Hero({ weddingDate }: HeroProps) {
         {/* 1. Countdown Box */}
         <motion.div 
           variants={itemVariants}
-          className="w-full max-w-md bg-white/70 backdrop-blur-md border border-white p-6 rounded-2xl shadow-lg ring-1 ring-primary/5 mb-8"
+          className="w-full max-w-md bg-white/90 backdrop-blur-md border border-[#E8DECF] p-6 md:p-8 rounded-3xl shadow-[0_8px_30px_rgba(184,147,88,0.12)] mb-12 relative overflow-hidden"
         >
-          <h3 className="text-center font-serif text-lg text-accent italic mb-4">Menuju Hari Bahagia</h3>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B89358] to-transparent" />
+          
+          <span className="text-[10px] uppercase tracking-[0.35em] text-[#B89358] font-semibold block mb-1">
+            Save The Date
+          </span>
+          <h3 className="font-serif text-xl md:text-2xl text-[#26211C] font-semibold mb-6">
+            Menuju Hari Bahagia
+          </h3>
           
           {isCompleted ? (
             <div className="py-4 text-center">
-              <p className="font-serif text-xl font-medium text-primary">Acara Sedang Berlangsung / Terima Kasih Atas Doanya</p>
+              <p className="font-serif text-xl font-medium text-[#B89358]">Acara Sedang Berlangsung / Terima Kasih Atas Doanya</p>
             </div>
           ) : (
-            <div className="grid grid-cols-4 gap-2">
-              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{days}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Hari</span>
+            <div className="grid grid-cols-4 gap-2.5">
+              <div className="flex flex-col items-center p-3 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF]">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{days}</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Hari</span>
               </div>
-              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{hours}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Jam</span>
+              <div className="flex flex-col items-center p-3 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF]">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{hours}</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Jam</span>
               </div>
-              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{minutes}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Menit</span>
+              <div className="flex flex-col items-center p-3 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF]">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{minutes}</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Menit</span>
               </div>
-              <div className="flex flex-col items-center p-3 bg-secondary/60 rounded-xl">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-accent">{seconds}</span>
-                <span className="text-[10px] uppercase tracking-wider text-muted mt-1">Detik</span>
+              <div className="flex flex-col items-center p-3 bg-[#FAF7F2] rounded-2xl border border-[#E8DECF]">
+                <span className="font-serif text-2xl md:text-3xl font-bold text-[#785A34]">{seconds}</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#827568] mt-1 font-sans font-medium">Detik</span>
               </div>
             </div>
           )}
         </motion.div>
 
-        {/* 2. Ayat Al-Qur'an (QS. Ar-Rum: 21) */}
+        {/* 2. Ayat Al-Qur'an (QS. Ar-Rum: 21 in Arch Frame) */}
         <motion.div 
           variants={itemVariants}
-          className="max-w-lg mb-10 px-4 text-center"
+          className="w-full max-w-xl bg-white/85 backdrop-blur-md border border-[#E8DECF] p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgba(184,147,88,0.08)] mb-14 text-center relative overflow-hidden"
         >
-          <p className="text-[#786c5f] text-xs md:text-sm leading-relaxed mb-2 italic">
-            &ldquo;Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.&rdquo;
-          </p>
-          <span className="text-[11px] font-semibold text-accent uppercase tracking-widest">
-            — QS. Ar-Rum: 21 —
-          </span>
-        </motion.div>
-
-        {/* 3. Nama Pengantin & Foto Monogram */}
-        <motion.div 
-          variants={itemVariants}
-          className="flex flex-col items-center mb-12 max-w-xl w-full px-4"
-        >
-          <div
-            className="relative w-56 h-56 md:w-72 md:h-72 rounded-full border-4 border-white shadow-2xl p-1 bg-secondary mx-auto overflow-hidden animate-float mb-8"
-          >
-            <div className="w-full h-full rounded-full bg-linear-to-tr from-primary/30 to-accent/40 flex flex-col items-center justify-center relative">
-              <div className="absolute inset-0 bg-[url('/gallery/DSC03112%20(1).jpg')] bg-cover bg-center mix-blend-overlay opacity-80" />
-              <div className="p-4 text-center z-10">
-                <span className="font-serif text-3xl text-emerald-950 font-bold block mb-1">G & A</span>
-                <span className="text-[10px] uppercase tracking-widest text-[#635544]">Our Journey Starts Here</span>
-              </div>
-              <div className="absolute inset-0 border border-white/20 rounded-full pointer-events-none scale-95" />
-            </div>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B89358] to-transparent" />
+          
+          {/* Basmalah Calligraphy Style */}
+          <div className="font-serif text-xl md:text-2xl text-[#785A34] mb-4 tracking-widest">
+            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
           </div>
 
-          {/* Details Mempelai Pria & Wanita */}
-          <div className="flex flex-col items-center text-center space-y-5 w-full">
+          <p className="text-[#5C5042] text-xs md:text-sm leading-relaxed mb-4 italic font-serif">
+            &ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;
+          </p>
+          
+          <div className="flex items-center justify-center gap-3 mt-4">
+            <div className="h-px w-8 bg-[#B89358]/50" />
+            <span className="text-[11px] font-semibold text-[#B89358] uppercase tracking-[0.2em] font-sans">
+              QS. Ar-Rum: 21
+            </span>
+            <div className="h-px w-8 bg-[#B89358]/50" />
+          </div>
+        </motion.div>
+
+        {/* 3. Profil Mempelai (The Couple Section) */}
+        <motion.div 
+          variants={itemVariants}
+          className="w-full max-w-2xl mb-14 px-4 flex flex-col items-center"
+        >
+          {/* Mukadimah Salam */}
+          <div className="text-center mb-10">
+            <h4 className="font-serif text-2xl md:text-3xl text-[#26211C] font-medium mb-3">
+              Assalamu&apos;alaikum Warahmatullahi Wabarakatuh
+            </h4>
+            <p className="text-xs md:text-sm text-[#786C5E] max-w-lg mx-auto leading-relaxed font-sans">
+              Dengan memohon Rahmat dan Ridho Allah Subhanahu Wa Ta&apos;ala, kami bermaksud untuk mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
+            </p>
+          </div>
+
+          {/* Couple Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 w-full items-center">
             {/* Mempelai Pria */}
-            <div>
-              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#2d2722] tracking-wide">
+            <div className="flex flex-col items-center text-center bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#E8DECF] shadow-lg">
+              {/* Portrait Arch Photo */}
+              <div className="relative w-44 h-56 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/40 shadow-md mb-5 bg-[#F3ECE1]">
+                <img
+                  src="/gallery/DSC03112 (1).jpg"
+                  alt="Gagas Wijaksana Nugraha"
+                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <h3 className="font-serif text-xl md:text-2xl font-semibold text-[#26211C] tracking-wide">
                 Gagas Wijaksana Nugraha
               </h3>
-              <p className="text-xs md:text-sm text-[#786c5f] mt-1 font-sans leading-relaxed">
-                Putra dari Alm. Bapak Nedy Winuza dan Ibu Nelzi Fati
+              <div className="h-px w-10 bg-[#B89358] my-2" />
+              <p className="text-xs text-[#786C5E] font-sans leading-relaxed">
+                Putra dari Alm. Bapak Nedy Winuza <br />&amp; Ibu Nelzi Fati
               </p>
             </div>
 
-            {/* Simbol & / Love ornament */}
-            <div className="flex items-center justify-center gap-3 w-full max-w-xs my-0.5">
-              <div className="h-px bg-gradient-to-r from-transparent via-[#c5a880]/60 to-transparent flex-1" />
-              <span className="font-serif text-2xl md:text-3xl text-primary italic font-light">&</span>
-              <div className="h-px bg-gradient-to-r from-transparent via-[#c5a880]/60 to-transparent flex-1" />
-            </div>
-
             {/* Mempelai Wanita */}
-            <div>
-              <h3 className="font-serif text-2xl md:text-3xl font-semibold text-[#2d2722] tracking-wide">
+            <div className="flex flex-col items-center text-center bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#E8DECF] shadow-lg">
+              {/* Portrait Arch Photo */}
+              <div className="relative w-44 h-56 rounded-t-full rounded-b-2xl overflow-hidden border-3 border-[#B89358]/40 shadow-md mb-5 bg-[#F3ECE1]">
+                <img
+                  src="/gallery/DSC03138 (1).jpg"
+                  alt="Akila Syifa Salsabila"
+                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <h3 className="font-serif text-xl md:text-2xl font-semibold text-[#26211C] tracking-wide">
                 Akila Syifa Salsabila
               </h3>
-              <p className="text-xs md:text-sm text-[#786c5f] mt-1 font-sans leading-relaxed">
-                Putri dari Bapak Giyanta dan Almh. Ibu Susi Suryani
+              <div className="h-px w-10 bg-[#B89358] my-2" />
+              <p className="text-xs text-[#786C5E] font-sans leading-relaxed">
+                Putri dari Bapak Giyanta <br />&amp; Almh. Ibu Susi Suryani
               </p>
             </div>
           </div>
@@ -147,41 +174,44 @@ export function Hero({ weddingDate }: HeroProps) {
         {/* 4. Informasi Acara (Waktu & Tempat) */}
         <motion.div
           variants={itemVariants}
-          className="w-full max-w-xl bg-white/80 backdrop-blur-md rounded-3xl border border-white p-6 md:p-8 shadow-lg relative overflow-hidden text-center mb-8"
+          className="w-full max-w-xl bg-white/90 backdrop-blur-md rounded-3xl border border-[#E8DECF] p-8 md:p-10 shadow-[0_8px_30px_rgba(184,147,88,0.12)] relative overflow-hidden text-center mb-8"
         >
           {/* Top gold line decorator */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-transparent via-primary/60 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B89358] to-transparent" />
 
           {/* Date & Venue Header */}
-          <div className="mb-6">
-            <div className="inline-flex items-center justify-center gap-2 text-primary font-medium text-xs md:text-sm tracking-wider uppercase mb-1.5">
-              <Calendar className="w-4 h-4" />
+          <div className="mb-8">
+            <span className="text-[10px] uppercase tracking-[0.35em] text-[#B89358] font-semibold block mb-2">
+              Save Our Special Day
+            </span>
+            <div className="inline-flex items-center justify-center gap-2 text-[#785A34] font-medium text-xs md:text-sm tracking-wider uppercase mb-1">
+              <Calendar className="w-4 h-4 text-[#B89358]" />
               <span>Sabtu, 12 Desember 2026</span>
             </div>
-            <h4 className="font-serif text-2xl md:text-3xl font-semibold text-foreground tracking-wide mt-1">
+            <h4 className="font-serif text-2xl md:text-3xl font-semibold text-[#26211C] tracking-wide mt-1">
               The Samasta Jatiwarna
             </h4>
           </div>
 
           {/* Akad & Resepsi Two-Column Section with Divider */}
-          <div className="bg-secondary/40 rounded-2xl p-5 md:p-6 border border-white/60 mb-6">
-            <div className="grid grid-cols-2 divide-x divide-[#e2d9cd]">
+          <div className="bg-[#FAF7F2] rounded-2xl p-6 border border-[#E8DECF] mb-8">
+            <div className="grid grid-cols-2 divide-x divide-[#E5DC CE]">
               {/* Akad Column */}
-              <div className="px-2 md:px-4 text-center">
-                <h5 className="font-serif text-base md:text-lg font-semibold text-accent mb-1">
+              <div className="px-3 md:px-5 text-center">
+                <h5 className="font-serif text-lg md:text-xl font-semibold text-[#785A34] mb-1.5">
                   Akad
                 </h5>
-                <p className="text-xs md:text-sm font-medium text-foreground/80 tracking-wide">
+                <p className="text-xs md:text-sm font-medium text-[#4A3E35] tracking-wide">
                   15.00 – 16.30 WIB
                 </p>
               </div>
 
               {/* Resepsi Column */}
-              <div className="px-2 md:px-4 text-center">
-                <h5 className="font-serif text-base md:text-lg font-semibold text-accent mb-1">
+              <div className="px-3 md:px-5 text-center">
+                <h5 className="font-serif text-lg md:text-xl font-semibold text-[#785A34] mb-1.5">
                   Resepsi
                 </h5>
-                <p className="text-xs md:text-sm font-medium text-foreground/80 tracking-wide">
+                <p className="text-xs md:text-sm font-medium text-[#4A3E35] tracking-wide">
                   19.00 – 21.00 WIB
                 </p>
               </div>
@@ -189,19 +219,19 @@ export function Hero({ weddingDate }: HeroProps) {
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
             <Button
               onClick={() => window.open(mapUrl, "_blank")}
               variant="outline"
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-full text-xs font-semibold hover:bg-primary/10 transition-all cursor-pointer shadow-xs"
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-xs font-semibold hover:bg-[#FAF7F2] border-[#B89358]/50 text-[#785A34] transition-all cursor-pointer shadow-xs"
             >
-              <Map className="w-4 h-4 text-primary" />
+              <Map className="w-4 h-4 text-[#B89358]" />
               Google Maps
             </Button>
             <Button
               onClick={() => window.open(calendarUrl, "_blank")}
               variant="primary"
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-full text-xs font-semibold shadow-[0_4px_12px_rgba(197,168,128,0.25)] hover:shadow-[0_4px_18px_rgba(197,168,128,0.35)] transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-xs font-semibold bg-gradient-to-r from-[#B89358] via-[#CBB07E] to-[#B89358] text-white shadow-[0_4px_15px_rgba(184,147,88,0.25)] hover:brightness-105 transition-all cursor-pointer"
             >
               <CalendarPlus className="w-4 h-4" />
               Save to your calendar

@@ -5,35 +5,48 @@ import { Heart } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="py-20 px-4 bg-[#0f0e0c] text-white relative overflow-hidden text-center">
+    <footer className="py-24 px-4 bg-[#181411] text-white relative overflow-hidden text-center">
       {/* Decorative Ornaments */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-linear-to-r from-transparent via-primary/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B89358]/50 to-transparent" />
       
+      {/* Corner borders */}
+      <div className="absolute top-6 left-6 w-8 h-8 border-t border-l border-[#B89358]/30 pointer-events-none" />
+      <div className="absolute top-6 right-6 w-8 h-8 border-t border-r border-[#B89358]/30 pointer-events-none" />
+      <div className="absolute bottom-6 left-6 w-8 h-8 border-b border-l border-[#B89358]/30 pointer-events-none" />
+      <div className="absolute bottom-6 right-6 w-8 h-8 border-b border-r border-[#B89358]/30 pointer-events-none" />
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="max-w-md mx-auto flex flex-col items-center justify-center"
+        className="max-w-lg mx-auto flex flex-col items-center justify-center relative z-10"
       >
-        <Heart className="w-6 h-6 text-primary fill-primary/30 animate-pulse mb-6" />
+        <div className="w-10 h-10 rounded-full bg-[#231E19] border border-[#B89358]/40 flex items-center justify-center mb-6">
+          <Heart className="w-5 h-5 text-[#B89358] fill-[#B89358]/30 animate-pulse" />
+        </div>
 
-        <p className="text-xs text-[#a8a095] uppercase tracking-[0.2em] mb-4">
-          Merupakan suatu kehormatan & kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami.
+        <p className="text-xs text-[#A69788] uppercase tracking-[0.25em] leading-relaxed mb-6 font-sans">
+          Merupakan suatu kehormatan &amp; kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami.
         </p>
 
-        <h4 className="font-serif text-3xl font-semibold text-primary mt-6 tracking-wide">
-          Gagas & Akila
+        <h4 className="font-serif text-3xl md:text-4xl font-normal text-[#FDF8F0] tracking-wide mt-2 shimmer-gold py-1">
+          Gagas &amp; Akila
         </h4>
         
-        <p className="text-[10px] text-[#70665b] uppercase tracking-widest mt-3">
-          Sampai Jumpa Di Hari Bahagia Kami
-        </p>
+        <div className="flex items-center justify-center gap-3 mt-3 opacity-60">
+          <div className="h-px w-8 bg-gradient-to-r from-transparent to-[#B89358]" />
+          <span className="text-[10px] text-[#B89358] uppercase tracking-[0.3em] font-sans">
+            Sampai Jumpa Di Hari Bahagia Kami
+          </span>
+          <div className="h-px w-8 bg-gradient-to-l from-transparent to-[#B89358]" />
+        </div>
 
-        <p className="text-[9px] text-[#554e45] mt-16 font-sans">
-          &copy; {new Date().getFullYear()} Gagas & Akila. All Rights Reserved. Built with Next.js & Google Sheets.
+        <p className="text-[9px] text-[#6E6255] mt-14 font-sans tracking-wider uppercase">
+          &copy; {new Date().getFullYear()} Gagas &amp; Akila Wedding Invitation.
         </p>
       </motion.div>
     </footer>
   );
 }
+

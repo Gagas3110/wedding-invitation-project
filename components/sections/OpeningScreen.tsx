@@ -20,40 +20,56 @@ function OpeningContent() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, y: "-100vh" }}
           transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1] }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-between py-16 px-6 bg-radial from-[#1e1a15] to-[#0f0e0c] text-white overflow-hidden"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-between py-12 md:py-16 px-6 bg-[#181411] text-white overflow-hidden"
         >
-          {/* Decorative Corner Ornaments */}
-          <div className="absolute top-6 left-6 w-16 h-16 border-t border-l border-primary/40 opacity-70 pointer-events-none" />
-          <div className="absolute top-6 right-6 w-16 h-16 border-t border-r border-primary/40 opacity-70 pointer-events-none" />
-          <div className="absolute bottom-6 left-6 w-16 h-16 border-b border-l border-primary/40 opacity-70 pointer-events-none" />
-          <div className="absolute bottom-6 right-6 w-16 h-16 border-b border-r border-primary/40 opacity-70 pointer-events-none" />
+          {/* Subtle background radial glow & pattern */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(184,147,88,0.18)_0%,rgba(24,20,17,0.95)_70%)] pointer-events-none" />
 
-          {/* Elegant gold circle in the background */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full border border-primary/10 opacity-30 pointer-events-none animate-pulse" />
+          {/* Decorative Minang Luxury Border Frame */}
+          <div className="absolute inset-4 md:inset-8 border border-[#B89358]/30 rounded-3xl pointer-events-none" />
+          <div className="absolute inset-6 md:inset-10 border border-[#B89358]/15 rounded-2xl pointer-events-none" />
 
-          <div className="text-center mt-12 z-10">
-            <span className="text-xs uppercase tracking-[0.3em] text-primary">Undangan Pernikahan</span>
-            <h1 className="font-serif text-4xl mt-6 font-semibold tracking-wide bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Gagas & Akila
+          {/* Ornate Corner Accents */}
+          <div className="absolute top-8 left-8 w-12 h-12 border-t-2 border-l-2 border-[#B89358] opacity-80 pointer-events-none" />
+          <div className="absolute top-8 right-8 w-12 h-12 border-t-2 border-r-2 border-[#B89358] opacity-80 pointer-events-none" />
+          <div className="absolute bottom-8 left-8 w-12 h-12 border-b-2 border-l-2 border-[#B89358] opacity-80 pointer-events-none" />
+          <div className="absolute bottom-8 right-8 w-12 h-12 border-b-2 border-r-2 border-[#B89358] opacity-80 pointer-events-none" />
+
+          {/* Top Header */}
+          <div className="text-center mt-6 md:mt-10 z-10">
+            <span className="text-[11px] uppercase tracking-[0.4em] text-[#C5A880] font-medium block mb-3">
+              The Wedding of
+            </span>
+            <h1 className="font-serif text-4xl md:text-6xl font-normal tracking-wide shimmer-gold py-1">
+              Gagas &amp; Akila
             </h1>
+            <div className="flex items-center justify-center gap-3 mt-3 opacity-60">
+              <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#B89358]" />
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#C5A880]">12 . 12 . 2026</span>
+              <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#B89358]" />
+            </div>
           </div>
 
-          <div className="text-center max-w-sm px-4 z-10 my-auto flex flex-col items-center">
-            <p className="text-xs uppercase tracking-widest text-[#a8a095] mb-2">Kepada Yth. Bapak/Ibu/Saudara/i</p>
-            <h2 className="font-serif text-2xl font-medium text-white my-3 italic">
+          {/* Guest Name Card */}
+          <div className="text-center max-w-sm w-full px-6 py-6 z-10 my-auto bg-[#231E19]/80 backdrop-blur-md rounded-2xl border border-[#B89358]/30 shadow-2xl flex flex-col items-center">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#A69788] mb-2 font-sans">
+              Kepada Yth. Bapak/Ibu/Saudara/i
+            </p>
+            <h2 className="font-serif text-2xl md:text-3xl font-semibold text-[#FDF8F0] my-2">
               {guestName}
             </h2>
-            <p className="text-xs text-[#8a8074] leading-relaxed max-w-xs mt-2">
+            <p className="text-[10px] text-[#8F8172] leading-relaxed max-w-xs mt-2 italic font-sans">
               Mohon maaf apabila ada kesalahan pada penulisan nama dan gelar.
             </p>
           </div>
 
-          <div className="z-10 w-full flex justify-center pb-6">
+          {/* Open Invitation Button */}
+          <div className="z-10 w-full flex justify-center pb-4 md:pb-6">
             <Button
-              className="bg-primary/95 text-foreground hover:bg-primary py-3.5 px-8 font-semibold tracking-[0.15em] border border-primary/20 shadow-[0_0_15px_rgba(197,168,128,0.2)]"
+              className="bg-gradient-to-r from-[#B89358] via-[#D4AF67] to-[#B89358] text-[#181411] hover:brightness-110 py-4 px-10 rounded-full font-semibold text-xs tracking-[0.2em] uppercase shadow-[0_4px_25px_rgba(184,147,88,0.35)] transition-all transform hover:scale-105 cursor-pointer border border-[#F3E2B8]/40"
               onClick={openInvitation}
             >
-              <MailOpen className="w-4 h-4 mr-2" />
+              <MailOpen className="w-4 h-4 mr-2 text-[#181411]" />
               Buka Undangan
             </Button>
           </div>

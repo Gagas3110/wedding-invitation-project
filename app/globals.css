@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf8f5;
-  --foreground: #1a1715;
-  --primary: #c5a880;
-  --primary-hover: #b0936b;
-  --primary-foreground: #ffffff;
-  --secondary: #f3efe9;
-  --accent: #8c7553;
-  --muted: #78716c;
-  --card: #ffffff;
-  --border: #e8e2d9;
+  --background: #FAF7F2;
+  --foreground: #26211C;
+  --primary: #B89358;
+  --primary-hover: #A37F45;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F3ECE1;
+  --accent: #785A34;
+  --muted: #827568;
+  --card: #FFFFFF;
+  --border: #E8DECF;
   
-  --font-serif: var(--font-playfair), serif;
-  --font-sans: var(--font-inter), sans-serif;
+  --font-serif: var(--font-cormorant), var(--font-playfair), serif;
+  --font-sans: var(--font-jakarta), var(--font-inter), sans-serif;
 }
 
 @theme {
@@ -37,21 +37,59 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  background-image: radial-gradient(#d8ccb8 0.75px, transparent 0.75px);
+  background-size: 24px 24px;
+}
+
+/* Luxury arch frames */
+.arch-frame {
+  border-top-left-radius: 9999px;
+  border-top-right-radius: 9999px;
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
 }
 
 /* Glassmorphism helpers */
 .glass {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.glass-gold {
+  background: rgba(255, 252, 247, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(184, 147, 88, 0.2);
 }
 
 .glass-dark {
-  background: rgba(26, 23, 21, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(26, 22, 18, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(184, 147, 88, 0.2);
+}
+
+/* Shimmer Gold Effect */
+.shimmer-gold {
+  background: linear-gradient(
+    110deg,
+    #8e6e3e 0%,
+    #d4af67 25%,
+    #f3e2b8 45%,
+    #d4af67 65%,
+    #8e6e3e 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 /* Custom transitions and scrollbar */

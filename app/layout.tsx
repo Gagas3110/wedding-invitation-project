@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Cormorant_Garamond, Plus_Jakarta_Sans, Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+});
 
 const playfair = Playfair_Display({ 
   subsets: ["latin"], 
   variable: "--font-playfair",
-  weight: ["400", "500", "600", "700"]
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const inter = Inter({ 
@@ -31,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${playfair.variable} antialiased bg-background text-foreground font-sans`}
+        className={`${jakarta.variable} ${cormorant.variable} ${inter.variable} ${playfair.variable} antialiased bg-background text-foreground font-sans`}
       >
         {children}
       </body>
