@@ -23,15 +23,16 @@ export function Gift() {
   };
 
   return (
-    <section className="relative py-24 px-4 bg-[#FAF7F2] overflow-hidden">
+    <section className="relative py-24 px-4 overflow-hidden" style={{ backgroundColor: '#FAF7F2' }}>
       {/* Decorative background */}
       <div
-        className="absolute inset-0 opacity-[0.07] pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: "url('/gallery/background_wedding.svg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
+          opacity: 0.45,
         }}
       />
       <div className="relative max-w-xl mx-auto">
