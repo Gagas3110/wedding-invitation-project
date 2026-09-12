@@ -54,7 +54,7 @@ function OpeningContent() {
             </h1>
 
             {/* Wedding Date */}
-            <p className="font-serif text-xs md:text-sm text-[#6E7642] tracking-[0.25em] mt-1 font-medium">
+            <p className="font-serif text-xl md:text-sm text-[#6E7642] tracking-[0.25em] mt-1 font-medium">
               12 &nbsp;Desember 2026
             </p>
           </motion.div>
