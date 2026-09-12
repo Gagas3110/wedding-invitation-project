@@ -161,15 +161,17 @@ export function Hero({ weddingDate }: HeroProps) {
 
             {/* Ampersand Divider */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
+              initial={{ opacity: 0, scale: 0.6 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center gap-2"
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="flex flex-col items-center gap-3 my-2"
             >
-              <div className="h-10 w-px bg-gradient-to-b from-transparent to-[#B89358]/60" />
-              <span className="font-serif text-3xl text-[#B89358] font-light">&amp;</span>
-              <div className="h-10 w-px bg-gradient-to-b from-[#B89358]/60 to-transparent" />
+              <div className="h-16 w-0.5 bg-gradient-to-b from-transparent via-[#B89358]/60 to-[#B89358]" />
+              <span className="font-serif text-5xl md:text-6xl text-[#B89358] font-normal drop-shadow-[0_2px_10px_rgba(184,147,88,0.25)] select-none">
+                &amp;
+              </span>
+              <div className="h-16 w-0.5 bg-gradient-to-b from-[#B89358] via-[#B89358]/60 to-transparent" />
             </motion.div>
 
             {/* 2. Mempelai Pria (Muncul Saat Di-scroll) */}

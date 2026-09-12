@@ -23,7 +23,7 @@ export function PersistentLeftBackdrop() {
           UNDANGAN PERNIKAHAN
         </span>
         <h1 className="font-script text-7xl md:text-8xl xl:text-9xl text-white font-normal leading-none my-1 drop-shadow-xl">
-          Gagas &amp; Akila
+          Akila &amp; Gagas
         </h1>
         <p className="text-xs md:text-sm font-light tracking-[0.25em] uppercase font-sans text-white/80 mt-2">
           12 DESEMBER 2026

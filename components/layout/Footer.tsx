@@ -31,7 +31,7 @@ export function Footer() {
         </p>
 
         <h4 className="font-serif text-3xl md:text-4xl font-normal text-[#FDF8F0] tracking-wide mt-2 shimmer-gold py-1">
-          Gagas &amp; Akila
+          Akila &amp; Gagas
         </h4>
         
         <div className="flex items-center justify-center gap-3 mt-3 opacity-60">
@@ -43,7 +43,7 @@ export function Footer() {
         </div>
 
         <p className="text-[9px] text-[#6E6255] mt-14 font-sans tracking-wider uppercase">
-          &copy; {new Date().getFullYear()} Gagas &amp; Akila Wedding Invitation.
+          &copy; {new Date().getFullYear()} Akila &amp; Gagas Wedding Invitation.
         </p>
       </motion.div>
     </footer>
