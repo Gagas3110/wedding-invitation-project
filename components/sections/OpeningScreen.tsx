@@ -35,9 +35,9 @@ function OpeningContent() {
               <svg viewBox="0 0 300 45" className="w-56 h-10 overflow-visible">
                 <path id="wedding-arch-curve" d="M 30 40 Q 150 8 270 40" fill="transparent" />
                 <text 
-                  className="font-serif text-[28px] md:text-[30px] font-bold tracking-[0.14em] fill-[#1A1A1A] italic" 
+                  className="font-serif text-[28px] md:text-[30px] font-bold tracking-[0.14em] fill-[#6E7642] italic" 
                   fontWeight="bold"
-                  stroke="#1A1A1A"
+                  stroke="#6E7642"
                   strokeWidth="0.5"
                   textAnchor="middle"
                 >
@@ -49,12 +49,12 @@ function OpeningContent() {
             </div>
 
             {/* Couple Script Names */}
-            <h1 className="font-script text-5xl md:text-6xl text-[#D1D9B5] font-normal leading-tight drop-shadow-xs my-1">
+            <h1 className="font-script text-5xl md:text-6xl text-[#686E49] font-normal leading-tight drop-shadow-xs my-1">
               Akila &amp; Gagas
             </h1>
 
             {/* Wedding Date */}
-            <p className="font-serif text-xs md:text-sm text-[#1A1A1A] tracking-[0.25em] mt-1 font-medium">
+            <p className="font-serif text-xs md:text-sm text-[#6E7642] tracking-[0.25em] mt-1 font-medium">
               12 &nbsp;Desember 2026
             </p>
           </motion.div>
