@@ -6,6 +6,7 @@ import { PersistentLeftBackdrop } from "@/components/layout/PersistentLeftBackdr
 import { OpeningScreen } from "@/components/sections/OpeningScreen";
 import { Countdown } from "@/components/sections/Countdown";
 import { Hero } from "@/components/sections/Hero";
+import { SaveTheDate } from "@/components/sections/SaveTheDate";
 import { Gallery } from "@/components/sections/Gallery";
 import { RSVP } from "@/components/sections/RSVP";
 import { Wishes } from "@/components/sections/Wishes";
@@ -43,7 +44,8 @@ export default function Home() {
         
         <main className="relative z-10 w-full min-h-screen">
           <Countdown weddingDate={weddingDate} />
-          <Hero weddingDate={weddingDate} />
+          <Hero />
+          <SaveTheDate />
           <Gallery />
           <RSVP onSuccessSubmit={handleRSVPSuccess} />
           <Wishes refreshTrigger={refreshTrigger} />

@@ -26,18 +26,30 @@ export function Gift() {
     <section className="py-24 px-4 bg-[#FAF7F2]/60">
       <div className="max-w-xl mx-auto">
         {/* Title */}
-        <div className="text-center mb-12 relative pb-2">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-12 relative pb-2"
+        >
           <span className="text-[10px] uppercase tracking-[0.4em] text-[#4A542C] font-semibold block mb-2">Kado Digital</span>
           <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#1A1A1A]">
             Tanda Kasih
           </h3>
           <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
-        </div>
+        </motion.div>
 
         {/* Caption */}
-        <p className="text-center text-xs text-[#4A542C] leading-relaxed max-w-sm mx-auto mb-10 font-sans">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+          className="text-center text-xs text-[#4A542C] leading-relaxed max-w-sm mx-auto mb-10 font-sans"
+        >
           Kehadiran dan doa restu Anda adalah kado terindah bagi kami. Namun apabila Anda ingin mengirimkan tanda kasih, Anda dapat menyalurkannya melalui rekening berikut:
-        </p>
+        </motion.p>
 
         {/* Gift Options Grid */}
         <div className="space-y-6">

@@ -43,7 +43,13 @@ export function Wishes({ refreshTrigger }: WishesProps) {
     <section className="py-24 px-4 bg-[#FAF7F2]/60">
       <div className="max-w-xl mx-auto">
         {/* Title */}
-        <div className="text-center mb-12 relative pb-2">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-12 relative pb-2"
+        >
           <span className="text-[10px] uppercase tracking-[0.4em] text-[#4A542C] font-semibold block mb-2">Doa Restu Tamu Undangan</span>
           <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#1A1A1A]">
             Kiriman Ucapan
@@ -58,7 +64,7 @@ export function Wishes({ refreshTrigger }: WishesProps) {
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
           </button>
-        </div>
+        </motion.div>
 
         {/* Wishes List */}
         <div className="space-y-4 min-h-[200px] relative">

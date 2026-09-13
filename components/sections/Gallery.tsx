@@ -78,12 +78,18 @@ export function Gallery() {
     <section className="py-24 px-4 bg-[#FAF7F2]/60">
       <div className="max-w-5xl mx-auto">
         {/* Title */}
-        <div className="text-center mb-16 relative pb-2">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-16 relative pb-2"
+        >
           <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#1A1A1A]">
              Momen Bahagia Kami
           </h3>
           <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
-        </div>
+        </motion.div>
 
         {/* Gallery Grid with Arch styling */}
         <div className="columns-1 sm:columns-2 md:columns-3 gap-6 space-y-6">

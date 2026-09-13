@@ -85,20 +85,26 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
     <section className="py-24 px-4 bg-[#FAF7F2]/60">
       <div className="max-w-xl mx-auto">
         {/* Title */}
-        <div className="text-center mb-12 relative pb-2">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-12 relative pb-2"
+        >
           <span className="text-[10px] uppercase tracking-[0.4em] text-[#4A542C] font-semibold block mb-2">Konfirmasi Kehadiran</span>
           <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#1A1A1A]">
             Buku Tamu &amp; RSVP
           </h3>
           <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
-        </div>
+        </motion.div>
 
         {/* Form Container */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
           className="bg-[#DCE3C2]/90 backdrop-blur-md rounded-3xl border border-[#CAD4AA]/60 p-8 md:p-10 shadow-xl relative overflow-hidden text-center"
         >
           {/* Top green line decorator */}
