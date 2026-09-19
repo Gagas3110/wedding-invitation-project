@@ -28,10 +28,9 @@ function OpeningContent() {
             loop
             muted
             playsInline
-            poster="/gallery/background_wedding.jpg"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
           >
-            <source src="/gallery/the_wedding_of_2.mp4" type="video/mp4" />
+            <source src="/gallery/opening.mp4" type="video/mp4" />
           </video>
 
           {/* Guest Card (Sage Green Box positioned in lower section) */}

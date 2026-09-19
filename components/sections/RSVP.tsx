@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { motion } from "framer-motion";
 import { Send, CheckCircle2 } from "lucide-react";
+import { PaperCard } from "@/components/ui/PaperCard";
 
 interface RSVPProps {
   onSuccessSubmit: () => void;
@@ -49,14 +50,14 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
         '"': "&quot;",
         "'": "&#039;",
       };
-      return map[m];
+      return map[m] || m;
     });
   };
 
   const onSubmit = async (values: RSVPFormValues) => {
     setIsSubmitting(true);
     setErrorMsg("");
-    
+
     // Sanitize fields before sending
     const sanitizedData = {
       name: sanitize(values.name.trim()),
@@ -82,141 +83,135 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
   };
 
   return (
-    <section className="py-24 px-4 bg-[#FAF7F2]/60">
-      <div className="max-w-xl mx-auto">
-        {/* Title */}
+    <section className="py-12 sm:py-16 px-2 relative z-10">
+      <div className="w-full max-w-lg mx-auto flex flex-col items-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-12 relative pb-2"
-        >
-          <span className="text-[10px] uppercase tracking-[0.4em] text-[#4A542C] font-semibold block mb-2">Konfirmasi Kehadiran</span>
-          <h3 className="font-serif text-3xl md:text-4xl font-semibold text-[#1A1A1A]">
-            Buku Tamu &amp; RSVP
-          </h3>
-          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
-        </motion.div>
-
-        {/* Form Container */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="bg-[#DCE3C2]/90 backdrop-blur-md rounded-3xl border border-[#CAD4AA]/60 p-8 md:p-10 shadow-xl relative overflow-hidden text-center"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="w-full"
         >
-          {/* Top green line decorator */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent" />
-
-          {isSuccess ? (
-            <div className="py-10 flex flex-col items-center justify-center">
-              <CheckCircle2 className="w-16 h-16 text-[#3B4420] mb-4 animate-bounce" />
-              <h4 className="font-serif text-2xl font-semibold text-[#1A1A1A] mb-2">Terima Kasih!</h4>
-              <p className="text-xs text-[#4A542C] max-w-xs leading-relaxed font-sans">
-                Konfirmasi kehadiran dan ucapan doa Anda telah tersimpan di daftar tamu kami.
-              </p>
-              <Button
-                variant="outline"
-                className="mt-6 font-sans text-xs tracking-wider border-[#CAD4AA] text-[#2D3319] hover:bg-[#EEF2DF]"
-                onClick={() => setIsSuccess(false)}
-              >
-                Kirim Pembaharuan RSVP
-              </Button>
+          <PaperCard variant="default" className="text-center">
+            {/* Title */}
+            <div className="mb-6">
+              <span className="text-[10px] uppercase tracking-[0.35em] text-[#4A542C] font-semibold block mb-1">
+                Konfirmasi Kehadiran
+              </span>
+              <h3 className="font-serif italic text-3xl sm:text-4xl text-[#1A1A1A] font-semibold">
+                Buku Tamu &amp; RSVP
+              </h3>
+              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
             </div>
-          ) : (
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Name */}
-              <Input
-                label="Nama Lengkap"
-                placeholder="Masukkan nama lengkap Anda"
-                error={errors.name?.message}
-                {...register("name")}
-              />
 
-              {/* Status Kehadiran */}
-              <div className="text-left">
-                <label className="block text-xs font-semibold text-[#2D3319] uppercase tracking-wider mb-2 pl-1 font-sans">
-                  Status Kehadiran
-                </label>
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setValue("status", "Hadir")}
-                    className={`py-3 px-4 rounded-xl border text-xs tracking-wider font-semibold transition-all duration-300 cursor-pointer ${
-                      selectedStatus === "Hadir"
-                        ? "bg-[#3B4420] border-[#3B4420] text-white shadow-sm"
-                        : "bg-[#EEF2DF]/85 border-[#CAD4AA]/70 text-[#2D3319] hover:bg-[#EEF2DF]"
-                    }`}
-                  >
-                    HADIR
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setValue("status", "Tidak Hadir")}
-                    className={`py-3 px-4 rounded-xl border text-xs tracking-wider font-semibold transition-all duration-300 cursor-pointer ${
-                      selectedStatus === "Tidak Hadir"
-                        ? "bg-[#3B4420] border-[#3B4420] text-white shadow-sm"
-                        : "bg-[#EEF2DF]/85 border-[#CAD4AA]/70 text-[#2D3319] hover:bg-[#EEF2DF]"
-                    }`}
-                  >
-                    TIDAK HADIR
-                  </button>
-                </div>
-              </div>
-
-              {/* Jumlah Tamu (Only show if Status is Hadir) */}
-              {selectedStatus === "Hadir" && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Input
-                    label="Jumlah Tamu (Orang)"
-                    type="number"
-                    min={1}
-                    max={10}
-                    error={errors.guests?.message}
-                    {...register("guests", { valueAsNumber: true })}
-                  />
-                </motion.div>
-              )}
-
-              {/* Ucapan */}
-              <Textarea
-                label="Ucapan Doa & Harapan"
-                placeholder="Berikan doa restu Anda kepada kedua mempelai..."
-                info="Maksimal 500 karakter"
-                error={errors.wish?.message}
-                {...register("wish")}
-              />
-
-              {/* Error messages */}
-              {errorMsg && (
-                <p className="text-xs text-red-600 text-left bg-red-50 p-3 rounded-lg border border-red-200 pl-4 pr-4">
-                  {errorMsg}
+            {isSuccess ? (
+              <div className="py-10 flex flex-col items-center justify-center">
+                <CheckCircle2 className="w-14 h-14 text-[#3B4420] mb-3 animate-bounce" />
+                <h4 className="font-serif text-2xl font-semibold text-[#1A1A1A] mb-2">Terima Kasih!</h4>
+                <p className="text-xs text-[#4A542C] max-w-xs leading-relaxed font-sans">
+                  Konfirmasi kehadiran dan ucapan doa Anda telah tersimpan di daftar tamu kami.
                 </p>
-              )}
+                <Button
+                  variant="outline"
+                  className="mt-6 font-sans text-xs tracking-wider border-[#CAD4AA] text-[#2D3319] hover:bg-[#EEF2DF] cursor-pointer"
+                  onClick={() => setIsSuccess(false)}
+                >
+                  Kirim Pembaharuan RSVP
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 text-left">
+                {/* Name */}
+                <Input
+                  label="Nama Lengkap"
+                  placeholder="Masukkan nama lengkap Anda"
+                  error={errors.name?.message}
+                  {...register("name")}
+                />
 
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-4 mt-2 flex items-center justify-center gap-2 bg-[#3B4420] hover:bg-[#2D3319] text-white shadow-[0_4px_20px_rgba(59,68,32,0.25)] hover:brightness-105 transition-all font-semibold tracking-widest cursor-pointer rounded-full"
-              >
-                {isSubmitting ? (
-                  <div className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    KIRIM RSVP
-                  </>
+                {/* Status Kehadiran */}
+                <div>
+                  <label className="block text-xs font-semibold text-[#2D3319] uppercase tracking-wider mb-2 pl-1 font-sans">
+                    Status Kehadiran
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setValue("status", "Hadir")}
+                      className={`py-3 px-4 rounded-xl border text-xs tracking-wider font-semibold transition-all duration-300 cursor-pointer ${
+                        selectedStatus === "Hadir"
+                          ? "bg-[#3B4420] border-[#3B4420] text-white shadow-xs"
+                          : "bg-[#EEF2DF]/80 border-[#CAD4AA]/70 text-[#2D3319] hover:bg-[#EEF2DF]"
+                      }`}
+                    >
+                      HADIR
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setValue("status", "Tidak Hadir")}
+                      className={`py-3 px-4 rounded-xl border text-xs tracking-wider font-semibold transition-all duration-300 cursor-pointer ${
+                        selectedStatus === "Tidak Hadir"
+                          ? "bg-[#3B4420] border-[#3B4420] text-white shadow-xs"
+                          : "bg-[#EEF2DF]/80 border-[#CAD4AA]/70 text-[#2D3319] hover:bg-[#EEF2DF]"
+                      }`}
+                    >
+                      TIDAK HADIR
+                    </button>
+                  </div>
+                </div>
+
+                {/* Jumlah Tamu (Only show if Status is Hadir) */}
+                {selectedStatus === "Hadir" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Input
+                      label="Jumlah Tamu (Orang)"
+                      type="number"
+                      min={1}
+                      max={10}
+                      error={errors.guests?.message}
+                      {...register("guests", { valueAsNumber: true })}
+                    />
+                  </motion.div>
                 )}
-              </Button>
-            </form>
-          )}
+
+                {/* Ucapan */}
+                <Textarea
+                  label="Ucapan Doa & Harapan"
+                  placeholder="Berikan doa restu Anda kepada kedua mempelai..."
+                  info="Maksimal 500 karakter"
+                  error={errors.wish?.message}
+                  {...register("wish")}
+                />
+
+                {/* Error messages */}
+                {errorMsg && (
+                  <p className="text-xs text-red-600 bg-red-50 p-3 rounded-lg border border-red-200">
+                    {errorMsg}
+                  </p>
+                )}
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-3.5 mt-2 flex items-center justify-center gap-2 bg-[#3B4420] hover:bg-[#2D3319] text-white shadow-[0_4px_16px_rgba(59,68,32,0.25)] hover:brightness-105 transition-all font-semibold tracking-widest cursor-pointer rounded-full text-xs uppercase"
+                >
+                  {isSubmitting ? (
+                    <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                  ) : (
+                    <>
+                      <Send className="w-3.5 h-3.5" />
+                      KIRIM RSVP
+                    </>
+                  )}
+                </Button>
+              </form>
+            )}
+          </PaperCard>
         </motion.div>
       </div>
     </section>

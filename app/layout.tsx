@@ -63,6 +63,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth">
       <head>
+        <link rel="preload" as="video" href="/gallery/opening.mp4" type="video/mp4" />
         <link rel="preload" as="image" href="/minang/COVER-MINANG4.jpg" />
         <link rel="preload" as="image" href="/gallery/DSC03172.jpg" />
         <link rel="preload" as="image" href="/gallery/background_wedding.jpg" />

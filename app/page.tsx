@@ -5,6 +5,7 @@ import { AppProvider } from "@/app/context/AppContext";
 import { PersistentLeftBackdrop } from "@/components/layout/PersistentLeftBackdrop";
 import { OpeningScreen } from "@/components/sections/OpeningScreen";
 import { Countdown } from "@/components/sections/Countdown";
+import { Ayat } from "@/components/sections/Ayat";
 import { Hero } from "@/components/sections/Hero";
 import { SaveTheDate } from "@/components/sections/SaveTheDate";
 import { Gallery } from "@/components/sections/Gallery";
@@ -41,10 +42,18 @@ export default function Home() {
         />
 
         <OpeningScreen />
-        
-        <main className="relative z-10 w-full min-h-screen">
+
+        <main className="relative z-10 w-full min-h-screen pb-10">
+          {/* Section 1: Countdown (1 Halaman Penuh Pertama) */}
           <Countdown weddingDate={weddingDate} />
+
+          {/* Section 2: Ayat Al-Qur'an (1 Halaman Sendiri, Tanpa Koin/Segel) */}
+          <Ayat />
+
+          {/* Section 3: Profil Kedua Mempelai */}
           <Hero />
+
+          {/* Section Selanjutnya */}
           <SaveTheDate />
           <Gallery />
           <RSVP onSuccessSubmit={handleRSVPSuccess} />

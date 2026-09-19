@@ -75,6 +75,33 @@ body {
   border-bottom-right-radius: 1.5rem;
 }
 
+/* Floating Paper Stationery styling */
+.paper-card {
+  background-color: #FAF7F2;
+  background-image: 
+    radial-gradient(#e6ded2 0.65px, transparent 0.65px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(250, 247, 242, 0.98) 100%);
+  background-size: 16px 16px, 100% 100%;
+  box-shadow: 
+    0 20px 40px -15px rgba(45, 38, 28, 0.14),
+    0 0 0 1px rgba(224, 214, 198, 0.6),
+    0 8px 16px -6px rgba(0, 0, 0, 0.05);
+}
+
+.paper-inner-frame {
+  border: 1px solid rgba(139, 155, 98, 0.35);
+  position: relative;
+}
+
+.paper-inner-frame::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(139, 155, 98, 0.18);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
 /* Glassmorphism helpers */
 .glass {
   background: rgba(255, 255, 255, 0.75);
