@@ -32,19 +32,19 @@ export function Countdown({ weddingDate }: CountdownProps) {
             <div className="grid grid-cols-4 gap-2 sm:gap-3">
               <div className="flex flex-col items-center p-3 bg-[#EEF2DF]/80 rounded-2xl border border-[#CAD4AA]/60 shadow-xs">
                 <span className="font-serif text-2xl sm:text-3xl font-bold text-[#2D3319]">{days}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Hari</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Days</span>
               </div>
               <div className="flex flex-col items-center p-3 bg-[#EEF2DF]/80 rounded-2xl border border-[#CAD4AA]/60 shadow-xs">
                 <span className="font-serif text-2xl sm:text-3xl font-bold text-[#2D3319]">{hours}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Jam</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Hours</span>
               </div>
               <div className="flex flex-col items-center p-3 bg-[#EEF2DF]/80 rounded-2xl border border-[#CAD4AA]/60 shadow-xs">
                 <span className="font-serif text-2xl sm:text-3xl font-bold text-[#2D3319]">{minutes}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Menit</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Minutes</span>
               </div>
               <div className="flex flex-col items-center p-3 bg-[#EEF2DF]/80 rounded-2xl border border-[#CAD4AA]/60 shadow-xs">
                 <span className="font-serif text-2xl sm:text-3xl font-bold text-[#2D3319]">{seconds}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Detik</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Seconds</span>
               </div>
             </div>
           )}

@@ -141,7 +141,7 @@ export function SaveTheDate() {
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           className="w-full bg-[#EDEBD7] rounded-[28px] p-6 sm:p-7 shadow-[0_12px_28px_rgba(45,38,28,0.08)] border border-[#DDD9C2] mb-4 text-center"
         >
-          <p className="font-serif text-sm sm:text-base text-[#2D3319] font-medium mb-1">
+          <p className="font-serif text-xl sm:text-2xl font-bold text-[#1A1A1A] mb-1">
             Sabtu, 12 Desember 2026
           </p>
           <h4 className="font-sans text-xl sm:text-2xl font-bold text-[#1A1A1A] tracking-tight mb-2">

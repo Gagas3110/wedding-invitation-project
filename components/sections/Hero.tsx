@@ -32,7 +32,7 @@ export function Hero() {
 
               <p className="text-xs sm:text-[13px] text-[#4A542C] max-w-md mx-auto leading-relaxed font-sans">
                 Dengan memohon Rahmat dan Ridho Allah Subhanahu Wa Ta&apos;ala, kami bermaksud untuk
-                mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:
+                mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan
               </p>
             </div>
 

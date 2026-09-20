@@ -95,11 +95,8 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
           <PaperCard variant="default" className="text-center">
             {/* Title */}
             <div className="mb-6">
-              <span className="text-[10px] uppercase tracking-[0.35em] text-[#4A542C] font-semibold block mb-1">
-                Konfirmasi Kehadiran
-              </span>
               <h3 className="font-serif italic text-3xl sm:text-4xl text-[#1A1A1A] font-semibold">
-                Buku Tamu &amp; RSVP
+                Konfirmasi Kehadiran
               </h3>
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
             </div>
