@@ -38,6 +38,12 @@
   --font-arabic: var(--font-arabic);
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -194,3 +200,11 @@ body {
 .animate-spin-slow {
   animation: rotate-disk 12s linear infinite;
 }
+
+/* Clean split-screen transition shadow for desktop right column */
+@media (min-width: 1024px) {
+  .desktop-column-shadow {
+    box-shadow: -12px 0 35px -5px rgba(0, 0, 0, 0.22), -4px 0 10px -2px rgba(0, 0, 0, 0.12);
+  }
+}
+

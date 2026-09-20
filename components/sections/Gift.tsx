@@ -36,19 +36,15 @@ export function Gift() {
           <PaperCard variant="default" className="text-center">
             {/* Title */}
             <div className="mb-6">
-              <span className="text-[10px] uppercase tracking-[0.35em] text-[#4A542C] font-semibold block mb-1">
-                Kado Digital
-              </span>
               <h3 className="font-serif italic text-3xl sm:text-4xl text-[#1A1A1A] font-semibold">
-                Tanda Kasih
+               With Love & Gratitude
               </h3>
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
             </div>
 
             {/* Caption */}
             <p className="text-xs sm:text-[13px] text-[#4A542C] leading-relaxed max-w-sm mx-auto mb-6 font-sans">
-              Kehadiran dan doa restu Anda adalah kado terindah bagi kami. Namun apabila Anda ingin
-              mengirimkan tanda kasih, Anda dapat menyalurkannya melalui rekening berikut:
+              Your presence and prayers are the greatest gifts we could ask for. If you wish to send a gift, you may do so here.
             </p>
 
             {/* Gift Options */}

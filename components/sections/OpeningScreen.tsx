@@ -20,7 +20,7 @@ function OpeningContent() {
           initial={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: "-100%" }}
           transition={{ duration: 1.0, ease: [0.77, 0, 0.175, 1] }}
-          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 h-screen overflow-hidden flex flex-col justify-end items-center pb-28 sm:pb-32 px-6 bg-[#FAF7F2] shadow-2xl select-none"
+          className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:w-[520px] z-50 overflow-hidden flex flex-col justify-end items-center pb-28 sm:pb-32 px-6 bg-[#FAF7F2] lg:border-l lg:border-[#d9cfc1]/60 desktop-column-shadow select-none"
         >
           {/* Background Video Layer */}
           <video
@@ -63,7 +63,7 @@ function OpeningContent() {
 export function OpeningScreen() {
   return (
     <Suspense fallback={
-      <div className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:lg:w-[520px] z-50 flex flex-col items-center justify-center bg-[#181411] text-white">
+      <div className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:w-[520px] z-50 flex flex-col items-center justify-center bg-[#181411] text-white">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#3B4420]"></div>
       </div>
     }>
