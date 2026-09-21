@@ -29,6 +29,7 @@ function OpeningContent() {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
+            style={{ objectPosition: "32% center" }}
           >
             <source src="/gallery/opening.mp4" type="video/mp4" />
           </video>

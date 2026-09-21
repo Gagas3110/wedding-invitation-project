@@ -53,9 +53,6 @@ export function Wishes({ refreshTrigger }: WishesProps) {
           <PaperCard variant="default" className="text-center">
             {/* Title */}
             <div className="mb-8 relative">
-              <span className="text-[10px] uppercase tracking-[0.35em] text-[#4A542C] font-semibold block mb-1">
-                Doa Restu Tamu Undangan
-              </span>
               <h3 className="font-serif italic text-3xl sm:text-4xl text-[#1A1A1A] font-semibold">
                 Kiriman Ucapan
               </h3>
