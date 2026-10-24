@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { rsvpSchema, RSVPFormValues } from "@/lib/validation";
@@ -21,6 +21,20 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  const getGuestNameFromUrl = () => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const to = params.get("to");
+      if (to) {
+        const cleanName = to.replace(/\+/g, " ").trim();
+        if (cleanName && cleanName.toLowerCase() !== "nama tamu") {
+          return cleanName;
+        }
+      }
+    }
+    return "";
+  };
+
   const {
     register,
     handleSubmit,
@@ -37,6 +51,14 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
       wish: "",
     },
   });
+
+  // Auto-fill nama dari query parameter ?to=... saat pertama kali load
+  useEffect(() => {
+    const guestName = getGuestNameFromUrl();
+    if (guestName) {
+      setValue("name", guestName, { shouldValidate: true });
+    }
+  }, [setValue]);
 
   const selectedStatus = useWatch({ control, name: "status" });
 
@@ -70,7 +92,12 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
       const result = await submitRSVP(sanitizedData);
       if (result.success) {
         setIsSuccess(true);
-        reset();
+        reset({
+          name: getGuestNameFromUrl(),
+          status: "Hadir",
+          guests: 1,
+          wish: "",
+        });
         onSuccessSubmit(); // Trigger wishes reload
       } else {
         setErrorMsg(result.message || "Gagal mengirim konfirmasi.");
