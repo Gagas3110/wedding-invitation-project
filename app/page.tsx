@@ -14,6 +14,7 @@ import { Wishes } from "@/components/sections/Wishes";
 import { Gift } from "@/components/sections/Gift";
 import { Footer } from "@/components/layout/Footer";
 import { MusicToggleButton } from "@/components/ui/MusicToggleButton";
+import { BrowserProtection } from "@/components/ui/BrowserProtection";
 
 export default function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -25,6 +26,7 @@ export default function Home() {
 
   return (
     <AppProvider>
+      <BrowserProtection />
       {/* 1. Persistent Left Photo on Desktop */}
       <PersistentLeftBackdrop />
 

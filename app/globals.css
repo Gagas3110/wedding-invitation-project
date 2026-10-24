@@ -208,3 +208,11 @@ body {
   }
 }
 
+/* Proteksi aset gambar & video dari pop-up tap & hold browser mobile */
+img, video {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
