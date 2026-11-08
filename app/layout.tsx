@@ -48,6 +48,19 @@ const cinzel = Cinzel({
 export const metadata: Metadata = {
   title: "The Wedding Of Akila & Gagas",
   description: "Undangan pernikahan digital Akila dan Gagas.",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+      "max-video-preview": -1,
+      "max-image-preview": "none",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     title: "The Wedding Of Akila & Gagas",
     description: "Undangan pernikahan digital Akila dan Gagas.",
