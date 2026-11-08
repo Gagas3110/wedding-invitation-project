@@ -201,6 +201,35 @@ body {
   animation: rotate-disk 12s linear infinite;
 }
 
+/* Jam pasir (Hourglass) loading flip animation */
+@keyframes hourglass-flip {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  20% {
+    transform: rotate(0deg) scale(1);
+  }
+  35% {
+    transform: rotate(90deg) scale(0.88);
+  }
+  50% {
+    transform: rotate(180deg) scale(1);
+  }
+  70% {
+    transform: rotate(180deg) scale(1);
+  }
+  85% {
+    transform: rotate(270deg) scale(0.88);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.animate-hourglass {
+  animation: hourglass-flip 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 /* Clean split-screen transition shadow for desktop right column */
 @media (min-width: 1024px) {
   .desktop-column-shadow {

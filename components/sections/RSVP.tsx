@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { motion } from "framer-motion";
 import { Send, CheckCircle2 } from "lucide-react";
 import { PaperCard } from "@/components/ui/PaperCard";
+import { HourglassLoader } from "@/components/ui/HourglassLoader";
 
 interface RSVPProps {
   onSuccessSubmit: () => void;
@@ -225,7 +226,7 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
                   className="w-full py-3.5 mt-2 flex items-center justify-center gap-2 bg-[#3B4420] hover:bg-[#2D3319] text-white shadow-[0_4px_16px_rgba(59,68,32,0.25)] hover:brightness-105 transition-all font-semibold tracking-widest cursor-pointer rounded-full text-xs uppercase"
                 >
                   {isSubmitting ? (
-                    <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                    <HourglassLoader className="w-4 h-4 text-white" />
                   ) : (
                     <>
                       <Send className="w-3.5 h-3.5" />

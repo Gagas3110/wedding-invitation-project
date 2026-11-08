@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, Heart, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PaperCard } from "@/components/ui/PaperCard";
+import { HourglassLoader } from "@/components/ui/HourglassLoader";
 
 interface WishesProps {
   refreshTrigger: number;
@@ -71,9 +72,8 @@ export function Wishes({ refreshTrigger }: WishesProps) {
             {/* Wishes List */}
             <div className="space-y-3.5 min-h-[160px] text-left">
               {loading && wishes.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-10">
-                  <div className="w-7 h-7 rounded-full border-2 border-[#CAD4AA]/40 border-t-[#3B4420] animate-spin mb-3" />
-                  <p className="text-xs text-[#4A542C] font-sans">Memuat ucapan doa syahdu...</p>
+                <div className="flex flex-col items-center justify-center py-12">
+                  <HourglassLoader className="w-8 h-8 text-[#3B4420]" />
                 </div>
               ) : wishes.length === 0 ? (
                 <div className="text-center py-10 bg-[#FAF7F2] border border-dashed border-[#CAD4AA]/70 rounded-2xl">

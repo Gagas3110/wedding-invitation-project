@@ -7,6 +7,7 @@ import { MailOpen } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
+import { HourglassLoader } from "@/components/ui/HourglassLoader";
 
 function OpeningContent() {
   const { isOpened, openInvitation } = useApp();
@@ -128,7 +129,7 @@ export function OpeningScreen() {
   return (
     <Suspense fallback={
       <div className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[480px] xl:w-[520px] z-50 flex flex-col items-center justify-center bg-[#181411] text-white">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#3B4420]"></div>
+        <HourglassLoader className="w-8 h-8 text-[#CAD4AA]" />
       </div>
     }>
       <OpeningContent />
