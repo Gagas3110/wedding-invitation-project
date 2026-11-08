@@ -45,9 +45,21 @@ const cinzel = Cinzel({
   weight: ["400", "600", "700"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wedding-invitation-project.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "The Wedding Of Akila & Gagas",
   description: "Undangan pernikahan digital Akila dan Gagas.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", type: "image/png" },
+    ],
+  },
   robots: {
     index: false,
     follow: false,
@@ -65,6 +77,13 @@ export const metadata: Metadata = {
     title: "The Wedding Of Akila & Gagas",
     description: "Undangan pernikahan digital Akila dan Gagas.",
     type: "website",
+    locale: "id_ID",
+    siteName: "Akila & Gagas Wedding",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Wedding Of Akila & Gagas",
+    description: "Undangan pernikahan digital Akila dan Gagas.",
   },
 };
 
