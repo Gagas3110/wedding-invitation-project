@@ -49,7 +49,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wedding-invitation-
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "The Wedding Of Akila & Gagas",
+  title: "Hari Bahagia Akila & Gagas",
   description: "Undangan pernikahan digital Akila dan Gagas.",
   icons: {
     icon: [
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "The Wedding Of Akila & Gagas",
+    title: "Hari Bahagia Akila & Gagas",
     description: "Undangan pernikahan digital Akila dan Gagas.",
     type: "website",
     locale: "id_ID",
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Wedding Of Akila & Gagas",
+    title: "Hari Bahagia Akila & Gagas",
     description: "Undangan pernikahan digital Akila dan Gagas.",
   },
 };

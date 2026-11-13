@@ -55,7 +55,7 @@ export function Wishes({ refreshTrigger }: WishesProps) {
             {/* Title */}
             <div className="mb-8 relative">
               <h3 className="font-serif italic text-3xl sm:text-4xl text-[#1A1A1A] font-semibold">
-                Wall of Wishes
+                Kiriman Doa untuk Kami
               </h3>
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
 
@@ -79,7 +79,7 @@ export function Wishes({ refreshTrigger }: WishesProps) {
                 <div className="text-center py-10 bg-[#FAF7F2] border border-dashed border-[#CAD4AA]/70 rounded-2xl">
                   <MessageSquare className="w-7 h-7 text-[#4A542C]/50 mx-auto mb-2" />
                   <p className="text-xs text-[#4A542C] italic font-sans">
-                    Belum ada ucapan. Silakan isi form RSVP di atas.
+                    Belum ada ucapan. Silakan isi form di atas.
                   </p>
                 </div>
               ) : (

@@ -7,7 +7,7 @@ export function SaveTheDate() {
   const mapUrl = process.env.NEXT_PUBLIC_MAP_URL || "https://maps.google.com/?q=The+Samasta+Jatiwarna";
 
   const calendarUrl = getGoogleCalendarUrl({
-    title: "The Wedding of Akila & Gagas",
+    title: "Hari Bahagia Akila & Gagas",
     description: "Akad: 15.00 - 16.30 WIB | Resepsi: 19.00 - 21.00 WIB di The Samasta Jatiwarna. Terima kasih atas doa dan kehadiran Anda.",
     location: "The Samasta Jatiwarna",
     startTime: "20261212T080000Z", // 15:00 WIB (UTC+7)
@@ -26,7 +26,7 @@ export function SaveTheDate() {
           className="text-center mb-6"
         >
           <h3 className="font-serif italic text-3xl sm:text-4xl text-[#1A1A1A] font-medium tracking-wide">
-            Save The Date!
+            Hari Bahagia Kami!
           </h3>
         </motion.div>
 
@@ -41,7 +41,7 @@ export function SaveTheDate() {
           {/* Month & Year */}
           <div className="flex justify-between items-center mb-6 px-1">
             <span className="font-serif tracking-[0.2em] uppercase text-base sm:text-lg font-bold text-[#1A1A1A]">
-              DECEMBER
+              Desember
             </span>
             <span className="font-serif text-lg sm:text-xl font-bold text-[#1A1A1A]">
               2026
@@ -50,13 +50,13 @@ export function SaveTheDate() {
 
           {/* Days of Week */}
           <div className="grid grid-cols-7 text-center text-xs sm:text-sm font-serif italic font-medium text-[#4A542C] mb-5">
-            <span>Sun</span>
-            <span>Mon</span>
-            <span>Tue</span>
-            <span>Wed</span>
-            <span>Thu</span>
-            <span>Fri</span>
-            <span>Sat</span>
+            <span>Minggu</span>
+            <span>Senin</span>
+            <span>Selasa</span>
+            <span>Rabu</span>
+            <span>Kamis</span>
+            <span>Jumat</span>
+            <span>Sabtu</span>
           </div>
 
           {/* Calendar Days Grid */}
@@ -190,7 +190,7 @@ export function SaveTheDate() {
             onClick={() => window.open(calendarUrl, "_blank")}
             className="flex-1 py-3 px-4 rounded-full bg-[#EDEBD7] hover:bg-[#E2DFCA] border border-[#DDD9C2] text-xs sm:text-[13px] font-semibold text-[#2D3319] shadow-xs transition-all cursor-pointer text-center"
           >
-            Save to your calendar
+            Tambahkan ke Kalender
           </button>
         </motion.div>
       </div>

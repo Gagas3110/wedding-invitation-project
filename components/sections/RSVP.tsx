@@ -102,7 +102,7 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
             {/* Title */}
             <div className="mb-6">
               <h3 className="font-serif italic text-3xl sm:text-4xl text-[#1A1A1A] font-semibold">
-                Leave Us a Wish
+                Doa untuk Kami
               </h3>
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
             </div>
@@ -210,7 +210,7 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
                   ) : (
                     <>
                       <Send className="w-3.5 h-3.5" />
-                      KIRIM RSVP
+                      KIRIM
                     </>
                   )}
                 </Button>

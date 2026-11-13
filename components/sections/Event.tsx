@@ -9,7 +9,7 @@ export function Event() {
   const mapUrl = process.env.NEXT_PUBLIC_MAP_URL || "https://maps.google.com/?q=The+Samasta+Jatiwarna";
 
   const calendarUrl = getGoogleCalendarUrl({
-    title: "The Wedding of Akila & Gagas",
+    title: "Hari Bahagia Akila & Gagas",
     description: "Akad: 15.00 - 16.30 WIB | Resepsi: 19.00 - 21.00 WIB di The Samasta Jatiwarna. Terima kasih atas doa dan kehadiran Anda.",
     location: "The Samasta Jatiwarna",
     startTime: "20261212T080000Z", // 15:00 WIB (UTC+7)
@@ -90,7 +90,7 @@ export function Event() {
               className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-xs font-semibold shadow-[0_4px_12px_rgba(59,68,32,0.25)] hover:shadow-[0_4px_18px_rgba(59,68,32,0.35)] transition-all cursor-pointer"
             >
               <CalendarPlus className="w-4 h-4" />
-              Save to your calendar
+              Tambahkan ke Kalender
             </Button>
           </div>
         </motion.div>

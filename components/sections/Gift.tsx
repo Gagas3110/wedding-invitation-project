@@ -38,14 +38,14 @@ export function Gift() {
             {/* Title */}
             <div className="mb-6">
               <h3 className="font-serif italic text-3xl sm:text-4xl text-[#1A1A1A] font-semibold">
-               With Love & Gratitude
+              Dengan Kasih dan Rasa Syukur
               </h3>
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#8B9B62] to-transparent mx-auto mt-3" />
             </div>
 
             {/* Caption */}
             <p className="text-xs sm:text-[13px] text-[#4A542C] leading-relaxed max-w-sm mx-auto mb-6 font-sans">
-              Your presence and prayers are the greatest gifts we could ask for. If you wish to send a gift, you may do so here.
+              Bagi kami, kehadiran dan doa Bapak/Ibu/Saudara/i sudah menjadi hadiah yang begitu berarti. Jika berkenan memberikan tanda kasih, informasi rekening dapat dilihat dibawah ini.
             </p>
 
             {/* Toggle Button */}

@@ -25,32 +25,32 @@ export function Countdown({ weddingDate }: CountdownProps) {
           {isCompleted ? (
             <div className="py-4 text-center">
               <p className="font-serif text-lg sm:text-xl font-medium text-[#2D3319]">
-                The Wait is Over !!
+                Hari Pernikahan Kami
               </p>
             </div>
           ) : (
             <div className="grid grid-cols-4 gap-2 sm:gap-3">
               <div className="flex flex-col items-center p-3 bg-[#EEF2DF]/80 rounded-2xl border border-[#CAD4AA]/60 shadow-xs">
                 <span className="font-serif text-2xl sm:text-3xl font-bold text-[#2D3319]">{days}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Days</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Hari</span>
               </div>
               <div className="flex flex-col items-center p-3 bg-[#EEF2DF]/80 rounded-2xl border border-[#CAD4AA]/60 shadow-xs">
                 <span className="font-serif text-2xl sm:text-3xl font-bold text-[#2D3319]">{hours}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Hours</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Jam</span>
               </div>
               <div className="flex flex-col items-center p-3 bg-[#EEF2DF]/80 rounded-2xl border border-[#CAD4AA]/60 shadow-xs">
                 <span className="font-serif text-2xl sm:text-3xl font-bold text-[#2D3319]">{minutes}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Minutes</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Menit</span>
               </div>
               <div className="flex flex-col items-center p-3 bg-[#EEF2DF]/80 rounded-2xl border border-[#CAD4AA]/60 shadow-xs">
                 <span className="font-serif text-2xl sm:text-3xl font-bold text-[#2D3319]">{seconds}</span>
-                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Seconds</span>
+                <span className="text-[9px] uppercase tracking-widest text-[#4A542C] mt-1 font-sans font-medium">Detik</span>
               </div>
             </div>
           )}
 
           <h3 className="font-serif text-2xl sm:text-3xl text-[#1A1A1A] font-semibold mt-6 sm:mt-7 mb-2 sm:mb-3">
-            Until Our Special Day
+           Menuju Hari Bahagia Kami
           </h3>
         </PaperCard>
       </motion.div>
