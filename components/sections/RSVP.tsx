@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { rsvpSchema, RSVPFormValues } from "@/lib/validation";
@@ -22,20 +22,6 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const getGuestNameFromUrl = () => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const to = params.get("to");
-      if (to) {
-        const cleanName = to.replace(/\+/g, " ").trim();
-        if (cleanName && cleanName.toLowerCase() !== "nama tamu") {
-          return cleanName;
-        }
-      }
-    }
-    return "";
-  };
-
   const {
     register,
     handleSubmit,
@@ -52,14 +38,6 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
       wish: "",
     },
   });
-
-  // Auto-fill nama dari query parameter ?to=... saat pertama kali load
-  useEffect(() => {
-    const guestName = getGuestNameFromUrl();
-    if (guestName) {
-      setValue("name", guestName, { shouldValidate: true });
-    }
-  }, [setValue]);
 
   const selectedStatus = useWatch({ control, name: "status" });
 
@@ -94,7 +72,7 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
       if (result.success) {
         setIsSuccess(true);
         reset({
-          name: getGuestNameFromUrl(),
+          name: "",
           status: "Hadir",
           guests: 1,
           wish: "",
@@ -145,11 +123,12 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
                 </Button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 text-left">
+              <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="space-y-5 text-left">
                 {/* Name */}
                 <Input
                   label="Nama Lengkap"
                   placeholder="Masukkan nama lengkap Anda"
+                  autoComplete="off"
                   error={errors.name?.message}
                   {...register("name")}
                 />
@@ -208,6 +187,7 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
                   label="Ucapan Doa & Harapan"
                   placeholder="Berikan doa restu Anda kepada kedua mempelai..."
                   info="Maksimal 500 karakter"
+                  autoComplete="off"
                   error={errors.wish?.message}
                   {...register("wish")}
                 />
