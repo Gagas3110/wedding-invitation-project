@@ -91,7 +91,7 @@ export default function RootLayout({
       <head>
         <link rel="preload" as="image" href="/gallery/opening-poster-v4.jpg" />
         <link rel="preload" as="image" href="/minang/COVER-MINANG4.jpg" />
-        <link rel="preload" as="image" href="/gallery/DSC03172.jpg" />
+        <link rel="preload" as="image" href="/gallery/DSC03172.png" />
         <link rel="preload" as="image" href="/gallery/background_wedding.jpg" />
       </head>
       <body
