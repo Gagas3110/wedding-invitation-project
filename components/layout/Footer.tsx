@@ -27,7 +27,7 @@ export function Footer() {
         </div>
 
         <p className="text-xs text-white/90 font-medium uppercase tracking-[0.25em] leading-relaxed mb-6 font-sans">
-          Here's to love, laughter, and happily ever after.
+          Untuk cinta, tawa, dan bahagia selamanya.
         </p>
 
         <h4 className="font-serif text-3xl md:text-4xl font-normal text-white tracking-wide mt-2 py-1 drop-shadow-xs">
