@@ -89,7 +89,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth">
       <head>
-        <link rel="preload" as="image" href="/gallery/opening-poster-v3.jpg" />
+        <link rel="preload" as="image" href="/gallery/opening-poster-v4.jpg" />
         <link rel="preload" as="image" href="/minang/COVER-MINANG4.jpg" />
         <link rel="preload" as="image" href="/gallery/DSC03172.jpg" />
         <link rel="preload" as="image" href="/gallery/background_wedding.jpg" />
