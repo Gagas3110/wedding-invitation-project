@@ -45,7 +45,7 @@ export function Gift() {
 
             {/* Caption */}
             <p className="text-xs sm:text-[13px] text-[#4A542C] leading-relaxed max-w-sm mx-auto mb-6 font-sans">
-              Bagi kami, kehadiran dan doa Bapak/Ibu/Saudara/i sudah menjadi hadiah yang begitu berarti. Jika berkenan memberikan tanda kasih, informasi rekening dapat dilihat dibawah.
+              Bagi kami, kehadiran dan doa Bapak/Ibu/Saudara/i sudah menjadi hadiah yang begitu berarti. Jika berkenan memberikan tanda kasih, informasi rekening dapat dilihat di bawah.
             </p>
 
             {/* Toggle Button */}
