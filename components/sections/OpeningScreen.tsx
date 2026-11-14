@@ -69,7 +69,7 @@ function OpeningContent() {
         >
           {/* Base Layer: Static Asset (Muncul seketika 0ms tanpa blank/buffering pada koneksi apapun) */}
           <img
-            src="/gallery/opening-poster.jpg"
+            src="/gallery/opening-poster-v2.jpg"
             alt="Cover Undangan Akila & Gagas"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
             style={{ objectPosition: "32% center" }}
@@ -86,7 +86,7 @@ function OpeningContent() {
               muted
               playsInline
               preload="auto"
-              poster="/gallery/opening-poster.jpg"
+              poster="/gallery/opening-poster-v2.jpg"
               onPlaying={() => setIsVideoPlaying(true)}
               onError={() => setVideoFailed(true)}
               className={`absolute inset-0 w-full h-full object-cover pointer-events-none z-0 transition-opacity duration-700 ease-in-out ${
@@ -94,7 +94,7 @@ function OpeningContent() {
               }`}
               style={{ objectPosition: "32% center" }}
             >
-              <source src="/gallery/opening.mp4" type="video/mp4" />
+              <source src="/gallery/opening-v2.mp4" type="video/mp4" />
             </video>
           )}
 
