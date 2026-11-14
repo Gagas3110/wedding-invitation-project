@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Amiri, Cormorant_Garamond, Plus_Jakarta_Sans, Playfair_Display, Inter, Alex_Brush, Cinzel } from "next/font/google";
+import { Amiri, Cormorant_Garamond, Plus_Jakarta_Sans, Playfair_Display, Inter, Alex_Brush } from "next/font/google";
 import "./globals.css";
 
 const amiri = Amiri({
@@ -37,12 +37,6 @@ const alexBrush = Alex_Brush({
   subsets: ["latin"],
   variable: "--font-alex-brush",
   weight: ["400"],
-});
-
-const cinzel = Cinzel({
-  subsets: ["latin"],
-  variable: "--font-cinzel",
-  weight: ["400", "600", "700"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wedding-invitation-project.vercel.app";
@@ -101,7 +95,7 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/gallery/background_wedding.jpg" />
       </head>
       <body
-        className={`${jakarta.variable} ${cormorant.variable} ${inter.variable} ${playfair.variable} ${alexBrush.variable} ${cinzel.variable} ${amiri.variable} antialiased bg-background text-foreground font-sans`}
+        className={`${jakarta.variable} ${cormorant.variable} ${inter.variable} ${playfair.variable} ${alexBrush.variable} ${amiri.variable} antialiased bg-background text-foreground font-sans`}
       >
         {children}
       </body>

@@ -18,7 +18,7 @@ import { BrowserProtection } from "@/components/ui/BrowserProtection";
 
 export default function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  const weddingDate = process.env.NEXT_PUBLIC_WEDDING_DATE || "2026-12-12T09:00:00";
+  const weddingDate = process.env.NEXT_PUBLIC_WEDDING_DATE || "2026-12-12T15:00:00+07:00";
 
   const handleRSVPSuccess = () => {
     setRefreshTrigger((prev) => prev + 1);
