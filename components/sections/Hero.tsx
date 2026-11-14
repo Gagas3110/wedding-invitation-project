@@ -99,7 +99,7 @@ export function Hero() {
                 </h3>
                 <div className="h-px w-12 bg-[#8B9B62] my-2" />
                 <p className="text-xs sm:text-[13px] text-[#4A542C] font-sans leading-relaxed">
-                  Putra dari Bapak Nedy Winuza S.kar, M.Sn (Alm.) <br />&amp; Ibu Ir.Nelzi Fati MP
+                  Putra dari Bapak Nedy Winuza, S.Kar., M.Sn (Alm.) <br />&amp; Ibu Ir. Nelzi Fati, M.P.
                 </p>
               </motion.div>
             </div>
