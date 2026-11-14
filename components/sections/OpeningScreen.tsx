@@ -23,10 +23,12 @@ function OpeningContent() {
   useEffect(() => {
     // 1. Deteksi koneksi lambat atau mode hemat data (Network Information API)
     if (typeof navigator !== "undefined") {
-      const conn =
-        (navigator as any).connection ||
-        (navigator as any).mozConnection ||
-        (navigator as any).webkitConnection;
+      const nav = navigator as unknown as {
+        connection?: { saveData?: boolean; effectiveType?: string };
+        mozConnection?: { saveData?: boolean; effectiveType?: string };
+        webkitConnection?: { saveData?: boolean; effectiveType?: string };
+      };
+      const conn = nav.connection || nav.mozConnection || nav.webkitConnection;
 
       if (conn) {
         if (
@@ -35,7 +37,7 @@ function OpeningContent() {
           conn.effectiveType === "2g" ||
           conn.effectiveType === "3g"
         ) {
-          setIsSlowNetwork(true);
+          setTimeout(() => setIsSlowNetwork(true), 0);
           return;
         }
       }

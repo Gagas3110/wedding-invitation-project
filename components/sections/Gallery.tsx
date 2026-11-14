@@ -22,7 +22,8 @@ export function Gallery() {
 
   useEffect(() => {
     if (isInView) {
-      setHasTriggered(true);
+      const timer = setTimeout(() => setHasTriggered(true), 0);
+      return () => clearTimeout(timer);
     }
   }, [isInView]);
 
