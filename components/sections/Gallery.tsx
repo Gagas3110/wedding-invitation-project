@@ -195,7 +195,7 @@ export function Gallery() {
                       : "bg-[#FAF8F5] text-[#556030] hover:bg-[#F2ECE1] border border-[#CAD4AA]/70"
                   }`}
                 >
-                  Strip 1 • Outdoor
+                  Outdoor
                 </button>
                 <button
                   type="button"
@@ -211,7 +211,7 @@ export function Gallery() {
                       : "bg-[#FAF8F5] text-[#556030] hover:bg-[#F2ECE1] border border-[#CAD4AA]/70"
                   }`}
                 >
-                  Strip 2 • Studio
+                  Studio
                 </button>
               </div>
 
