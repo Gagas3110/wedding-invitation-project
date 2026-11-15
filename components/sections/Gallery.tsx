@@ -16,6 +16,7 @@ export function Gallery() {
   const [activePhoto, setActivePhoto] = useState<number | null>(null);
   const [animKey, setAnimKey] = useState(0);
   const [hasTriggered, setHasTriggered] = useState(false);
+  const [currentStrip, setCurrentStrip] = useState<"outdoor" | "studio">("outdoor");
 
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "0px 0px -50px 0px" });
@@ -43,8 +44,32 @@ export function Gallery() {
     return () => window.removeEventListener("scroll", checkVisibility);
   }, []);
 
-  // Engagement photos — 4 main strip photos matching user preference + remaining engagement photos
-  const stripPhotos: GalleryImage[] = [
+  // Strip 1: Outdoor prewedding photos (1.png - 4.png)
+  const outdoorPhotos: GalleryImage[] = [
+    {
+      src: "/gallery/1.png",
+      alt: "Akila & Gagas Tersenyum di Bawah Pohon",
+      caption: "",
+    },
+    {
+      src: "/gallery/2.png",
+      alt: "Akila & Gagas Bergandengan Tangan di Jalan Hutan",
+      caption: "",
+    },
+    {
+      src: "/gallery/3.png",
+      alt: "Akila & Gagas Bersama di Hutan Rindang",
+      caption: "",
+    },
+    {
+      src: "/gallery/4.png",
+      alt: "Akila & Gagas Duduk di Rumput Hijau",
+      caption: "",
+    },
+  ];
+
+  // Strip 2: Studio engagement photos
+  const studioPhotos: GalleryImage[] = [
     {
       src: "/gallery/DSC03256.jpg",
       alt: "Akila & Gagas di Pintu",
@@ -67,9 +92,12 @@ export function Gallery() {
     },
   ];
 
-  // All photos available in full-color lightbox
+  const stripPhotos = currentStrip === "outdoor" ? outdoorPhotos : studioPhotos;
+
+  // All photos available in full lightbox
   const allPhotos: GalleryImage[] = [
-    ...stripPhotos,
+    ...outdoorPhotos,
+    ...studioPhotos,
     {
       src: "/gallery/DSC03172.jpg",
       alt: "Akila & Gagas di Tangga",
@@ -151,6 +179,42 @@ export function Gallery() {
 
             {/* Photobooth Dispenser & Filmstrip Assembly */}
             <div ref={containerRef} className="relative w-full max-w-[340px] sm:max-w-[380px] mx-auto pt-2">
+              {/* Strip Selector Tabs */}
+              <div className="flex items-center justify-center gap-2 mb-3.5 relative z-30">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (currentStrip !== "outdoor") {
+                      setCurrentStrip("outdoor");
+                      setAnimKey((k) => k + 1);
+                    }
+                  }}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-300 cursor-pointer ${
+                    currentStrip === "outdoor"
+                      ? "bg-[#3B4420] text-white shadow-sm"
+                      : "bg-[#FAF8F5] text-[#556030] hover:bg-[#F2ECE1] border border-[#CAD4AA]/70"
+                  }`}
+                >
+                  Strip 1 • Outdoor
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (currentStrip !== "studio") {
+                      setCurrentStrip("studio");
+                      setAnimKey((k) => k + 1);
+                    }
+                  }}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-300 cursor-pointer ${
+                    currentStrip === "studio"
+                      ? "bg-[#3B4420] text-white shadow-sm"
+                      : "bg-[#FAF8F5] text-[#556030] hover:bg-[#F2ECE1] border border-[#CAD4AA]/70"
+                  }`}
+                >
+                  Strip 2 • Studio
+                </button>
+              </div>
+
               {/* 1. Golden Dispenser Slot Hardware (Back & Base Frame: Z-10) */}
               <div 
                 className="relative z-10 mx-auto w-full max-w-[320px] sm:max-w-[350px] drop-shadow-[0_12px_24px_rgba(0,0,0,0.25)] cursor-pointer active:scale-98 transition-transform"
@@ -198,9 +262,9 @@ export function Gallery() {
                   <div className="flex flex-col gap-3 pt-1">
                     {stripPhotos.map((photo, i) => (
                       <div
-                        key={i}
+                        key={photo.src}
                         className="relative group cursor-pointer overflow-hidden rounded-sm bg-white p-1 border border-[#E5DFD3] shadow-xs hover:shadow-md transition-all duration-300"
-                        onClick={() => openLightbox(i)}
+                        onClick={() => openLightbox(currentStrip === "outdoor" ? i : outdoorPhotos.length + i)}
                       >
                         {/* Black & White Photo */}
                         <div className="relative aspect-[3/2] w-full overflow-hidden rounded-xs bg-neutral-800">
@@ -215,7 +279,7 @@ export function Gallery() {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-2">
                             <span className="inline-flex items-center gap-1 text-[10px] text-white font-sans font-medium bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-full border border-white/20">
                               <Eye className="w-3 h-3 text-[#E8D18D]" />
-                              Lihat Warna
+                              {currentStrip === "outdoor" ? "Lihat Foto" : "Lihat Warna"}
                             </span>
                             <span className="text-[9px] text-white/80 font-mono tracking-widest">
                               0{i + 1}
@@ -274,7 +338,11 @@ export function Gallery() {
               {/* Badge: Full Color Preview */}
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs font-sans">
                 <Sparkles className="w-3.5 h-3.5 text-[#E8D18D]" />
-                <span>Versi Berwarna</span>
+                <span>
+                  {allPhotos[activePhoto].src.endsWith(".png")
+                    ? "Koleksi Outdoor"
+                    : "Versi Berwarna"}
+                </span>
                 <span className="text-white/60 mx-1">•</span>
                 <span className="font-mono text-[11px] text-[#E8D18D]">
                   {activePhoto + 1} / {allPhotos.length}
