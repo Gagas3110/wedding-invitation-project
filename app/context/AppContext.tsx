@@ -23,6 +23,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Keep refs synchronized with state
   useEffect(() => {
     isOpenedRef.current = isOpened;
+    if (!isOpened) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
   }, [isOpened]);
 
   useEffect(() => {
