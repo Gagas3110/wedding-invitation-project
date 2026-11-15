@@ -84,7 +84,6 @@ function OpeningContent() {
             <video
               ref={videoRef}
               autoPlay
-              loop
               muted
               playsInline
               preload="auto"
