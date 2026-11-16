@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# whatsapp blast automation
+scripts/wa-blast/node_modules/
+scripts/wa-blast/.wwebjs_auth/
+scripts/wa-blast/.wwebjs_cache/
+scripts/wa-blast/tamu.xlsx
+scripts/wa-blast/tamu.csv
+scripts/wa-blast/laporan-pengiriman.xlsx
+

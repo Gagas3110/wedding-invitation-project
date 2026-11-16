@@ -1,0 +1,15 @@
+{
+  "name": "wa-blast-wedding",
+  "version": "1.0.0",
+  "description": "WhatsApp Automated Invitation Sender for Akila & Gagas Wedding",
+  "main": "send.js",
+  "scripts": {
+    "start": "node send.js"
+  },
+  "dependencies": {
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.26.0",
+    "xlsx": "^0.18.5"
+  }
+}
+

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "wa:preview": "node scripts/wa-blast/send.js --preview",
+    "wa:send": "node scripts/wa-blast/send.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
