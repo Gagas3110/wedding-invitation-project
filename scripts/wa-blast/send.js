@@ -188,6 +188,7 @@ async function loadGuestData() {
   let colNameIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('nama') || h.includes('tamu'))));
   let colLinkIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('link') || h.includes('url') || h.includes('undangan'))));
   let colPhoneIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('telepon') || h.includes('telp') || h.includes('hp') || h.includes('wa') || h.includes('whatsapp') || h.includes('phone'))));
+  let colButtonIdx = headerRow.findIndex((h) => Boolean(h && h.includes('kirim') && h.includes('wa')));
   
   // Prioritaskan kolom yang mengandung kata 'status', hindari 'kirim wa'
   let colStatusIdx = headerRow.findIndex((h) => Boolean(h && h.includes('status')));
@@ -212,12 +213,14 @@ async function loadGuestData() {
   if (colNameIdx === -1) colNameIdx = 1;
   if (colLinkIdx === -1) colLinkIdx = 2;
   if (colPhoneIdx === -1) colPhoneIdx = 3;
+  if (colButtonIdx === -1) colButtonIdx = 4;
   if (colStatusIdx === -1) colStatusIdx = 5;
 
   console.log(`📌 Posisi Kolom Terdeteksi:`);
   console.log(`   - Nama   : Kolom ${colNameIdx + 1} (${rawHeaders[colNameIdx] || 'Tanpa Header'})`);
   console.log(`   - Link   : Kolom ${colLinkIdx + 1} (${rawHeaders[colLinkIdx] || 'Tanpa Header'})`);
   console.log(`   - No WA  : Kolom ${colPhoneIdx + 1} (${rawHeaders[colPhoneIdx] || 'Tanpa Header'})`);
+  console.log(`   - Tombol : Kolom ${colButtonIdx + 1} (${rawHeaders[colButtonIdx] || 'Tanpa Header'})`);
   console.log(`   - Status : Kolom ${colStatusIdx + 1} (${rawHeaders[colStatusIdx] || 'Tanpa Header'})`);
 
   const guests = [];
@@ -232,6 +235,25 @@ async function loadGuestData() {
 
     if (!rawName) continue;
 
+    // Ambil pesan siap kirim langsung dari hyperlink tombol di spreadsheet jika tersedia
+    let customMessage = null;
+    if (colButtonIdx !== -1) {
+      const cellAddress = xlsx.utils.encode_cell({ r: i, c: colButtonIdx });
+      const cell = sheet[cellAddress];
+      if (cell && cell.l && cell.l.Target) {
+        try {
+          const rawTarget = cell.l.Target.replace(/&amp;/g, '&');
+          const parsed = new URL(rawTarget);
+          const extracted = parsed.searchParams.get('text');
+          if (extracted && extracted.trim()) {
+            customMessage = extracted.trim();
+          }
+        } catch (e) {
+          // gunakan template jika URL tidak bisa di-parse
+        }
+      }
+    }
+
     const normalizedPhone = normalizePhoneNumber(rawPhone);
 
     guests.push({
@@ -241,6 +263,7 @@ async function loadGuestData() {
       rawPhone: rawPhone,
       phone: normalizedPhone,
       status: rawStatus,
+      customMessage: customMessage,
       originalRow: row
     });
   }
@@ -321,7 +344,7 @@ async function main() {
     console.log('\n👀 MODE PREVIEW (--preview):');
     console.log('Contoh pesan yang akan dikirim ke antrean pertama:');
     console.log('----------------------------------------------------');
-    const sampleMsg = template
+    const sampleMsg = queue[0].customMessage || template
       .replace(/{nama}/g, queue[0].nama)
       .replace(/{link}/g, queue[0].link);
     console.log(sampleMsg);
@@ -375,7 +398,7 @@ async function main() {
       const guest = queue[i];
       const progress = `[${i + 1}/${queue.length}]`;
 
-      const message = template
+      const message = guest.customMessage || template
         .replace(/{nama}/g, guest.nama)
         .replace(/{link}/g, guest.link);
 
