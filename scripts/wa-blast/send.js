@@ -6,16 +6,28 @@ const qrcode = require('qrcode-terminal');
 const xlsx = require('xlsx');
 
 // -----------------------------------------------------------------------------
-// KONFIGURASI
+// KONFIGURASI & PATH
 // -----------------------------------------------------------------------------
+const CONFIG_FILE = path.join(__dirname, 'config.json');
 const DATA_FILE_XLSX = path.join(__dirname, 'tamu.xlsx');
 const DATA_FILE_CSV = path.join(__dirname, 'tamu.csv');
 const TEMPLATE_FILE = path.join(__dirname, 'template.txt');
 const REPORT_FILE = path.join(__dirname, 'laporan-pengiriman.xlsx');
 
-// Jeda antar pesan (milidetik) untuk mencegah nomor diblokir WhatsApp (4 - 7 detik)
-const MIN_DELAY_MS = 4000;
-const MAX_DELAY_MS = 7500;
+let config = {
+  sheetUrl: '',
+  minDelayMs: 4000,
+  maxDelayMs: 7500
+};
+
+if (fs.existsSync(CONFIG_FILE)) {
+  try {
+    const rawConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
+    config = { ...config, ...rawConfig };
+  } catch (e) {
+    console.warn('⚠️ Gagal membaca config.json, menggunakan konfigurasi default.');
+  }
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -30,7 +42,7 @@ function getRandomDelay(min, max) {
 // -----------------------------------------------------------------------------
 function normalizePhoneNumber(rawNumber) {
   if (!rawNumber) return null;
-  // Hapus semua karakter non-angka (spasi, tanda plus, tanda minus, titik)
+  // Hapus semua karakter non-angka
   let clean = String(rawNumber).trim().replace(/\D/g, '');
 
   if (!clean) return null;
@@ -39,16 +51,12 @@ function normalizePhoneNumber(rawNumber) {
   if (clean.startsWith('0')) {
     clean = '62' + clean.slice(1);
   }
-  // Jika diawali 8... (tanpa 0 dan tanpa 62, seperti di spreadsheet user), tambahkan 62
+  // Jika diawali 8... (tanpa 0 dan tanpa 62), tambahkan 62
   else if (clean.startsWith('8')) {
     clean = '62' + clean;
   }
-  // Jika diawali 62... sudah benar
-  else if (clean.startsWith('62')) {
-    // sudah pas
-  }
 
-  // Validasi panjang nomor telepon wajar (minimal 10 digit, maks 16 digit)
+  // Validasi panjang nomor telepon wajar
   if (clean.length < 10 || clean.length > 16) {
     return null;
   }
@@ -57,68 +65,130 @@ function normalizePhoneNumber(rawNumber) {
 }
 
 // -----------------------------------------------------------------------------
-// 2. BACA TEMPLATE PESAN
+// 2. PARSE ARGUMEN CLI (--rows, -r, --preview)
 // -----------------------------------------------------------------------------
-function getTemplate() {
-  if (fs.existsSync(TEMPLATE_FILE)) {
-    return fs.readFileSync(TEMPLATE_FILE, 'utf-8');
+function parseRowArguments() {
+  const args = process.argv.slice(2);
+  let rowsParam = null;
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--rows' || args[i] === '-r') {
+      rowsParam = args[i + 1];
+    } else if (args[i].startsWith('--rows=')) {
+      rowsParam = args[i].split('=')[1];
+    }
   }
-  return `Kepada Yth.
-Bapak/Ibu/Saudara/i *{nama}*
-___________________________
 
-Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri momen bahagia kami:
+  if (!rowsParam) return null;
 
-🕊️ *The Wedding of Akila & Gagas* 🕊️
+  const targetRows = new Set();
+  const parts = rowsParam.split(',');
 
-Berikut tautan undangan kami untuk informasi lengkap acara & RSVP:
-🔗 {link}
+  for (const part of parts) {
+    const trimmed = part.trim();
+    if (trimmed.includes('-')) {
+      const [start, end] = trimmed.split('-').map((n) => parseInt(n.trim(), 10));
+      if (!isNaN(start) && !isNaN(end)) {
+        const min = Math.min(start, end);
+        const max = Math.max(start, end);
+        for (let r = min; r <= max; r++) {
+          targetRows.add(r);
+        }
+      }
+    } else {
+      const num = parseInt(trimmed, 10);
+      if (!isNaN(num)) {
+        targetRows.add(num);
+      }
+    }
+  }
 
-Merupakan kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
-
-Terima kasih.
-— Akila & Gagas —`;
+  return targetRows;
 }
 
 // -----------------------------------------------------------------------------
-// 3. BACA DATA SPREADSHEET (XLSX / CSV)
+// 3. AMBIL DATA DARI GOOGLE SHEETS LIVE ATAU FILE LOKAL
 // -----------------------------------------------------------------------------
-function loadGuestData() {
-  let targetPath = null;
-  if (fs.existsSync(DATA_FILE_XLSX)) {
-    targetPath = DATA_FILE_XLSX;
-  } else if (fs.existsSync(DATA_FILE_CSV)) {
-    targetPath = DATA_FILE_CSV;
+async function fetchSheetCsv(url) {
+  try {
+    // Ubah URL edit Google Sheets menjadi link ekspor CSV
+    // Contoh input: https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit#gid=0
+    let csvUrl = url;
+    const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+    if (match) {
+      const sheetId = match[1];
+      const gidMatch = url.match(/[#&]gid=([0-9]+)/);
+      const gid = gidMatch ? gidMatch[1] : '0';
+      csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+    }
+
+    console.log(`🌐 Mengambil data langsung dari Google Sheets...`);
+    const res = await fetch(csvUrl, { redirect: 'follow' });
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+    const text = await res.text();
+    return text;
+  } catch (err) {
+    console.warn(`⚠️ Gagal mengambil data langsung dari Google Sheets: ${err.message}`);
+    console.warn(`👉 Menggunakan file lokal sebagai cadangan.`);
+    return null;
+  }
+}
+
+async function loadGuestData() {
+  let workbook = null;
+  let dataSource = '';
+
+  // 1. Coba ambil langsung dari Google Sheets jika URL diisi
+  if (config.sheetUrl && config.sheetUrl.trim()) {
+    const csvContent = await fetchSheetCsv(config.sheetUrl.trim());
+    if (csvContent) {
+      workbook = xlsx.read(csvContent, { type: 'string' });
+      dataSource = 'Google Sheets (Live)';
+    }
   }
 
-  if (!targetPath) {
-    console.error('\n❌ ERROR: File data tamu tidak ditemukan!');
-    console.error('Silakan download spreadsheet Anda sebagai Excel (tamu.xlsx) atau CSV (tamu.csv)');
-    console.error(`dan letakkan di folder: ${__dirname}\n`);
+  // 2. Jika tidak ada / gagal, baca file lokal
+  if (!workbook) {
+    if (fs.existsSync(DATA_FILE_XLSX)) {
+      workbook = xlsx.readFile(DATA_FILE_XLSX);
+      dataSource = path.basename(DATA_FILE_XLSX);
+    } else if (fs.existsSync(DATA_FILE_CSV)) {
+      workbook = xlsx.readFile(DATA_FILE_CSV);
+      dataSource = path.basename(DATA_FILE_CSV);
+    }
+  }
+
+  if (!workbook) {
+    console.error('\n❌ ERROR: Data tamu tidak ditemukan!');
+    console.error('Anda bisa:');
+    console.error('1. Masukkan URL Google Sheets Anda di file "config.json"');
+    console.error('   ATAU');
+    console.error('2. Download sheet Anda sebagai "tamu.xlsx" atau "tamu.csv" di folder ini.\n');
     process.exit(1);
   }
 
-  console.log(`\n📂 Membaca file: ${path.basename(targetPath)}`);
-  const workbook = xlsx.readFile(targetPath);
+  console.log(`\n📂 Sumber Data: ${dataSource}`);
   const sheetName = workbook.SheetNames[0];
   const sheet = workbook.Sheets[sheetName];
-  const rows = xlsx.utils.sheet_to_json(sheet, { header: 1 }); // array of arrays
+  const rows = xlsx.utils.sheet_to_json(sheet, { header: 1 });
 
   if (rows.length < 2) {
-    console.error('❌ Data kosong atau hanya ada header.');
+    console.error('❌ Data kosong atau hanya ada baris header.');
     process.exit(1);
   }
 
-  // Deteksi indeks kolom berdasarkan nama header atau posisi umum
   const rawHeaders = Array.from(rows[0] || []);
   const headerRow = rawHeaders.map((h) => (h != null ? String(h).trim().toLowerCase() : ''));
-  
+
+  // Deteksi indeks kolom
   let colNameIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('nama') || h.includes('tamu'))));
   let colLinkIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('link') || h.includes('url') || h.includes('undangan'))));
-  let colPhoneIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('telepon') || h.includes('telp') || h.includes('hp') || h.includes('wa') || h.includes('phone'))));
+  let colPhoneIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('telepon') || h.includes('telp') || h.includes('hp') || h.includes('wa') || h.includes('whatsapp') || h.includes('phone'))));
   let colStatusIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('status') || h.includes('kirim'))));
 
-  // Fallback berdasarkan struktur default template spreadsheet (Col B = 1, Col C = 2, Col E = 4, Col G = 6)
+  // Fallback berdasarkan posisi umum pada template (Nama: B/1, Link: C/2, Phone: E/4, Status: G/6)
   if (colNameIdx === -1) colNameIdx = 1;
   if (colLinkIdx === -1) colLinkIdx = 2;
   if (colPhoneIdx === -1) colPhoneIdx = 4;
@@ -136,12 +206,12 @@ function loadGuestData() {
     const rawPhone = row[colPhoneIdx] !== undefined ? String(row[colPhoneIdx]).trim() : '';
     const rawStatus = row[colStatusIdx] ? String(row[colStatusIdx]).trim() : '';
 
-    if (!rawName) continue; // baris kosong
+    if (!rawName) continue;
 
     const normalizedPhone = normalizePhoneNumber(rawPhone);
 
     guests.push({
-      rowIndex: i + 1,
+      rowIndex: i + 1, // Nomor baris nyata di Google Sheets (dimulai dari 2 karena baris 1 header)
       nama: rawName,
       link: rawLink || `https://www.akilagagaswedding.my.id/?to=${encodeURIComponent(rawName)}`,
       rawPhone: rawPhone,
@@ -151,46 +221,81 @@ function loadGuestData() {
     });
   }
 
-  return { guests, targetPath, colStatusIdx };
+  return { guests };
 }
 
 // -----------------------------------------------------------------------------
-// 4. MAIN RUNNER
+// 4. TEMPLATE PESAN
+// -----------------------------------------------------------------------------
+function getTemplate() {
+  if (fs.existsSync(TEMPLATE_FILE)) {
+    return fs.readFileSync(TEMPLATE_FILE, 'utf-8');
+  }
+  return `Kepada Yth.
+Bapak/Ibu/Saudara/i *{nama}*
+___________________________
+
+🕊️ *The Wedding of Akila & Gagas* 🕊️
+
+Berikut link undangan resmi kami:
+🔗 {link}
+
+Terima kasih.
+— Akila & Gagas —`;
+}
+
+// -----------------------------------------------------------------------------
+// 5. MAIN EXECUTION
 // -----------------------------------------------------------------------------
 async function main() {
   const isDryRun = process.argv.includes('--preview') || process.argv.includes('--dry-run');
+  const targetRowNumbers = parseRowArguments();
   const template = getTemplate();
-  const { guests } = loadGuestData();
 
-  // Filter hanya tamu yang punya nomor telepon valid & belum dikirim
-  const queue = guests.filter((g) => {
-    const isSent = /sudah|terkirim|sukses/i.test(g.status);
-    return g.phone && !isSent;
-  });
+  const { guests } = await loadGuestData();
 
-  const skippedAlreadySent = guests.filter((g) => /sudah|terkirim|sukses/i.test(g.status)).length;
-  const skippedNoPhone = guests.filter((g) => !g.phone).length;
+  let queue = [];
+
+  if (targetRowNumbers && targetRowNumbers.size > 0) {
+    console.log(`🎯 Filter Baris Terpilih: [${Array.from(targetRowNumbers).join(', ')}]`);
+
+    for (const r of targetRowNumbers) {
+      const guest = guests.find((g) => g.rowIndex === r);
+      if (!guest) {
+        console.log(`   ⚠️ Baris ${r}: Tidak ada tamu di baris ini.`);
+        continue;
+      }
+      if (!guest.phone) {
+        console.log(`   ⚠️ Baris ${r} (${guest.nama}): Tidak ada nomor WhatsApp yang valid.`);
+        continue;
+      }
+      queue.push(guest);
+    }
+  } else {
+    // Mode default: kirim semua yang ada nomor telepon dan belum terkirim
+    queue = guests.filter((g) => {
+      const isSent = /sudah|terkirim|sukses/i.test(g.status);
+      return g.phone && !isSent;
+    });
+  }
 
   console.log('\n📊 RINGKASAN DATA:');
   console.log(`   - Total Tamu di sheet : ${guests.length}`);
-  console.log(`   - Tanpa Nomor Telepon : ${skippedNoPhone}`);
-  console.log(`   - Sudah Pernah Kirim  : ${skippedAlreadySent}`);
   console.log(`   - Siap Dikirim        : ${queue.length} tamu\n`);
 
   if (queue.length === 0) {
-    console.log('🎉 Semua tamu yang memiliki nomor telepon sudah terkirim atau tidak ada nomor baru.');
+    console.log('🎉 Tidak ada kontak yang perlu dikirim.');
     process.exit(0);
   }
 
-  // Tampilkan daftar antrean
   console.log('📋 DAFTAR ANTREAN PENGIRIMAN:');
   queue.forEach((g, idx) => {
-    console.log(`   ${idx + 1}. ${g.nama} -> ${g.phone} (${g.link})`);
+    console.log(`   ${idx + 1}. [Baris ${g.rowIndex}] ${g.nama} -> ${g.phone}`);
   });
 
   if (isDryRun) {
-    console.log('\n👀 MODE PREVIEW (--preview / --dry-run):');
-    console.log('Contoh pesan yang akan dikirim ke tamu pertama:');
+    console.log('\n👀 MODE PREVIEW (--preview):');
+    console.log('Contoh pesan yang akan dikirim ke antrean pertama:');
     console.log('----------------------------------------------------');
     const sampleMsg = template
       .replace(/{nama}/g, queue[0].nama)
@@ -252,13 +357,14 @@ async function main() {
         .replace(/{link}/g, guest.link);
 
       try {
-        process.stdout.write(`${progress} Mengirim ke ${guest.nama} (${guest.phone})... `);
+        process.stdout.write(`${progress} Mengirim ke [Baris ${guest.rowIndex}] ${guest.nama} (${guest.phone})... `);
 
-        // Verifikasi apakah nomor terdaftar di WhatsApp
+        // Verifikasi nomor di WhatsApp
         const isRegistered = await client.isRegisteredUser(chatId);
         if (!isRegistered) {
           console.log('⚠️ Nomor tidak terdaftar di WA');
           reportData.push({
+            Baris: guest.rowIndex,
             Nama: guest.nama,
             Nomor: guest.phone,
             Link: guest.link,
@@ -273,6 +379,7 @@ async function main() {
         console.log('✅ TERKIRIM!');
 
         reportData.push({
+          Baris: guest.rowIndex,
           Nama: guest.nama,
           Nomor: guest.phone,
           Link: guest.link,
@@ -282,7 +389,7 @@ async function main() {
 
         // Jeda anti-spam jika masih ada antrean berikutnya
         if (i < queue.length - 1) {
-          const delay = getRandomDelay(MIN_DELAY_MS, MAX_DELAY_MS);
+          const delay = getRandomDelay(config.minDelayMs, config.maxDelayMs);
           const seconds = (delay / 1000).toFixed(1);
           console.log(`   ⏳ Jeda ${seconds} detik demi keamanan akun WhatsApp...\n`);
           await sleep(delay);
@@ -290,6 +397,7 @@ async function main() {
       } catch (err) {
         console.log(`❌ GAGAL: ${err.message}`);
         reportData.push({
+          Baris: guest.rowIndex,
           Nama: guest.nama,
           Nomor: guest.phone,
           Link: guest.link,
@@ -299,7 +407,7 @@ async function main() {
       }
     }
 
-    // Buat laporan Excel hasil pengiriman
+    // Simpan laporan Excel
     try {
       const reportWb = xlsx.utils.book_new();
       const reportWs = xlsx.utils.json_to_sheet(reportData);
@@ -323,4 +431,3 @@ main().catch((err) => {
   console.error('\n❌ Terjadi kesalahan fatal:', err);
   process.exit(1);
 });
-
