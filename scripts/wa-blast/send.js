@@ -374,7 +374,6 @@ async function main() {
     for (let i = 0; i < queue.length; i++) {
       const guest = queue[i];
       const progress = `[${i + 1}/${queue.length}]`;
-      const chatId = `${guest.phone}@c.us`;
 
       const message = template
         .replace(/{nama}/g, guest.nama)
@@ -383,9 +382,9 @@ async function main() {
       try {
         process.stdout.write(`${progress} Mengirim ke [Baris ${guest.rowIndex}] ${guest.nama} (${guest.phone})... `);
 
-        // Verifikasi nomor di WhatsApp
-        const isRegistered = await client.isRegisteredUser(chatId);
-        if (!isRegistered) {
+        // Verifikasi dan dapatkan WhatsApp ID (JID/LID) yang valid dari WhatsApp server
+        const numberDetails = await client.getNumberId(guest.phone);
+        if (!numberDetails) {
           console.log('⚠️ Nomor tidak terdaftar di WA');
           reportData.push({
             Baris: guest.rowIndex,
@@ -398,8 +397,13 @@ async function main() {
           continue;
         }
 
-        // Kirim pesan
-        await client.sendMessage(chatId, message);
+        const chatId = typeof numberDetails === 'string' ? numberDetails : numberDetails._serialized;
+
+        // Kirim pesan dan tunggu konfirmasi pengiriman dari server WhatsApp (waitUntilMsgSent: true)
+        await client.sendMessage(chatId, message, {
+          waitUntilMsgSent: true,
+          linkPreview: false
+        });
         console.log('✅ TERKIRIM!');
 
         reportData.push({
@@ -443,6 +447,8 @@ async function main() {
     }
 
     console.log('\n🎉 SEMUA PENGIRIMAN SELESAI!');
+    console.log('⏳ Menunggu 5 detik untuk memastikan semua pesan tersinkronisasi sempurna ke server WhatsApp...');
+    await sleep(5000);
     console.log('Menutup sesi WhatsApp...');
     await client.destroy();
     process.exit(0);
