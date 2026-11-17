@@ -109,26 +109,22 @@ function parseRowArguments() {
 // -----------------------------------------------------------------------------
 // 3. AMBIL DATA DARI GOOGLE SHEETS LIVE ATAU FILE LOKAL
 // -----------------------------------------------------------------------------
-async function fetchSheetCsv(url) {
+async function fetchSheetWorkbook(url) {
   try {
-    // Ubah URL edit Google Sheets menjadi link ekspor CSV
-    // Contoh input: https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit#gid=0
-    let csvUrl = url;
+    let xlsxUrl = url;
     const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
     if (match) {
       const sheetId = match[1];
-      const gidMatch = url.match(/[#&]gid=([0-9]+)/);
-      const gid = gidMatch ? gidMatch[1] : '0';
-      csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+      xlsxUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=xlsx`;
     }
 
-    console.log(`🌐 Mengambil data langsung dari Google Sheets...`);
-    const res = await fetch(csvUrl, { redirect: 'follow' });
+    console.log(`🌐 Mengambil data terbaru langsung dari Google Sheets...`);
+    const res = await fetch(xlsxUrl, { redirect: 'follow' });
     if (!res.ok) {
       throw new Error(`HTTP ${res.status}: ${res.statusText}`);
     }
-    const text = await res.text();
-    return text;
+    const buf = Buffer.from(await res.arrayBuffer());
+    return xlsx.read(buf, { type: 'buffer' });
   } catch (err) {
     console.warn(`⚠️ Gagal mengambil data langsung dari Google Sheets: ${err.message}`);
     console.warn(`👉 Menggunakan file lokal sebagai cadangan.`);
@@ -142,9 +138,8 @@ async function loadGuestData() {
 
   // 1. Coba ambil langsung dari Google Sheets jika URL diisi
   if (config.sheetUrl && config.sheetUrl.trim()) {
-    const csvContent = await fetchSheetCsv(config.sheetUrl.trim());
-    if (csvContent) {
-      workbook = xlsx.read(csvContent, { type: 'string' });
+    workbook = await fetchSheetWorkbook(config.sheetUrl.trim());
+    if (workbook) {
       dataSource = 'Google Sheets (Live)';
     }
   }
@@ -170,8 +165,15 @@ async function loadGuestData() {
   }
 
   console.log(`\n📂 Sumber Data: ${dataSource}`);
-  const sheetName = workbook.SheetNames[0];
-  const sheet = workbook.Sheets[sheetName];
+
+  // Pilih sheet yang tepat (prioritaskan config.sheetName atau cari sheet bertema 'tamu' / 'undangan')
+  let targetSheetName = config.sheetName;
+  if (!targetSheetName || !workbook.Sheets[targetSheetName]) {
+    targetSheetName = workbook.SheetNames.find((s) => /tamu|guest|undangan/i.test(s)) || workbook.SheetNames[0];
+  }
+
+  console.log(`📑 Membaca Sheet Tab: "${targetSheetName}" (Tersedia: ${workbook.SheetNames.join(', ')})`);
+  const sheet = workbook.Sheets[targetSheetName];
   const rows = xlsx.utils.sheet_to_json(sheet, { header: 1 });
 
   if (rows.length < 2) {
@@ -182,19 +184,41 @@ async function loadGuestData() {
   const rawHeaders = Array.from(rows[0] || []);
   const headerRow = rawHeaders.map((h) => (h != null ? String(h).trim().toLowerCase() : ''));
 
-  // Deteksi indeks kolom
+  // Deteksi indeks kolom berdasarkan header
   let colNameIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('nama') || h.includes('tamu'))));
   let colLinkIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('link') || h.includes('url') || h.includes('undangan'))));
   let colPhoneIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('telepon') || h.includes('telp') || h.includes('hp') || h.includes('wa') || h.includes('whatsapp') || h.includes('phone'))));
-  let colStatusIdx = headerRow.findIndex((h) => Boolean(h && (h.includes('status') || h.includes('kirim'))));
+  
+  // Prioritaskan kolom yang mengandung kata 'status', hindari 'kirim wa'
+  let colStatusIdx = headerRow.findIndex((h) => Boolean(h && h.includes('status')));
+  if (colStatusIdx === -1) {
+    colStatusIdx = headerRow.findIndex((h) => Boolean(h && h.includes('kirim') && !h.includes('wa')));
+  }
 
-  // Fallback berdasarkan posisi umum pada template (Nama: B/1, Link: C/2, Phone: E/4, Status: G/6)
+  // Jika kolom Link belum ketemu di header, cari kolom di baris data yang isinya URL (http:// atau https://)
+  if (colLinkIdx === -1) {
+    for (let r = 1; r < Math.min(rows.length, 10); r++) {
+      if (rows[r]) {
+        const found = rows[r].findIndex((cell) => typeof cell === 'string' && cell.startsWith('http'));
+        if (found !== -1) {
+          colLinkIdx = found;
+          break;
+        }
+      }
+    }
+  }
+
+  // Fallback default jika masih belum terdeteksi
   if (colNameIdx === -1) colNameIdx = 1;
   if (colLinkIdx === -1) colLinkIdx = 2;
-  if (colPhoneIdx === -1) colPhoneIdx = 4;
-  if (colStatusIdx === -1) colStatusIdx = 6;
+  if (colPhoneIdx === -1) colPhoneIdx = 3;
+  if (colStatusIdx === -1) colStatusIdx = 5;
 
-  console.log(`📌 Posisi Kolom: Nama [Kolom ${colNameIdx + 1}], Link [Kolom ${colLinkIdx + 1}], HP [Kolom ${colPhoneIdx + 1}], Status [Kolom ${colStatusIdx + 1}]`);
+  console.log(`📌 Posisi Kolom Terdeteksi:`);
+  console.log(`   - Nama   : Kolom ${colNameIdx + 1} (${rawHeaders[colNameIdx] || 'Tanpa Header'})`);
+  console.log(`   - Link   : Kolom ${colLinkIdx + 1} (${rawHeaders[colLinkIdx] || 'Tanpa Header'})`);
+  console.log(`   - No WA  : Kolom ${colPhoneIdx + 1} (${rawHeaders[colPhoneIdx] || 'Tanpa Header'})`);
+  console.log(`   - Status : Kolom ${colStatusIdx + 1} (${rawHeaders[colStatusIdx] || 'Tanpa Header'})`);
 
   const guests = [];
   for (let i = 1; i < rows.length; i++) {
