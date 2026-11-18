@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kirim Undangan WhatsApp — Akila & Gagas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #FAF7F2;
+    }
+    .font-serif {
+      font-family: 'Playfair Display', serif;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1ECE4;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #C4BAAB;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9E9381;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-[#2D3319] flex flex-col antialiased selection:bg-[#8B9B62] selection:text-white pb-28">
+
+  <!-- HEADER -->
+  <header class="bg-[#FAF7F2]/90 backdrop-blur-md sticky top-0 z-30 border-b border-[#E3DCCE] px-4 py-3 sm:py-4 transition-all">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-[#3B4420] text-white flex items-center justify-center font-serif text-lg font-bold shadow-sm">
+          A&G
+        </div>
+        <div>
+          <h1 class="font-serif italic text-xl sm:text-2xl font-bold text-[#1A1A1A] leading-tight">
+            Kirim Undangan WhatsApp
+          </h1>
+          <p class="text-xs text-[#5D6B38] font-medium">The Wedding of Akila & Gagas</p>
+        </div>
+      </div>
+
+      <!-- WA STATUS PILL -->
+      <div class="flex items-center gap-2">
+        <div id="statusPill" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+          <span id="statusText">Menghubungkan ke WhatsApp...</span>
+        </div>
+        <button id="btnLogout" onclick="logoutWhatsApp()" class="hidden text-xs text-stone-500 hover:text-red-600 underline font-medium px-2 py-1">
+          Ganti Akun
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 py-6 w-full flex-1">
+
+    <!-- QR CODE ALERT / MODAL JIKA BELUM LOGIN -->
+    <div id="qrContainer" class="hidden mb-6 bg-white border-2 border-emerald-500/40 rounded-3xl p-6 sm:p-8 shadow-xl text-center max-w-md mx-auto animate-fade-in">
+      <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">
+        📲
+      </div>
+      <h2 class="font-serif italic text-2xl font-bold text-[#1A1A1A] mb-1">Tautkan WhatsApp Anda</h2>
+      <p class="text-xs text-stone-600 mb-4 leading-relaxed">
+        Buka WhatsApp di HP Anda &gt; Menu Titik Tiga / Pengaturan &gt; <b>Perangkat Tertaut</b> &gt; <b>Tautkan Perangkat</b>, lalu scan kode di bawah:
+      </p>
+      <div class="p-3 bg-white rounded-2xl border border-stone-200 inline-block shadow-inner mb-3">
+        <img id="qrImg" class="w-64 h-64 mx-auto rounded-lg" alt="QR Code WhatsApp" />
+      </div>
+      <p class="text-[11px] text-stone-400">Kode otomatis diperbarui jika kedaluwarsa</p>
+    </div>
+
+    <!-- FILTER & INPUT BAR -->
+    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-[#E3DCCE] shadow-sm mb-6 flex flex-col gap-4">
+      
+      <!-- Baris 1: Input Nomor Baris -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <div class="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+          <label for="rowInput" class="text-xs font-bold text-stone-700 whitespace-nowrap">
+            🎯 Nomor Baris Google Sheets:
+          </label>
+          <div class="relative flex-1">
+            <input 
+              type="text" 
+              id="rowInput" 
+              placeholder="Contoh: 47, 50 atau 10-25 atau 2,4,6-12" 
+              class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#8B9B62] focus:border-transparent bg-stone-50/50"
+            />
+          </div>
+        </div>
+        <button 
+          onclick="applyRowSelection()" 
+          class="bg-[#3B4420] hover:bg-[#2D3319] text-white text-xs font-bold py-2.5 px-5 rounded-xl transition-all shadow-sm hover:shadow active:scale-95 cursor-pointer whitespace-nowrap"
+        >
+          Pilih Baris Ini
+        </button>
+      </div>
+
+      <div class="h-px bg-stone-100"></div>
+
+      <!-- Baris 2: Search & Filter Tabs -->
+      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <!-- Search Box -->
+        <div class="relative flex-1 max-w-md">
+          <input 
+            type="text" 
+            id="searchInput" 
+            oninput="renderGuests()" 
+            placeholder="🔍 Cari nama tamu atau nomor HP..." 
+            class="w-full text-xs sm:text-sm pl-3.5 pr-8 py-2 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#8B9B62] bg-white"
+          />
+        </div>
+
+        <!-- Filter Tab Buttons -->
+        <div class="flex flex-wrap items-center gap-1.5 text-xs">
+          <button 
+            onclick="setFilter('phone_only')" 
+            id="filterBtn_phone_only" 
+            class="px-3 py-1.5 rounded-lg font-semibold transition-all bg-[#3B4420] text-white"
+          >
+            Punya No WA Saja
+          </button>
+          <button 
+            onclick="setFilter('all')" 
+            id="filterBtn_all" 
+            class="px-3 py-1.5 rounded-lg font-semibold transition-all bg-stone-100 text-stone-600 hover:bg-stone-200"
+          >
+            Semua Tamu
+          </button>
+          <button 
+            onclick="setFilter('unsent')" 
+            id="filterBtn_unsent" 
+            class="px-3 py-1.5 rounded-lg font-semibold transition-all bg-stone-100 text-stone-600 hover:bg-stone-200"
+          >
+            Belum Dikirim
+          </button>
+        </div>
+      </div>
+
+      <!-- Baris 3: Selection Helpers -->
+      <div class="flex items-center justify-between text-xs text-stone-500 pt-1">
+        <div class="flex items-center gap-3">
+          <button onclick="selectAllVisible(true)" class="text-[#3B4420] hover:underline font-bold cursor-pointer">
+            ☑️ Pilih Semua di Layar
+          </button>
+          <span>|</span>
+          <button onclick="selectAllVisible(false)" class="text-stone-500 hover:underline cursor-pointer">
+            Hapus Semua Centang
+          </button>
+        </div>
+        <div id="statsSummary" class="font-medium">
+          Memuat data...
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE DAFTAR TAMU -->
+    <div class="bg-white rounded-2xl border border-[#E3DCCE] shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm">
+          <thead class="bg-[#F5EFE6] text-stone-700 font-serif border-b border-[#E3DCCE]">
+            <tr>
+              <th class="py-3 px-3 sm:px-4 w-12 text-center">
+                <input type="checkbox" id="headerCheckbox" onchange="toggleSelectAllCurrentView(this.checked)" class="w-4 h-4 rounded text-[#3B4420] focus:ring-[#8B9B62]" />
+              </th>
+              <th class="py-3 px-2 sm:px-3 font-semibold text-center w-20">Baris</th>
+              <th class="py-3 px-3 font-semibold">Nama Tamu</th>
+              <th class="py-3 px-3 font-semibold">Nomor WhatsApp</th>
+              <th class="py-3 px-3 font-semibold text-center w-28">Status</th>
+              <th class="py-3 px-3 font-semibold text-center w-24">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="guestTableBody" class="divide-y divide-stone-100">
+            <tr>
+              <td colspan="6" class="text-center py-12 text-stone-400">
+                Memuat daftar tamu dari Google Sheets...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM STICKY ACTION BAR -->
+  <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-[#E3DCCE] py-3.5 px-4 z-40 shadow-lg">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full bg-[#8B9B62]"></span>
+        <span class="text-xs sm:text-sm font-bold text-stone-800">
+          <span id="selectedCount" class="text-[#3B4420] text-base font-extrabold">0</span> tamu dipilih
+        </span>
+        <span id="selectedRowsText" class="text-xs text-stone-400 hidden sm:inline"></span>
+      </div>
+
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <button 
+          id="btnSendBlast" 
+          onclick="startSending()" 
+          disabled 
+          class="w-full sm:w-auto bg-[#3B4420] disabled:bg-stone-300 disabled:cursor-not-allowed hover:bg-[#2D3319] text-white font-bold text-xs sm:text-sm py-3 px-7 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+        >
+          <span>🚀 Kirim Undangan WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PREVIEW PESAN -->
+  <div id="previewModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-stone-200 max-h-[90vh] flex flex-col animate-fade-in">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
+        <div>
+          <h3 class="font-serif italic font-bold text-lg text-stone-900" id="modalGuestName">Pratinjau Pesan</h3>
+          <p class="text-xs text-stone-500" id="modalGuestPhone"></p>
+        </div>
+        <button onclick="closePreviewModal()" class="text-stone-400 hover:text-stone-700 text-2xl font-bold leading-none p-1">&times;</button>
+      </div>
+      <div class="bg-stone-50 rounded-2xl p-4 border border-stone-200 overflow-y-auto flex-1 font-sans text-xs sm:text-sm leading-relaxed whitespace-pre-line text-stone-800" id="modalMessageContent">
+      </div>
+      <div class="pt-4 mt-2 text-right">
+        <button onclick="closePreviewModal()" class="bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-bold py-2.5 px-5 rounded-xl cursor-pointer">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PROGRESS PENGIRIMAN -->
+  <div id="progressModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-stone-200 text-center animate-fade-in">
+      <div id="progressIcon" class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-800 text-2xl flex items-center justify-center mx-auto mb-3 animate-pulse">
+        ✉️
+      </div>
+      <h3 id="progressTitle" class="font-serif italic text-2xl font-bold text-stone-900 mb-1">
+        Mengirim Undangan...
+      </h3>
+      <p id="progressSubtitle" class="text-xs text-stone-500 mb-4">
+        Mohon jangan tutup jendela ini selama proses berlangsung.
+      </p>
+
+      <!-- PROGRESS BAR -->
+      <div class="w-full bg-stone-100 rounded-full h-3 mb-2 overflow-hidden border border-stone-200">
+        <div id="progressBar" class="bg-[#3B4420] h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+      </div>
+      <div class="flex justify-between text-xs text-stone-500 font-semibold mb-4">
+        <span id="progressStep">0 / 0</span>
+        <span id="progressPercent">0%</span>
+      </div>
+
+      <!-- LOG STATUS TERAKHIR -->
+      <div id="progressCurrentLog" class="p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs text-left mb-5 min-h-[50px] flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+        <span id="currentStatusText" class="text-stone-700">Menyiapkan antrean...</span>
+      </div>
+
+      <button 
+        id="btnCloseProgress" 
+        onclick="closeProgressModal()" 
+        disabled 
+        class="w-full bg-stone-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3B4420] hover:text-white text-stone-700 font-bold text-xs py-3 rounded-xl transition-all cursor-pointer"
+      >
+        Tutup
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let allGuests = [];
+    let selectedRows = new Set();
+    let currentFilter = 'phone_only'; // 'all', 'phone_only', 'unsent'
+    let waState = 'connecting';
+
+    // 1. SETUP SSE LISTENER
+    function initSSE() {
+      const evtSource = new EventSource('/api/events');
+      
+      evtSource.onmessage = (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          handleServerEvent(data);
+        } catch (err) {
+          console.error('SSE Error parse:', err);
+        }
+      };
+
+      evtSource.onerror = () => {
+        updateStatusPill('disconnected', null);
+      };
+    }
+
+    function handleServerEvent(data) {
+      if (data.type === 'status') {
+        updateStatusPill(data.status, data.qr);
+      } else if (data.type === 'send_start') {
+        openProgressModal(data.total);
+      } else if (data.type === 'send_progress') {
+        updateProgressStep(data.progress, `Mengirim ke [Baris ${data.guest.rowIndex}] ${data.guest.nama}...`);
+      } else if (data.type === 'send_item_result') {
+        if (data.status === 'success') {
+          updateProgressStep(data.progress, `✅ Terkirim ke ${data.guest.nama}`);
+          // Update status tamu di UI
+          const g = allGuests.find(x => x.rowIndex === data.guest.rowIndex);
+          if (g) {
+            g.isSent = true;
+            g.status = 'Terkirim';
+          }
+          renderGuests();
+        } else {
+          updateProgressStep(data.progress, `❌ Gagal: ${data.guest.nama} (${data.reason || 'Error'})`);
+        }
+      } else if (data.type === 'send_delay') {
+        const text = `⏳ Jeda ${data.delaySeconds} detik demi keamanan akun WhatsApp...`;
+        document.getElementById('currentStatusText').innerText = text;
+      } else if (data.type === 'send_complete') {
+        finishProgress();
+      }
+    }
+
+    function updateStatusPill(status, qr) {
+      waState = status;
+      const pill = document.getElementById('statusPill');
+      const text = document.getElementById('statusText');
+      const qrBox = document.getElementById('qrContainer');
+      const qrImg = document.getElementById('qrImg');
+      const btnLogout = document.getElementById('btnLogout');
+
+      if (status === 'ready') {
+        pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-xs';
+        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-600"></span><span>WhatsApp Terhubung (Siap Kirim)</span>';
+        qrBox.classList.add('hidden');
+        btnLogout.classList.remove('hidden');
+      } else if (status === 'qr_ready' && qr) {
+        pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-300 shadow-xs';
+        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span><span>Perlu Scan QR Code</span>';
+        qrImg.src = qr;
+        qrBox.classList.remove('hidden');
+        btnLogout.classList.add('hidden');
+      } else if (status === 'authenticated') {
+        pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-800 border border-blue-300 shadow-xs';
+        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span><span>Memuat Obrolan...</span>';
+        qrBox.classList.add('hidden');
+        btnLogout.classList.remove('hidden');
+      } else {
+        pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-600 border border-stone-300';
+        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-stone-400"></span><span>Menghubungkan ke WhatsApp...</span>';
+        qrBox.classList.add('hidden');
+        btnLogout.classList.add('hidden');
+      }
+      updateSendButton();
+    }
+
+    async function logoutWhatsApp() {
+      if (!confirm('Apakah Anda ingin keluar (logout) dari akun WhatsApp ini agar bisa scan nomor lain?')) return;
+      try {
+        await fetch('/api/logout', { method: 'POST' });
+        location.reload();
+      } catch (e) {
+        alert('Gagal logout: ' + e.message);
+      }
+    }
+
+    // 2. FETCH GUESTS FROM SERVER
+    async function loadGuests() {
+      try {
+        const res = await fetch('/api/guests');
+        const json = await res.json();
+        if (json.success) {
+          allGuests = json.guests || [];
+          renderGuests();
+        } else {
+          document.getElementById('guestTableBody').innerHTML = `
+            <tr><td colspan="6" class="text-center py-8 text-red-600 font-semibold">Gagal memuat data: ${json.error}</td></tr>
+          `;
+        }
+      } catch (err) {
+        document.getElementById('guestTableBody').innerHTML = `
+          <tr><td colspan="6" class="text-center py-8 text-red-600 font-semibold">Gagal tersambung ke server lokal.</td></tr>
+        `;
+      }
+    }
+
+    // 3. RENDER TABLE
+    function getFilteredGuests() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      return allGuests.filter(g => {
+        // Search query
+        const matchSearch = !q || g.nama.toLowerCase().includes(q) || (g.phone && g.phone.includes(q)) || String(g.rowIndex).includes(q);
+        if (!matchSearch) return false;
+
+        // Filter tab
+        if (currentFilter === 'phone_only') return Boolean(g.phone);
+        if (currentFilter === 'unsent') return Boolean(g.phone && !g.isSent);
+        return true; // 'all'
+      });
+    }
+
+    function renderGuests() {
+      const tbody = document.getElementById('guestTableBody');
+      const filtered = getFilteredGuests();
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-12 text-stone-400">Tidak ada tamu yang cocok dengan filter.</td></tr>`;
+        updateStats();
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(g => {
+        const isChecked = selectedRows.has(g.rowIndex);
+        const hasPhone = Boolean(g.phone);
+
+        html += `
+          <tr class="hover:bg-[#FAF7F2] transition-colors ${isChecked ? 'bg-amber-50/40' : ''}">
+            <td class="py-3 px-3 sm:px-4 text-center">
+              <input 
+                type="checkbox" 
+                ${!hasPhone ? 'disabled' : ''} 
+                ${isChecked ? 'checked' : ''} 
+                onchange="toggleRowSelection(${g.rowIndex}, this.checked)"
+                class="w-4 h-4 rounded text-[#3B4420] focus:ring-[#8B9B62] ${!hasPhone ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}" 
+              />
+            </td>
+            <td class="py-3 px-2 sm:px-3 text-center">
+              <span class="inline-block px-2 py-0.5 rounded-md font-mono text-xs font-semibold bg-stone-100 text-stone-700 border border-stone-200">
+                ${g.rowIndex}
+              </span>
+            </td>
+            <td class="py-3 px-3">
+              <div class="font-bold text-stone-900">${escapeHtml(g.nama)}</div>
+              <a href="${escapeHtml(g.link)}" target="_blank" class="text-[11px] text-[#5D6B38] hover:underline truncate block max-w-xs">
+                ${escapeHtml(g.link)}
+              </a>
+            </td>
+            <td class="py-3 px-3">
+              ${hasPhone ? `
+                <span class="font-mono text-xs font-semibold text-stone-800 bg-emerald-50 px-2 py-1 rounded border border-emerald-200">
+                  ${g.phone}
+                </span>
+              ` : `
+                <span class="text-xs text-stone-400 italic">Belum ada nomor</span>
+              `}
+            </td>
+            <td class="py-3 px-3 text-center">
+              ${g.isSent ? `
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                  ✓ Terkirim
+                </span>
+              ` : `
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-stone-100 text-stone-600">
+                  Belum
+                </span>
+              `}
+            </td>
+            <td class="py-3 px-3 text-center">
+              <button 
+                onclick="showPreviewModal(${g.rowIndex})" 
+                class="text-xs text-[#3B4420] hover:text-[#2D3319] hover:underline font-bold py-1 px-2 cursor-pointer"
+              >
+                Lihat Pesan
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+      updateStats();
+    }
+
+    // 4. SELECTION LOGIC
+    function toggleRowSelection(rowIndex, isChecked) {
+      if (isChecked) selectedRows.add(rowIndex);
+      else selectedRows.delete(rowIndex);
+      updateSelectionSummary();
+    }
+
+    function toggleSelectAllCurrentView(isChecked) {
+      const visible = getFilteredGuests();
+      visible.forEach(g => {
+        if (g.phone) {
+          if (isChecked) selectedRows.add(g.rowIndex);
+          else selectedRows.delete(g.rowIndex);
+        }
+      });
+      renderGuests();
+      updateSelectionSummary();
+    }
+
+    function selectAllVisible(select) {
+      const visible = getFilteredGuests();
+      visible.forEach(g => {
+        if (g.phone) {
+          if (select) selectedRows.add(g.rowIndex);
+          else selectedRows.delete(g.rowIndex);
+        }
+      });
+      renderGuests();
+      updateSelectionSummary();
+    }
+
+    function applyRowSelection() {
+      const input = document.getElementById('rowInput').value.trim();
+      if (!input) return;
+
+      const parts = input.split(',');
+      let countAdded = 0;
+
+      parts.forEach(part => {
+        const trimmed = part.trim();
+        if (trimmed.includes('-')) {
+          const [start, end] = trimmed.split('-').map(n => parseInt(n.trim(), 10));
+          if (!isNaN(start) && !isNaN(end)) {
+            const min = Math.min(start, end);
+            const max = Math.max(start, end);
+            for (let r = min; r <= max; r++) {
+              const g = allGuests.find(x => x.rowIndex === r);
+              if (g && g.phone) {
+                selectedRows.add(r);
+                countAdded++;
+              }
+            }
+          }
+        } else {
+          const num = parseInt(trimmed, 10);
+          if (!isNaN(num)) {
+            const g = allGuests.find(x => x.rowIndex === num);
+            if (g && g.phone) {
+              selectedRows.add(num);
+              countAdded++;
+            }
+          }
+        }
+      });
+
+      renderGuests();
+      updateSelectionSummary();
+      alert(`Berhasil memilih ${countAdded} tamu dari baris yang Anda masukkan.`);
+    }
+
+    function setFilter(type) {
+      currentFilter = type;
+      ['all', 'phone_only', 'unsent'].forEach(t => {
+        const btn = document.getElementById('filterBtn_' + t);
+        if (t === type) {
+          btn.className = 'px-3 py-1.5 rounded-lg font-semibold transition-all bg-[#3B4420] text-white';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-lg font-semibold transition-all bg-stone-100 text-stone-600 hover:bg-stone-200';
+        }
+      });
+      renderGuests();
+    }
+
+    function updateStats() {
+      const total = allGuests.length;
+      const withPhone = allGuests.filter(g => g.phone).length;
+      const sent = allGuests.filter(g => g.isSent).length;
+      document.getElementById('statsSummary').innerHTML = `
+        Total: <b>${total}</b> tamu | Punya No WA: <b>${withPhone}</b> | Sudah Terkirim: <b>${sent}</b>
+      `;
+      updateSelectionSummary();
+    }
+
+    function updateSelectionSummary() {
+      const count = selectedRows.size;
+      document.getElementById('selectedCount').innerText = count;
+      
+      const arr = Array.from(selectedRows).sort((a,b) => a-b);
+      const text = arr.length > 0 ? `(Baris: ${arr.slice(0, 10).join(', ')}${arr.length > 10 ? '...' : ''})` : '';
+      document.getElementById('selectedRowsText').innerText = text;
+
+      updateSendButton();
+    }
+
+    function updateSendButton() {
+      const btn = document.getElementById('btnSendBlast');
+      const count = selectedRows.size;
+      btn.disabled = count === 0 || waState !== 'ready';
+      btn.innerHTML = `<span>🚀 Kirim Undangan WhatsApp (${count} Tamu)</span>`;
+    }
+
+    // 5. MODAL PREVIEW
+    function showPreviewModal(rowIndex) {
+      const g = allGuests.find(x => x.rowIndex === rowIndex);
+      if (!g) return;
+
+      document.getElementById('modalGuestName').innerText = g.nama;
+      document.getElementById('modalGuestPhone').innerText = `Baris ${g.rowIndex} | ${g.phone || 'Tanpa No WhatsApp'}`;
+      document.getElementById('modalMessageContent').innerText = g.message;
+      document.getElementById('previewModal').classList.remove('hidden');
+    }
+
+    function closePreviewModal() {
+      document.getElementById('previewModal').classList.add('hidden');
+    }
+
+    // 6. SENDING PROCESS
+    async function startSending() {
+      const count = selectedRows.size;
+      if (count === 0) return;
+
+      const confirmMsg = `Kirim undangan WhatsApp ke ${count} tamu yang dipilih sekarang?`;
+      if (!confirm(confirmMsg)) return;
+
+      const rowsArray = Array.from(selectedRows);
+
+      try {
+        const res = await fetch('/api/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rows: rowsArray })
+        });
+        const json = await res.json();
+        if (!json.success) {
+          alert('Gagal memulai pengiriman: ' + json.error);
+        }
+      } catch (err) {
+        alert('Error pengiriman: ' + err.message);
+      }
+    }
+
+    function openProgressModal(total) {
+      document.getElementById('progressModal').classList.remove('hidden');
+      document.getElementById('progressTitle').innerText = 'Mengirim Undangan...';
+      document.getElementById('progressSubtitle').innerText = 'Mohon jangan tutup jendela ini selama proses berlangsung.';
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('progressStep').innerText = `0 / ${total}`;
+      document.getElementById('progressPercent').innerText = '0%';
+      document.getElementById('btnCloseProgress').disabled = true;
+      document.getElementById('progressIcon').innerText = '✉️';
+      document.getElementById('progressIcon').className = 'w-14 h-14 rounded-full bg-emerald-100 text-emerald-800 text-2xl flex items-center justify-center mx-auto mb-3 animate-pulse';
+    }
+
+    function updateProgressStep(progress, statusText) {
+      const percent = Math.round((progress.current / progress.total) * 100);
+      document.getElementById('progressBar').style.width = `${percent}%`;
+      document.getElementById('progressStep').innerText = `${progress.current} / ${progress.total}`;
+      document.getElementById('progressPercent').innerText = `${percent}%`;
+      document.getElementById('currentStatusText').innerText = statusText;
+    }
+
+    function finishProgress() {
+      document.getElementById('progressTitle').innerText = '🎉 Pengiriman Selesai!';
+      document.getElementById('progressSubtitle').innerText = 'Seluruh antrean pesan telah berhasil diproses.';
+      document.getElementById('progressIcon').innerText = '✅';
+      document.getElementById('progressIcon').className = 'w-14 h-14 rounded-full bg-emerald-500 text-white text-2xl flex items-center justify-center mx-auto mb-3';
+      document.getElementById('currentStatusText').innerText = 'Semua pesan berhasil diproses.';
+      document.getElementById('btnCloseProgress').disabled = false;
+      document.getElementById('btnCloseProgress').className = 'w-full bg-[#3B4420] text-white font-bold text-xs py-3 rounded-xl transition-all cursor-pointer shadow-md';
+      
+      // Hapus pilihan yang sudah selesai
+      selectedRows.clear();
+      updateSelectionSummary();
+      renderGuests();
+    }
+
+    function closeProgressModal() {
+      document.getElementById('progressModal').classList.add('hidden');
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // ON LOAD
+    window.onload = () => {
+      initSSE();
+      loadGuests();
+    };
+  </script>
+</body>
+</html>
+

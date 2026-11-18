@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "wa:preview": "node scripts/wa-blast/send.js --preview",
-    "wa:send": "node scripts/wa-blast/send.js"
+    "wa:send": "node scripts/wa-blast/send.js",
+    "wa:ui": "node scripts/wa-blast/server.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

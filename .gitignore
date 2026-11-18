@@ -41,6 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # whatsapp blast automation
+.wwebjs_cache/
 scripts/wa-blast/node_modules/
 scripts/wa-blast/.wwebjs_auth/
 scripts/wa-blast/.wwebjs_cache/
