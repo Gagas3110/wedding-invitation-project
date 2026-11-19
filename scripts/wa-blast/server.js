@@ -131,8 +131,21 @@ function initWhatsApp() {
     ]
   };
 
-  if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+  if (process.env.PUPPETEER_EXECUTABLE_PATH && fs.existsSync(process.env.PUPPETEER_EXECUTABLE_PATH)) {
     puppeteerOpts.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  } else if (process.platform === 'linux') {
+    const linuxPaths = [
+      '/usr/bin/chromium',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/google-chrome-stable',
+      '/usr/bin/google-chrome'
+    ];
+    for (const p of linuxPaths) {
+      if (fs.existsSync(p)) {
+        puppeteerOpts.executablePath = p;
+        break;
+      }
+    }
   }
 
   client = new Client({

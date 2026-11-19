@@ -4,7 +4,8 @@
   "description": "WhatsApp Automated Invitation Sender for Akila & Gagas Wedding",
   "main": "send.js",
   "scripts": {
-    "start": "node send.js"
+    "start": "node server.js",
+    "cli": "node send.js"
   },
   "dependencies": {
     "cloudflared": "^0.7.3",
