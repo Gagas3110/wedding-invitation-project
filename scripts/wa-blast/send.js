@@ -357,22 +357,46 @@ async function main() {
   console.log('👉 Jika belum login, QR Code akan muncul di bawah. Scan menggunakan WhatsApp di HP Anda.');
   console.log('👉 Sesi login akan disimpan otomatis di folder .wwebjs_auth agar tidak perlu scan ulang setiap saat.\n');
 
+  const puppeteerArgs = {
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--no-first-run',
+      '--no-zygote',
+      '--disable-gpu'
+    ]
+  };
+
+  let foundBrowser = null;
+  if (process.env.PUPPETEER_EXECUTABLE_PATH && fs.existsSync(process.env.PUPPETEER_EXECUTABLE_PATH)) {
+    foundBrowser = process.env.PUPPETEER_EXECUTABLE_PATH;
+  } else if (process.platform === 'linux') {
+    const linuxPaths = [
+      '/usr/bin/chromium',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/google-chrome-stable',
+      '/usr/bin/google-chrome',
+      '/root/.nix-profile/bin/chromium'
+    ];
+    for (const p of linuxPaths) {
+      if (fs.existsSync(p)) {
+        foundBrowser = p;
+        break;
+      }
+    }
+  }
+  if (foundBrowser) {
+    puppeteerArgs.executablePath = foundBrowser;
+  }
+
   const client = new Client({
     authStrategy: new LocalAuth({
       dataPath: path.join(__dirname, '.wwebjs_auth')
     }),
-    puppeteer: {
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu'
-      ]
-    }
+    puppeteer: puppeteerArgs
   });
 
   client.on('qr', (qr) => {

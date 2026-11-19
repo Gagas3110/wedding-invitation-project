@@ -131,21 +131,39 @@ function initWhatsApp() {
     ]
   };
 
+  let foundBrowserPath = null;
   if (process.env.PUPPETEER_EXECUTABLE_PATH && fs.existsSync(process.env.PUPPETEER_EXECUTABLE_PATH)) {
-    puppeteerOpts.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+    foundBrowserPath = process.env.PUPPETEER_EXECUTABLE_PATH;
   } else if (process.platform === 'linux') {
     const linuxPaths = [
       '/usr/bin/chromium',
       '/usr/bin/chromium-browser',
       '/usr/bin/google-chrome-stable',
-      '/usr/bin/google-chrome'
+      '/usr/bin/google-chrome',
+      '/root/.nix-profile/bin/chromium'
     ];
     for (const p of linuxPaths) {
       if (fs.existsSync(p)) {
-        puppeteerOpts.executablePath = p;
+        foundBrowserPath = p;
         break;
       }
     }
+    if (!foundBrowserPath) {
+      try {
+        const cp = require('child_process');
+        const found = cp.execSync('which chromium 2>/dev/null || which google-chrome 2>/dev/null', { encoding: 'utf-8' }).trim();
+        if (found && fs.existsSync(found)) {
+          foundBrowserPath = found;
+        }
+      } catch (e) {}
+    }
+  }
+
+  if (foundBrowserPath) {
+    puppeteerOpts.executablePath = foundBrowserPath;
+    console.log(`🌐 Menggunakan Chromium binary di: ${foundBrowserPath}`);
+  } else {
+    console.log('🌐 Menggunakan Chromium bawaan Puppeteer');
   }
 
   client = new Client({
