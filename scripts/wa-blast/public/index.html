@@ -16,7 +16,6 @@
     .font-serif {
       font-family: 'Playfair Display', serif;
     }
-    /* Custom scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -34,6 +33,19 @@
   </style>
 </head>
 <body class="min-h-screen text-[#2D3319] flex flex-col antialiased selection:bg-[#8B9B62] selection:text-white pb-28">
+
+  <!-- ONLINE TUNNEL BANNER (JIKA MODE ONLINE AKTIF) -->
+  <div id="tunnelBanner" class="hidden bg-[#2D3319] text-[#E8EDD8] text-xs py-2.5 px-4 border-b border-[#3B4420] shadow-sm">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>🌐 <b>Mode Online Aktif!</b> Bagikan link ini ke orang tua: <a id="tunnelLink" href="#" target="_blank" class="underline font-mono font-bold text-white tracking-wide"></a> (PIN: <b id="tunnelPin">1212</b>)</span>
+      </div>
+      <button onclick="copyTunnelLink()" class="bg-[#8B9B62] hover:bg-[#7A8A52] text-white px-3 py-1 rounded-md text-[11px] font-bold cursor-pointer transition-all active:scale-95 shadow-xs">
+        📋 Salin Link
+      </button>
+    </div>
+  </div>
 
   <!-- HEADER -->
   <header class="bg-[#FAF7F2]/90 backdrop-blur-md sticky top-0 z-30 border-b border-[#E3DCCE] px-4 py-3 sm:py-4 transition-all">
@@ -217,6 +229,39 @@
     </div>
   </div>
 
+  <!-- PIN LOCK OVERLAY -->
+  <div id="pinModal" class="fixed inset-0 bg-[#FAF7F2] z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-8 shadow-xl border border-[#E3DCCE] text-center animate-fade-in">
+      <div class="w-14 h-14 rounded-full bg-[#3B4420] text-white flex items-center justify-center font-serif text-xl font-bold mx-auto mb-4 shadow">
+        A&G
+      </div>
+      <h2 class="font-serif italic text-2xl font-bold text-stone-900 mb-1">Undangan Akila & Gagas</h2>
+      <p class="text-xs text-stone-500 mb-6 leading-relaxed">
+        Masukkan 4 digit PIN akses untuk membuka dashboard pengiriman undangan.
+      </p>
+      
+      <form onsubmit="verifyPin(event)" class="space-y-4">
+        <div>
+          <input 
+            type="password" 
+            id="pinInput" 
+            maxlength="8" 
+            placeholder="••••" 
+            class="w-full text-center text-3xl tracking-widest font-mono py-3 rounded-2xl border-2 border-stone-200 focus:outline-none focus:border-[#8B9B62] focus:ring-2 focus:ring-[#8B9B62]/20"
+            autofocus 
+          />
+        </div>
+        <p id="pinError" class="text-xs text-red-600 font-semibold hidden">PIN salah, silakan coba lagi.</p>
+        <button 
+          type="submit" 
+          class="w-full bg-[#3B4420] hover:bg-[#2D3319] text-white font-bold text-sm py-3.5 rounded-2xl transition-all shadow-md active:scale-95 cursor-pointer"
+        >
+          Masuk Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- MODAL: PREVIEW PESAN -->
   <div id="previewModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-stone-200 max-h-[90vh] flex flex-col animate-fade-in">
@@ -279,12 +324,108 @@
   <script>
     let allGuests = [];
     let selectedRows = new Set();
-    let currentFilter = 'phone_only'; // 'all', 'phone_only', 'unsent'
+    let currentFilter = 'phone_only';
     let waState = 'connecting';
+    let onlineTunnelUrl = null;
 
-    // 1. SETUP SSE LISTENER
+    function getSavedPin() {
+      return localStorage.getItem('wa_blast_pin') || '';
+    }
+
+    function getAuthHeaders() {
+      return {
+        'Content-Type': 'application/json',
+        'X-Access-PIN': getSavedPin()
+      };
+    }
+
+    // 1. PIN VERIFICATION
+    async function checkAuthAndInit() {
+      try {
+        const res = await fetch('/api/config');
+        const json = await res.json();
+        
+        if (json.publicTunnelUrl) {
+          showTunnelBanner(json.publicTunnelUrl);
+        }
+
+        if (json.pinRequired) {
+          const saved = getSavedPin();
+          if (saved) {
+            const vRes = await fetch('/api/auth/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ pin: saved })
+            });
+            if (vRes.ok) {
+              document.getElementById('pinModal').classList.add('hidden');
+              startApp();
+              return;
+            }
+          }
+          // Tampilkan PIN modal
+          document.getElementById('pinModal').classList.remove('hidden');
+          document.getElementById('pinInput').focus();
+        } else {
+          document.getElementById('pinModal').classList.add('hidden');
+          startApp();
+        }
+      } catch (err) {
+        console.error('Config fetch error:', err);
+        startApp();
+      }
+    }
+
+    async function verifyPin(e) {
+      e.preventDefault();
+      const input = document.getElementById('pinInput').value.trim();
+      const errEl = document.getElementById('pinError');
+      errEl.classList.add('hidden');
+
+      try {
+        const res = await fetch('/api/auth/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pin: input })
+        });
+        if (res.ok) {
+          localStorage.setItem('wa_blast_pin', input);
+          document.getElementById('pinModal').classList.add('hidden');
+          startApp();
+        } else {
+          errEl.classList.remove('hidden');
+        }
+      } catch (err) {
+        errEl.innerText = 'Gagal memverifikasi: ' + err.message;
+        errEl.classList.remove('hidden');
+      }
+    }
+
+    function showTunnelBanner(url) {
+      onlineTunnelUrl = url;
+      const banner = document.getElementById('tunnelBanner');
+      const link = document.getElementById('tunnelLink');
+      link.href = url;
+      link.innerText = url;
+      banner.classList.remove('hidden');
+    }
+
+    function copyTunnelLink() {
+      if (!onlineTunnelUrl) return;
+      navigator.clipboard.writeText(onlineTunnelUrl).then(() => {
+        alert('✅ Link online berhasil disalin! Anda bisa kirimkan link ini ke WhatsApp orang tua.');
+      });
+    }
+
+    function startApp() {
+      initSSE();
+      loadGuests();
+    }
+
+    // 2. SETUP SSE LISTENER
     function initSSE() {
-      const evtSource = new EventSource('/api/events');
+      const pinParam = encodeURIComponent(getSavedPin());
+      const evtSource = new EventSource('/api/events?pin=' + pinParam);
       
       evtSource.onmessage = (e) => {
         try {
@@ -303,6 +444,9 @@
     function handleServerEvent(data) {
       if (data.type === 'status') {
         updateStatusPill(data.status, data.qr);
+        if (data.publicUrl) showTunnelBanner(data.publicUrl);
+      } else if (data.type === 'tunnel_ready') {
+        showTunnelBanner(data.publicUrl);
       } else if (data.type === 'send_start') {
         openProgressModal(data.total);
       } else if (data.type === 'send_progress') {
@@ -310,7 +454,6 @@
       } else if (data.type === 'send_item_result') {
         if (data.status === 'success') {
           updateProgressStep(data.progress, `✅ Terkirim ke ${data.guest.nama}`);
-          // Update status tamu di UI
           const g = allGuests.find(x => x.rowIndex === data.guest.rowIndex);
           if (g) {
             g.isSent = true;
@@ -331,7 +474,6 @@
     function updateStatusPill(status, qr) {
       waState = status;
       const pill = document.getElementById('statusPill');
-      const text = document.getElementById('statusText');
       const qrBox = document.getElementById('qrContainer');
       const qrImg = document.getElementById('qrImg');
       const btnLogout = document.getElementById('btnLogout');
@@ -364,17 +506,17 @@
     async function logoutWhatsApp() {
       if (!confirm('Apakah Anda ingin keluar (logout) dari akun WhatsApp ini agar bisa scan nomor lain?')) return;
       try {
-        await fetch('/api/logout', { method: 'POST' });
+        await fetch('/api/logout', { method: 'POST', headers: getAuthHeaders() });
         location.reload();
       } catch (e) {
         alert('Gagal logout: ' + e.message);
       }
     }
 
-    // 2. FETCH GUESTS FROM SERVER
+    // 3. FETCH GUESTS FROM SERVER
     async function loadGuests() {
       try {
-        const res = await fetch('/api/guests');
+        const res = await fetch('/api/guests', { headers: getAuthHeaders() });
         const json = await res.json();
         if (json.success) {
           allGuests = json.guests || [];
@@ -386,23 +528,21 @@
         }
       } catch (err) {
         document.getElementById('guestTableBody').innerHTML = `
-          <tr><td colspan="6" class="text-center py-8 text-red-600 font-semibold">Gagal tersambung ke server lokal.</td></tr>
+          <tr><td colspan="6" class="text-center py-8 text-red-600 font-semibold">Gagal tersambung ke server.</td></tr>
         `;
       }
     }
 
-    // 3. RENDER TABLE
+    // 4. RENDER TABLE
     function getFilteredGuests() {
       const q = document.getElementById('searchInput').value.trim().toLowerCase();
       return allGuests.filter(g => {
-        // Search query
         const matchSearch = !q || g.nama.toLowerCase().includes(q) || (g.phone && g.phone.includes(q)) || String(g.rowIndex).includes(q);
         if (!matchSearch) return false;
 
-        // Filter tab
         if (currentFilter === 'phone_only') return Boolean(g.phone);
         if (currentFilter === 'unsent') return Boolean(g.phone && !g.isSent);
-        return true; // 'all'
+        return true;
       });
     }
 
@@ -479,7 +619,7 @@
       updateStats();
     }
 
-    // 4. SELECTION LOGIC
+    // 5. SELECTION LOGIC
     function toggleRowSelection(rowIndex, isChecked) {
       if (isChecked) selectedRows.add(rowIndex);
       else selectedRows.delete(rowIndex);
@@ -590,7 +730,7 @@
       btn.innerHTML = `<span>🚀 Kirim Undangan WhatsApp (${count} Tamu)</span>`;
     }
 
-    // 5. MODAL PREVIEW
+    // 6. MODAL PREVIEW
     function showPreviewModal(rowIndex) {
       const g = allGuests.find(x => x.rowIndex === rowIndex);
       if (!g) return;
@@ -605,7 +745,7 @@
       document.getElementById('previewModal').classList.add('hidden');
     }
 
-    // 6. SENDING PROCESS
+    // 7. SENDING PROCESS
     async function startSending() {
       const count = selectedRows.size;
       if (count === 0) return;
@@ -618,7 +758,7 @@
       try {
         const res = await fetch('/api/send', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(),
           body: JSON.stringify({ rows: rowsArray })
         });
         const json = await res.json();
@@ -659,7 +799,6 @@
       document.getElementById('btnCloseProgress').disabled = false;
       document.getElementById('btnCloseProgress').className = 'w-full bg-[#3B4420] text-white font-bold text-xs py-3 rounded-xl transition-all cursor-pointer shadow-md';
       
-      // Hapus pilihan yang sudah selesai
       selectedRows.clear();
       updateSelectionSummary();
       renderGuests();
@@ -681,10 +820,8 @@
 
     // ON LOAD
     window.onload = () => {
-      initSSE();
-      loadGuests();
+      checkAuthAndInit();
     };
   </script>
 </body>
 </html>
-

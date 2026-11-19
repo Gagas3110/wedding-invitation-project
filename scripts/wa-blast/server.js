@@ -2,7 +2,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const xlsx = require('xlsx');
@@ -16,8 +16,9 @@ const PUBLIC_DIR = path.join(__dirname, 'public');
 let config = {
   sheetUrl: 'https://docs.google.com/spreadsheets/d/1zhQpldcFJY-7gbnjN-efsDky5gvojccBX0r76CMDJqc/edit?usp=sharing',
   sheetName: 'Daftar Tamu',
+  pin: '1212',
   minDelayMs: 4000,
-  maxDelayMs: 7000
+  maxDelayMs: 7500
 };
 
 if (fs.existsSync(CONFIG_FILE)) {
@@ -30,13 +31,17 @@ if (fs.existsSync(CONFIG_FILE)) {
 }
 
 // -----------------------------------------------------------------------------
-// WHATSAPP STATE
+// WHATSAPP STATE & TUNNEL STATE
 // -----------------------------------------------------------------------------
 let waStatus = 'connecting'; // 'connecting', 'qr_ready', 'ready', 'disconnected'
 let qrDataUrl = null;
 let client = null;
 let sseClients = [];
 let isSending = false;
+
+const isTunnelRequested = process.argv.includes('--tunnel') || process.env.ENABLE_TUNNEL === '1';
+let publicTunnelUrl = null;
+let tunnelProcess = null;
 
 function broadcastSSE(data) {
   const payload = `data: ${JSON.stringify(data)}\n\n`;
@@ -49,10 +54,69 @@ function broadcastSSE(data) {
   });
 }
 
+function startTunnel() {
+  if (!isTunnelRequested) return;
+
+  console.log('🌐 Membuka Cloudflare Tunnel untuk akses online orang tua/keluarga...');
+  try {
+    tunnelProcess = spawn('cloudflared', ['tunnel', '--url', `http://localhost:${PORT}`], {
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
+
+    const urlRegex = /https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/;
+
+    const handleOutput = (chunk) => {
+      const text = chunk.toString();
+      const match = text.match(urlRegex);
+      if (match && !publicTunnelUrl) {
+        publicTunnelUrl = match[0];
+        console.log('\n======================================================');
+        console.log('🌐 LINK ONLINE UNTUK ORANG TUA / KELUARGA:');
+        console.log(`👉 Link Website: ${publicTunnelUrl}`);
+        console.log(`🔑 PIN Akses   : ${config.pin || '1212'}`);
+        console.log('======================================================\n');
+
+        broadcastSSE({
+          type: 'tunnel_ready',
+          publicUrl: publicTunnelUrl,
+          pin: config.pin || '1212'
+        });
+      }
+    };
+
+    tunnelProcess.stdout.on('data', handleOutput);
+    tunnelProcess.stderr.on('data', handleOutput);
+
+    tunnelProcess.on('error', (err) => {
+      console.warn('⚠️ Gagal menjalankan Cloudflare Tunnel:', err.message);
+    });
+
+    process.on('exit', () => {
+      if (tunnelProcess) {
+        try { tunnelProcess.kill(); } catch (e) {}
+      }
+    });
+  } catch (err) {
+    console.warn('⚠️ Tidak dapat memulai tunnel:', err.message);
+  }
+}
+
 function initWhatsApp() {
   waStatus = 'connecting';
   qrDataUrl = null;
   broadcastSSE({ type: 'status', status: waStatus, qr: null });
+
+  // Bersihkan stale lock file Chromium jika proses sebelumnya terhenti tiba-tiba
+  const sessionDir = path.join(__dirname, '.wwebjs_auth', 'session');
+  if (fs.existsSync(sessionDir)) {
+    ['SingletonLock', 'SingletonCookie', 'SingletonSocket'].forEach((file) => {
+      try {
+        fs.unlinkSync(path.join(sessionDir, file));
+      } catch (e) {
+        // ignore
+      }
+    });
+  }
 
   client = new Client({
     authStrategy: new LocalAuth({
@@ -380,13 +444,13 @@ async function handleSendQueue(selectedRowIndices) {
 }
 
 // -----------------------------------------------------------------------------
-// HTTP SERVER
+// HTTP SERVER WITH PIN SECURITY
 // -----------------------------------------------------------------------------
 const server = http.createServer(async (req, res) => {
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Access-PIN');
 
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
@@ -395,6 +459,50 @@ const server = http.createServer(async (req, res) => {
 
   const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
 
+  // Public Endpoint: Cek Konfigurasi (PIN required & public URL)
+  if (parsedUrl.pathname === '/api/config' && req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({
+      pinRequired: Boolean(config.pin),
+      publicTunnelUrl: publicTunnelUrl
+    }));
+  }
+
+  // Public Endpoint: Verifikasi PIN
+  if (parsedUrl.pathname === '/api/auth/verify' && req.method === 'POST') {
+    let body = '';
+    req.on('data', (c) => body += c);
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const inputPin = String(payload.pin || '').trim();
+        const expectedPin = String(config.pin || '1212').trim();
+
+        if (inputPin === expectedPin) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ success: true }));
+        } else {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ success: false, error: 'PIN salah' }));
+        }
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ success: false, error: 'Invalid payload' }));
+      }
+    });
+    return;
+  }
+
+  // PIN PROTECTION MIDDLEWARE untuk seluruh API berikutnya
+  if (parsedUrl.pathname.startsWith('/api/')) {
+    const pinHeader = req.headers['x-access-pin'] || parsedUrl.searchParams.get('pin');
+    const expectedPin = String(config.pin || '1212').trim();
+    if (config.pin && pinHeader !== expectedPin) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ success: false, error: 'Unauthorized: PIN Akses Diperlukan' }));
+    }
+  }
+
   // SSE Stream
   if (parsedUrl.pathname === '/api/events') {
     res.writeHead(200, {
@@ -402,7 +510,12 @@ const server = http.createServer(async (req, res) => {
       'Cache-Control': 'no-cache',
       Connection: 'keep-alive'
     });
-    res.write(`data: ${JSON.stringify({ type: 'status', status: waStatus, qr: qrDataUrl })}\n\n`);
+    res.write(`data: ${JSON.stringify({
+      type: 'status',
+      status: waStatus,
+      qr: qrDataUrl,
+      publicUrl: publicTunnelUrl
+    })}\n\n`);
     sseClients.push(res);
     req.on('close', () => {
       sseClients = sseClients.filter((c) => c !== res);
@@ -413,7 +526,12 @@ const server = http.createServer(async (req, res) => {
   // API Status
   if (parsedUrl.pathname === '/api/status' && req.method === 'GET') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ status: waStatus, qr: qrDataUrl, isSending }));
+    return res.end(JSON.stringify({
+      status: waStatus,
+      qr: qrDataUrl,
+      isSending,
+      publicUrl: publicTunnelUrl
+    }));
   }
 
   // API Guests
@@ -502,7 +620,11 @@ server.listen(PORT, () => {
   // Buka browser secara otomatis di Mac
   exec(`open ${url}`);
 
+  // Mulai Cloudflare Tunnel jika diminta
+  if (isTunnelRequested) {
+    startTunnel();
+  }
+
   // Mulai inisialisasi WhatsApp di background
   initWhatsApp();
 });
-

@@ -9,7 +9,8 @@
     "lint": "eslint",
     "wa:preview": "node scripts/wa-blast/send.js --preview",
     "wa:send": "node scripts/wa-blast/send.js",
-    "wa:ui": "node scripts/wa-blast/server.js"
+    "wa:ui": "node scripts/wa-blast/server.js",
+    "wa:online": "node scripts/wa-blast/server.js --tunnel"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

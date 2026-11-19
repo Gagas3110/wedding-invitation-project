@@ -1,6 +1,7 @@
 {
   "sheetUrl": "https://docs.google.com/spreadsheets/d/1zhQpldcFJY-7gbnjN-efsDky5gvojccBX0r76CMDJqc/edit?usp=sharing",
   "sheetName": "Daftar Tamu",
+  "pin": "1212",
   "minDelayMs": 4000,
   "maxDelayMs": 7500
 }

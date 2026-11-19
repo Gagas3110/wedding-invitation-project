@@ -1,39 +1,54 @@
 # 📲 Web UI Kirim Undangan WhatsApp (Akila & Gagas Wedding)
 
-Aplikasi Web UI ramah pengguna untuk mengirim undangan pernikahan ke WhatsApp tamu secara otomatis langsung dari browser di laptop Anda — didesain khusus agar mudah digunakan oleh keluarga / non-developer.
+Aplikasi Web UI ramah pengguna untuk mengirim undangan pernikahan ke WhatsApp tamu secara otomatis — didesain khusus agar mudah digunakan oleh keluarga / orang tua dari laptop maupun HP mereka sendiri.
 
 ---
 
-## 🌟 Cara Paling Mudah (Untuk Keluarga & Non-Dev):
+## 🌟 2 Pilihan Penggunaan:
 
-### 1. Buka Aplikasi
-Cukup **klik dua kali** file:
-```text
-Buka-Kirim-Undangan.command
-```
-*(Atau jalankan `npm run wa:ui` di terminal).*
+### Pilihan 1: Mode Online (Bisa Dibuka Orang Tua dari HP Jarak Jauh) 🌐
+Gunakan mode ini jika orang tua ingin membuka web pengiriman **dari HP mereka sendiri** di mana saja:
 
-Browser otomatis terbuka menampilkan halaman web di `http://localhost:3001`.
+1. **Jalankan Aplikasi:**
+   Klik dua kali file:
+   ```text
+   Buka-Kirim-Undangan-Online.command
+   ```
+   *(Atau lewat terminal: `npm run wa:online`)*
 
-### 2. Hubungkan WhatsApp (Cukup 1x di Awal)
-- Jika baru pertama kali buka, scan **QR Code** yang muncul di layar dengan WhatsApp HP Anda (**Perangkat Tertaut** > **Tautkan Perangkat**).
-- Jika sudah pernah login, sistem akan otomatis langsung terhubung (ada badge hijau: *"WhatsApp Terhubung"*).
-
-### 3. Pilih Tamu yang Mau Dikirim
-- **Ketik nomor baris Google Sheets**: Masukkan nomor baris (misal `47, 50` atau `10-25`), lalu klik **"Pilih Baris Ini"**.
-- **Atau langsung centang kotak di tabel**: Bisa centang manual, pakai pencarian nama, atau klik tombol **"Pilih Semua di Layar"**.
-- Anda juga bisa klik tombol **"Lihat Pesan"** untuk pratinjau teks yang akan dikirim ke tamu tersebut.
-
-### 4. Klik Tombol Kirim!
-Klik tombol hijau besar di bagian bawah:
-```text
-🚀 Kirim Undangan WhatsApp (X Tamu)
-```
-Muncul progress bar interaktif yang menunjukkan proses pengiriman satu per satu hingga selesai!
+2. **Bagikan Link ke Orang Tua:**
+   Di terminal dan di layar dashboard akan muncul link online aman, misalnya:
+   ```text
+   👉 https://xxxx-xxxx.trycloudflare.com
+   🔑 PIN Akses: 1212
+   ```
+3. **Kirimkan link tersebut lewat WhatsApp ke orang tua.**
+4. Orang tua buka link dari browser HP mereka, masukkan PIN `1212`, dan langsung bisa memilih baris tamu serta klik **Kirim**!
 
 ---
 
-## ⚙️ Fitur Tambahan:
-- **Mode CLI (Terminal)**: Tetap bisa dijalankan via terminal dengan `npm run wa:send -- --rows 47,50` atau `npm run wa:preview`.
-- **Ganti Akun**: Di pojok kanan atas ada tombol "Ganti Akun" jika ingin mengirim menggunakan nomor WhatsApp lain.
-- **Laporan Excel**: Setiap hasil pengiriman otomatis tersimpan di `scripts/wa-blast/laporan-pengiriman.xlsx`.
+### Pilihan 2: Mode Lokal (Dipakai di Laptop Anda Sendiri) 💻
+Gunakan mode ini jika orang tua memakai langsung dari laptop Anda:
+
+1. **Jalankan Aplikasi:**
+   Klik dua kali file:
+   ```text
+   Buka-Kirim-Undangan.command
+   ```
+   *(Atau lewat terminal: `npm run wa:ui`)*
+2. Browser otomatis terbuka di `http://localhost:3001`.
+
+---
+
+## 🔒 Keamanan (PIN Akses)
+- Link online diproteksi dengan **4-digit PIN** (default: `1212`, bisa diubah di file `config.json`).
+- Siapa pun di internet tidak bisa melihat nomor telepon tamu atau mengirim pesan tanpa memasukkan PIN yang benar.
+
+---
+
+## 📋 Fitur Dashboard:
+- **Ketik Nomor Baris Google Sheets**: Cukup masukkan nomor baris (misal `47, 50` atau rentang `10-25`), lalu klik **"Pilih Baris Ini"**.
+- **Pencarian Nama Tamu**: Cari cepat nama tamu dengan kolom pencarian.
+- **Tombol "Lihat Pesan"**: Pratinjau isi teks pesan yang akan dikirim sebelum menekan tombol kirim.
+- **Progres Interaktif**: Tampilan progress bar dan status kirim langsung per tamu.
+- **Laporan Excel**: Rekap pengiriman otomatis dicatat ke `laporan-pengiriman.xlsx`.
