@@ -7,7 +7,7 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const xlsx = require('xlsx');
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const CONFIG_FILE = path.join(__dirname, 'config.json');
 const TEMPLATE_FILE = path.join(__dirname, 'template.txt');
 const REPORT_FILE = path.join(__dirname, 'laporan-pengiriman.xlsx');
@@ -118,22 +118,28 @@ function initWhatsApp() {
     });
   }
 
+  const puppeteerOpts = {
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--no-first-run',
+      '--no-zygote',
+      '--disable-gpu'
+    ]
+  };
+
+  if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+    puppeteerOpts.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  }
+
   client = new Client({
     authStrategy: new LocalAuth({
       dataPath: path.join(__dirname, '.wwebjs_auth')
     }),
-    puppeteer: {
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu'
-      ]
-    }
+    puppeteer: puppeteerOpts
   });
 
   client.on('qr', async (qr) => {
@@ -610,18 +616,20 @@ const server = http.createServer(async (req, res) => {
   res.end('404 Not Found');
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   const url = `http://localhost:${PORT}`;
   console.log(`\n======================================================`);
-  console.log(`🌿 Web UI Kirim Undangan WhatsApp Siap!`);
-  console.log(`👉 Buka di browser: ${url}`);
+  console.log(`🌿 Web UI Kirim Undangan WhatsApp Siap di Port ${PORT}!`);
+  console.log(`👉 Akses: ${url}`);
   console.log(`======================================================\n`);
 
-  // Buka browser secara otomatis di Mac
-  exec(`open ${url}`);
+  // Buka browser secara otomatis hanya jika di Mac lokal
+  if (process.platform === 'darwin' && !process.env.RAILWAY_ENVIRONMENT) {
+    exec(`open ${url}`);
+  }
 
-  // Mulai Cloudflare Tunnel jika diminta
-  if (isTunnelRequested) {
+  // Mulai Cloudflare Tunnel jika diminta dan bukan di Railway
+  if (isTunnelRequested && !process.env.RAILWAY_ENVIRONMENT) {
     startTunnel();
   }
 
