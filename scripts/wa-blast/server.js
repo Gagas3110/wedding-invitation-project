@@ -213,8 +213,23 @@ function initWhatsApp() {
     broadcastSSE({ type: 'status', status: waStatus, qr: null });
   });
 
-  client.initialize().catch((err) => {
-    console.error('Error saat inisialisasi WhatsApp:', err);
+  client.on('loading_screen', (percent, msg) => console.log(`⏳ Loading WhatsApp Web: ${percent}% ${msg}`));
+
+  client.initialize().catch(async (err) => {
+    console.error('Error saat inisialisasi WhatsApp:', err.message);
+    // Diagnostics: what did the page actually load?
+    try {
+      const page = client.pupPage;
+      if (page) {
+        console.log('🔎 Page URL:', page.url());
+        console.log('🔎 Page title:', await page.title());
+        const text = await page.evaluate(() => (document.body && document.body.innerText || '').slice(0, 300));
+        console.log('🔎 Page text:', JSON.stringify(text));
+        console.log('🔎 UserAgent:', await page.evaluate(() => navigator.userAgent));
+      }
+    } catch (e) {
+      console.log('🔎 Diagnostics failed:', e.message);
+    }
     waStatus = 'error';
     broadcastSSE({ type: 'status', status: 'error', error: err.message });
     // Retry once after cleaning up the failed browser
