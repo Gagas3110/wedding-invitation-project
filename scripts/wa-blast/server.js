@@ -38,6 +38,8 @@ let qrDataUrl = null;
 let client = null;
 let sseClients = [];
 let isSending = false;
+let guestCache = null;
+const GUEST_CACHE_TTL_MS = 30 * 1000;
 
 const isTunnelRequested = process.argv.includes('--tunnel') || process.env.ENABLE_TUNNEL === '1';
 let publicTunnelUrl = null;
@@ -244,6 +246,10 @@ Terima kasih.`;
 }
 
 async function fetchGuestsData() {
+  if (guestCache && guestCache.expiresAt > Date.now()) {
+    return guestCache.guests;
+  }
+
   let workbook = null;
   if (config.sheetUrl && config.sheetUrl.trim()) {
     try {
@@ -252,7 +258,14 @@ async function fetchGuestsData() {
       if (match) {
         xlsxUrl = `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=xlsx`;
       }
-      const res = await fetch(xlsxUrl, { redirect: 'follow' });
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      let res;
+      try {
+        res = await fetch(xlsxUrl, { redirect: 'follow', signal: controller.signal });
+      } finally {
+        clearTimeout(timeout);
+      }
       if (res.ok) {
         const buf = Buffer.from(await res.arrayBuffer());
         workbook = xlsx.read(buf, { type: 'buffer' });
@@ -360,6 +373,10 @@ async function fetchGuestsData() {
     });
   }
 
+  guestCache = {
+    guests,
+    expiresAt: Date.now() + GUEST_CACHE_TTL_MS
+  };
   return guests;
 }
 
@@ -371,6 +388,8 @@ async function handleSendQueue(selectedRowIndices) {
   if (waStatus !== 'ready') throw new Error('WhatsApp belum terhubung. Silakan scan QR code.');
 
   isSending = true;
+  const sendStartedAt = Date.now();
+  console.log(`📤 Memulai antrean ${selectedRowIndices.length} tamu.`);
   broadcastSSE({ type: 'send_start', total: selectedRowIndices.length });
 
   try {
@@ -396,7 +415,9 @@ async function handleSendQueue(selectedRowIndices) {
       });
 
       try {
+        const numberLookupStartedAt = Date.now();
         const numberDetails = await client.getNumberId(guest.phone);
+        console.log(`🔎 Lookup nomor baris ${guest.rowIndex}: ${Date.now() - numberLookupStartedAt} ms`);
         if (!numberDetails) {
           broadcastSSE({
             type: 'send_item_result',
@@ -417,10 +438,12 @@ async function handleSendQueue(selectedRowIndices) {
 
         const chatId = typeof numberDetails === 'string' ? numberDetails : numberDetails._serialized;
 
+        const messageStartedAt = Date.now();
         await client.sendMessage(chatId, guest.message, {
           waitUntilMsgSent: true,
           linkPreview: false
         });
+        console.log(`✅ Pesan baris ${guest.rowIndex} dikirim dalam ${Date.now() - messageStartedAt} ms`);
 
         broadcastSSE({
           type: 'send_item_result',
@@ -474,6 +497,7 @@ async function handleSendQueue(selectedRowIndices) {
       console.error('Gagal simpan laporan:', saveErr);
     }
 
+    console.log(`🏁 Antrean ${queue.length} tamu selesai dalam ${Date.now() - sendStartedAt} ms`);
     broadcastSSE({ type: 'send_complete', total: queue.length });
   } finally {
     isSending = false;
