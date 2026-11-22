@@ -41,34 +41,19 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
 
   const selectedStatus = useWatch({ control, name: "status" });
 
-  // Sanitize input to escape HTML tags for safety
-  const sanitize = (text: string) => {
-    return text.replace(/[&<>"']/g, (m) => {
-      const map: Record<string, string> = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;",
-      };
-      return map[m] || m;
-    });
-  };
-
   const onSubmit = async (values: RSVPFormValues) => {
     setIsSubmitting(true);
     setErrorMsg("");
 
-    // Sanitize fields before sending
-    const sanitizedData = {
-      name: sanitize(values.name.trim()),
+    const rsvpData = {
+      name: values.name.trim(),
       status: values.status,
       guests: Number(values.guests),
-      wish: values.wish ? sanitize(values.wish.trim()) : "",
+      wish: values.wish.trim(),
     };
 
     try {
-      const result = await submitRSVP(sanitizedData);
+      const result = await submitRSVP(rsvpData);
       if (result.success) {
         setIsSuccess(true);
         reset({

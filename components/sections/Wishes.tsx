@@ -9,6 +9,22 @@ import { Button } from "@/components/ui/Button";
 import { PaperCard } from "@/components/ui/PaperCard";
 import { HourglassLoader } from "@/components/ui/HourglassLoader";
 
+function decodeLegacyEscapedText(value: string) {
+  const entities: Record<string, string> = {
+    amp: "&",
+    lt: "<",
+    gt: ">",
+    quot: '"',
+    "#039": "'",
+    "#39": "'",
+  };
+
+  return value.replace(
+    /&amp;(amp|lt|gt|quot|#0?39);/g,
+    (_, entity: string) => entities[entity]
+  );
+}
+
 interface WishesProps {
   refreshTrigger: number;
 }
@@ -101,7 +117,7 @@ export function Wishes({ refreshTrigger }: WishesProps) {
                         </div>
 
                         <h5 className="font-serif text-base font-semibold text-[#1A1A1A] pr-20">
-                          {wish.name}
+                          {decodeLegacyEscapedText(wish.name)}
                         </h5>
 
                         <p className="text-[10px] text-[#4A542C]/80 mt-0.5 font-sans">
@@ -115,7 +131,9 @@ export function Wishes({ refreshTrigger }: WishesProps) {
                         </p>
 
                         <p className="text-xs font-sans text-[#2D3319] mt-2.5 leading-relaxed border-t border-dashed border-[#CAD4AA]/50 pt-2">
-                          {wish.wish ? wish.wish : "Mengirimkan doa restu terbaik untuk kedua mempelai."}
+                          {wish.wish
+                            ? decodeLegacyEscapedText(wish.wish)
+                            : "Mengirimkan doa restu terbaik untuk kedua mempelai."}
                         </p>
                       </motion.div>
                     ))}

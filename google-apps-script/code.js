@@ -101,13 +101,13 @@ function handlePostRSVP(data) {
     const sheet = getOrCreateSheet();
     
     // Server-side Validation
-    const name = sanitizeInput(data.name);
+    const name = typeof data.name === "string" ? data.name.trim() : "";
     const status = data.status;
     const guests = Number(data.guests);
-    const wish = sanitizeInput(data.wish || "");
+    const wish = typeof data.wish === "string" ? data.wish.trim() : "";
 
     // 1. Validasi Nama
-    if (!name || name.trim() === "") {
+    if (!name) {
       return createJsonResponse({ success: false, message: "Nama tamu wajib diisi." });
     }
 
@@ -188,19 +188,6 @@ function isDoubleSubmit(sheet, name, wish) {
   const lastRowWish = lastRowValues[3];
   
   return (lastRowName === name && lastRowWish === wish);
-}
-
-/**
- * Sanitasi String Input untuk mencegah XSS
- */
-function sanitizeInput(input) {
-  if (typeof input !== 'string') return input;
-  return input
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 
 /**
