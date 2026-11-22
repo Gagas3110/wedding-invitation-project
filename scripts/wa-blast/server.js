@@ -128,7 +128,6 @@ function initWhatsApp() {
       '--disable-dev-shm-usage',
       '--disable-accelerated-2d-canvas',
       '--no-first-run',
-      '--no-zygote',
       '--disable-gpu'
     ]
   };
@@ -172,6 +171,14 @@ function initWhatsApp() {
     authStrategy: new LocalAuth({
       dataPath: path.join(__dirname, '.wwebjs_auth')
     }),
+    // Pin a known-good WhatsApp Web build; the live version can break injection
+    // (inject() times out at 30s waiting for window.Debug.VERSION).
+    webVersionCache: process.env.WA_WEB_VERSION
+      ? {
+          type: 'remote',
+          remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${process.env.WA_WEB_VERSION}.html`
+        }
+      : { type: 'none' },
     puppeteer: puppeteerOpts
   });
 
@@ -210,6 +217,11 @@ function initWhatsApp() {
     console.error('Error saat inisialisasi WhatsApp:', err);
     waStatus = 'error';
     broadcastSSE({ type: 'status', status: 'error', error: err.message });
+    // Retry once after cleaning up the failed browser
+    if (!initWhatsApp.retried) {
+      initWhatsApp.retried = true;
+      client.destroy().catch(() => {}).finally(() => setTimeout(initWhatsApp, 5000));
+    }
   });
 }
 
