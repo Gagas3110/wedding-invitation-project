@@ -439,11 +439,12 @@ async function handleSendQueue(selectedRowIndices) {
         const chatId = typeof numberDetails === 'string' ? numberDetails : numberDetails._serialized;
 
         const messageStartedAt = Date.now();
-        await client.sendMessage(chatId, guest.message, {
+        const sentMessage = await client.sendMessage(chatId, guest.message, {
           waitUntilMsgSent: true,
           linkPreview: false
         });
-        console.log(`✅ Pesan baris ${guest.rowIndex} dikirim dalam ${Date.now() - messageStartedAt} ms`);
+        const ack = sentMessage && typeof sentMessage.ack === 'number' ? sentMessage.ack : null;
+        console.log(`✅ Pesan baris ${guest.rowIndex} dikirim dalam ${Date.now() - messageStartedAt} ms (ack=${ack ?? 'unknown'}, from=${sentMessage?.from ?? 'unknown'}, to=${sentMessage?.to ?? chatId})`);
 
         broadcastSSE({
           type: 'send_item_result',
