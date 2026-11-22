@@ -22,7 +22,7 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json patch-wwebjs.js ./
 RUN npm install --omit=dev
 
 COPY . .
