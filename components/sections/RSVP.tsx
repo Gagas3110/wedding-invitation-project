@@ -49,7 +49,7 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
       name: values.name.trim(),
       status: values.status,
       guests: Number(values.guests),
-      wish: values.wish.trim(),
+      wish: values.wish?.trim() ?? "",
     };
 
     try {
