@@ -168,6 +168,8 @@ function initWhatsApp() {
   }
 
   client = new Client({
+    // Default is 30s; WhatsApp Web can take longer to boot on small containers.
+    authTimeoutMs: Number(process.env.WA_AUTH_TIMEOUT_MS) || 180000,
     authStrategy: new LocalAuth({
       dataPath: path.join(__dirname, '.wwebjs_auth')
     }),
