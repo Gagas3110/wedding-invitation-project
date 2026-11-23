@@ -103,5 +103,50 @@ if (src.includes(oldSocketBlock)) {
   src = src.replace(oldEnd, newEnd);
 }
 
+// Patch 7: Safe AppState in initWebEvents (prevent Cannot read properties of null (reading 'Socket'))
+src = src.replace(
+  "const AppState = window.require('WAWebSocketModel').Socket;",
+  "const AppState = window.require?.('WAWebSocketModel')?.Socket;"
+);
+src = src.replace(
+  "AppState.on('change:state',",
+  "AppState?.on?.('change:state',"
+);
+src = src.replace(
+  "window\n                .require('WAWebConnModel')\n                .Conn.on('change:battery'",
+  "window?.require?.('WAWebConnModel')?.Conn?.on?.('change:battery'"
+);
+
+// Patch 8: Safe logout, getState, resetState
+src = src.replace(
+  "return window.require('WAWebSocketModel').Socket.logout();",
+  "return window.require?.('WAWebSocketModel')?.Socket?.logout?.();"
+);
+src = src.replace(
+  "return window.require('WAWebSocketModel').Socket.state ?? null;",
+  "return window.require?.('WAWebSocketModel')?.Socket?.state ?? null;"
+);
+src = src.replace(
+  "window.require('WAWebSocketModel').Socket.reconnect();",
+  "window.require?.('WAWebSocketModel')?.Socket?.reconnect?.();"
+);
+
+// Patch 9: Safe framenavigated handler against detached frame on logout
+const oldFrameNav = `        this.pupPage.on('framenavigated', async (frame) => {
+            if (frame.parentFrame() !== null) return;`;
+const newFrameNav = `        this.pupPage.on('framenavigated', async (frame) => {
+            try {
+            if (frame.parentFrame() !== null) return;`;
+
+if (src.includes(oldFrameNav)) {
+  src = src.replace(oldFrameNav, newFrameNav);
+  const oldNavEnd = `await this.inject();
+        });`;
+  const newNavEnd = `await this.inject();
+            } catch (err) {}
+        });`;
+  src = src.replace(oldNavEnd, newNavEnd);
+}
+
 fs.writeFileSync(file, src);
 console.log('✅ patch-wwebjs: successfully applied modern WhatsApp Web compatibility patches!');
