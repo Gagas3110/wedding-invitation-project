@@ -778,23 +778,18 @@ const server = http.createServer(async (req, res) => {
         
         let code = null;
         try {
-          if (typeof client.requestPairingCode === 'function') {
-            code = await client.requestPairingCode(phone, true);
-          } else {
-            code = await client.pupPage.evaluate(async (phoneNumber) => {
-              const api = window.require('WAWebAltDeviceLinkingApi');
-              api.setPairingType('ALT_DEVICE_LINKING');
-              await api.initializeAltDeviceLinking();
-              return await api.startAltLinkingFlow(phoneNumber, true);
-            }, phone);
-          }
-        } catch (callErr) {
           code = await client.pupPage.evaluate(async (phoneNumber) => {
             const api = window.require('WAWebAltDeviceLinkingApi');
             api.setPairingType('ALT_DEVICE_LINKING');
             await api.initializeAltDeviceLinking();
-            return await api.startAltLinkingFlow(phoneNumber, true);
+            return await api.startAltLinkingFlow(phoneNumber, false);
           }, phone);
+        } catch (callErr) {
+          if (typeof client.requestPairingCode === 'function') {
+            code = await client.requestPairingCode(phone, false);
+          } else {
+            throw callErr;
+          }
         }
 
         if (!code) {
