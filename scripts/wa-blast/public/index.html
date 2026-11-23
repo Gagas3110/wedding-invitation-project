@@ -432,8 +432,26 @@
     }
 
     function startApp() {
+      checkStatusDirectly();
+      setInterval(checkStatusDirectly, 3000);
       initSSE();
       loadGuests();
+    }
+
+    async function checkStatusDirectly() {
+      try {
+        const pin = getSavedPin();
+        const res = await fetch('/api/status', {
+          headers: { 'X-Access-PIN': pin }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          updateStatusPill(data.status, data.qr, data.message || data.error);
+          if (data.publicUrl) showTunnelBanner(data.publicUrl);
+        }
+      } catch (e) {
+        console.error('Check status error:', e);
+      }
     }
 
     // 2. SETUP SSE LISTENER
@@ -451,7 +469,8 @@
       };
 
       evtSource.onerror = () => {
-        updateStatusPill('disconnected', null);
+        // Jangan langsung disconnected, cek via API langsung
+        checkStatusDirectly();
       };
     }
 

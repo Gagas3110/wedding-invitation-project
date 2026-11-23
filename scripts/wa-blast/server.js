@@ -56,6 +56,15 @@ function broadcastSSE(data) {
   });
 }
 
+// SSE Heartbeat keep-alive every 15s to keep proxy connections (Cloudflare / ngrok / mobile) alive
+setInterval(() => {
+  sseClients.forEach((res) => {
+    try {
+      res.write(': keepalive\n\n');
+    } catch (e) {}
+  });
+}, 15000);
+
 function startTunnel() {
   if (!isTunnelRequested) return;
 
@@ -695,8 +704,9 @@ const server = http.createServer(async (req, res) => {
   if (parsedUrl.pathname === '/api/events') {
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      Connection: 'keep-alive'
+      'Cache-Control': 'no-cache, no-transform',
+      Connection: 'keep-alive',
+      'X-Accel-Buffering': 'no'
     });
     res.write(`data: ${JSON.stringify({
       type: 'status',
