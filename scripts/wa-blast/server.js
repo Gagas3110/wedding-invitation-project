@@ -140,6 +140,8 @@ function initWhatsApp() {
     });
   }
 
+  const MODERN_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+
   const puppeteerOpts = {
     headless: true,
     args: [
@@ -148,7 +150,8 @@ function initWhatsApp() {
       '--disable-dev-shm-usage',
       '--disable-accelerated-2d-canvas',
       '--no-first-run',
-      '--disable-gpu'
+      '--disable-gpu',
+      `--user-agent=${MODERN_USER_AGENT}`
     ]
   };
 
@@ -188,13 +191,11 @@ function initWhatsApp() {
   }
 
   client = new Client({
-    // Default is 30s; WhatsApp Web can take longer to boot on small containers.
-    authTimeoutMs: Number(process.env.WA_AUTH_TIMEOUT_MS) || 180000,
+    authTimeoutMs: Number(process.env.WA_AUTH_TIMEOUT_MS) || 60000,
+    userAgent: MODERN_USER_AGENT,
     authStrategy: new LocalAuth({
       dataPath: path.join(__dirname, '.wwebjs_auth')
     }),
-    // Pin a known-good WhatsApp Web build; the live version can break injection
-    // (inject() times out at 30s waiting for window.Debug.VERSION).
     webVersionCache: process.env.WA_WEB_VERSION
       ? {
           type: 'remote',
