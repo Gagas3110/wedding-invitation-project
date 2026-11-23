@@ -105,13 +105,21 @@ function startTunnel() {
 
 function wipeAuthFolder() {
   const authDir = path.join(__dirname, '.wwebjs_auth');
-  if (fs.existsSync(authDir)) {
-    try {
-      fs.rmSync(authDir, { recursive: true, force: true });
-      console.log('🧹 Folder sesi .wwebjs_auth berhasil dibersihkan.');
-    } catch (e) {
-      console.warn('⚠️ Gagal membersihkan folder .wwebjs_auth:', e.message);
+  if (!fs.existsSync(authDir)) return;
+
+  try {
+    const entries = fs.readdirSync(authDir);
+    for (const entry of entries) {
+      const entryPath = path.join(authDir, entry);
+      try {
+        fs.rmSync(entryPath, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+      } catch (err) {
+        console.warn(`⚠️ Gagal membersihkan ${entry}:`, err.message);
+      }
     }
+    console.log('🧹 Isi folder sesi .wwebjs_auth berhasil dibersihkan.');
+  } catch (e) {
+    console.warn('⚠️ Gagal membaca folder .wwebjs_auth:', e.message);
   }
 }
 
@@ -226,11 +234,16 @@ function initWhatsApp() {
     waStatus = 'error';
     broadcastSSE({ type: 'status', status: 'error', error: 'Sesi WhatsApp lama tidak valid. Membersihkan sesi & membuat QR baru...' });
     try {
-      await client.destroy();
+      if (client && client.pupBrowser) {
+        try { const proc = client.pupBrowser.process(); if (proc) proc.kill('SIGKILL'); } catch (e) {}
+      }
+      await client.destroy().catch(() => {});
     } catch (e) {}
     client = null;
-    wipeAuthFolder();
-    setTimeout(initWhatsApp, 2500);
+    setTimeout(() => {
+      wipeAuthFolder();
+      initWhatsApp();
+    }, 2000);
   });
 
   client.on('disconnected', async (reason) => {
@@ -243,12 +256,17 @@ function initWhatsApp() {
     if (reason === 'LOGOUT' || reason === 'NAVIGATION') {
       console.log('🧹 Perangkat keluar (LOGOUT), otomatis membersihkan sesi & menyiapkan QR baru...');
       try {
-        await client.destroy();
+        if (client && client.pupBrowser) {
+          try { const proc = client.pupBrowser.process(); if (proc) proc.kill('SIGKILL'); } catch (e) {}
+        }
+        await client.destroy().catch(() => {});
       } catch (e) {}
       client = null;
-      wipeAuthFolder();
       initWhatsApp.retried = false;
-      setTimeout(initWhatsApp, 2000);
+      setTimeout(() => {
+        wipeAuthFolder();
+        initWhatsApp();
+      }, 2000);
     }
   });
 
@@ -728,21 +746,27 @@ const server = http.createServer(async (req, res) => {
       if (client) {
         try {
           await client.logout();
-        } catch (logoutErr) {
-          console.warn('Catatan: Client logout dilewati:', logoutErr.message);
-        }
+        } catch (logoutErr) {}
         try {
-          await client.destroy();
-        } catch (destroyErr) {
-          console.warn('Catatan: Client destroy dilewati:', destroyErr.message);
-        }
+          if (client.pupBrowser) {
+            try {
+              const proc = client.pupBrowser.process();
+              if (proc) proc.kill('SIGKILL');
+            } catch (e) {}
+            await client.pupBrowser.close().catch(() => {});
+          }
+          await client.destroy().catch(() => {});
+        } catch (destroyErr) {}
         client = null;
       }
+
+      // Beri jeda 1 detik agar proses OS dan file lock benar-benar lepas
+      await new Promise((r) => setTimeout(r, 1000));
 
       wipeAuthFolder();
       initWhatsApp.retried = false;
 
-      // Beri jeda 1.5 detik agar port/process Chromium benar-benar release
+      // Beri jeda 1.5 detik lalu inisialisasi ulang WhatsApp
       setTimeout(() => {
         initWhatsApp();
       }, 1500);
