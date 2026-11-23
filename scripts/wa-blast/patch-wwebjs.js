@@ -130,6 +130,10 @@ src = src.replace(
   "window.require('WAWebSocketModel').Socket.reconnect();",
   "window.require?.('WAWebSocketModel')?.Socket?.reconnect?.();"
 );
+src = src.replace(
+  "const state =\n                        window.require('WAWebSocketModel').Socket.state;",
+  "const state =\n                        window.require?.('WAWebSocketModel')?.Socket?.state;"
+);
 
 // Patch 9: Safe framenavigated handler against detached frame on logout
 const oldFrameNav = `        this.pupPage.on('framenavigated', async (frame) => {

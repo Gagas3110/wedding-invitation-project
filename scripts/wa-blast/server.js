@@ -35,6 +35,8 @@ if (fs.existsSync(CONFIG_FILE)) {
 // -----------------------------------------------------------------------------
 let waStatus = 'connecting'; // 'connecting', 'qr_ready', 'ready', 'disconnected'
 let qrDataUrl = null;
+let pairingCode = null;
+let pairingCodeExpiry = null;
 let client = null;
 let sseClients = [];
 let isSending = false;
@@ -222,7 +224,14 @@ function initWhatsApp() {
     } catch (err) {
       console.error('Error generating QR data URL:', err);
     }
-    broadcastSSE({ type: 'status', status: waStatus, qr: qrDataUrl });
+    broadcastSSE({ type: 'status', status: waStatus, qr: qrDataUrl, pairingCode, pairingCodeExpiry });
+  });
+
+  client.on('code', (code) => {
+    console.log(`📱 Kode Tautan WhatsApp diterima: ${code}`);
+    pairingCode = code;
+    pairingCodeExpiry = Date.now() + 180000;
+    broadcastSSE({ type: 'code_received', code: pairingCode, expiry: pairingCodeExpiry });
   });
 
   // Fast DOM watcher: deteksi QR code langsung dari elemen DOM WhatsApp Web
@@ -254,15 +263,19 @@ function initWhatsApp() {
   client.on('authenticated', () => {
     console.log('🔐 WhatsApp Terautentikasi.');
     waStatus = 'authenticated';
-    broadcastSSE({ type: 'status', status: waStatus, qr: null });
+    pairingCode = null;
+    pairingCodeExpiry = null;
+    broadcastSSE({ type: 'status', status: waStatus, qr: null, pairingCode: null });
   });
 
   client.on('ready', () => {
     console.log('✅ WhatsApp Siap Digunakan.');
     waStatus = 'ready';
     qrDataUrl = null;
+    pairingCode = null;
+    pairingCodeExpiry = null;
     initWhatsApp.retried = false;
-    broadcastSSE({ type: 'status', status: waStatus, qr: null });
+    broadcastSSE({ type: 'status', status: waStatus, qr: null, pairingCode: null });
   });
 
   client.on('auth_failure', async (msg) => {
@@ -712,6 +725,8 @@ const server = http.createServer(async (req, res) => {
       type: 'status',
       status: waStatus,
       qr: qrDataUrl,
+      pairingCode,
+      pairingCodeExpiry,
       publicUrl: publicTunnelUrl
     })}\n\n`);
     sseClients.push(res);
@@ -727,9 +742,84 @@ const server = http.createServer(async (req, res) => {
     return res.end(JSON.stringify({
       status: waStatus,
       qr: qrDataUrl,
+      pairingCode,
+      pairingCodeExpiry,
       isSending,
       publicUrl: publicTunnelUrl
     }));
+  }
+
+  // API Request Pairing Code (Login via Nomor HP)
+  if (parsedUrl.pathname === '/api/request-code' && req.method === 'POST') {
+    let body = '';
+    req.on('data', (chunk) => (body += chunk));
+    req.on('end', async () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        let phone = (payload.phone || '').trim().replace(/[^0-9]/g, '');
+        if (!phone) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ success: false, error: 'Nomor WhatsApp tidak boleh kosong.' }));
+        }
+
+        // Format ke standar internasional (contoh: 0812 -> 62812)
+        if (phone.startsWith('0')) {
+          phone = '62' + phone.slice(1);
+        } else if (!phone.startsWith('62')) {
+          if (phone.startsWith('8')) phone = '62' + phone;
+        }
+
+        if (!client || !client.pupPage) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ success: false, error: 'WhatsApp di server sedang bersiap. Mohon tunggu beberapa detik.' }));
+        }
+
+        console.log(`📱 Meminta kode tautan pairing untuk nomor: ${phone}...`);
+        
+        let code = null;
+        try {
+          if (typeof client.requestPairingCode === 'function') {
+            code = await client.requestPairingCode(phone, true);
+          } else {
+            code = await client.pupPage.evaluate(async (phoneNumber) => {
+              const api = window.require('WAWebAltDeviceLinkingApi');
+              api.setPairingType('ALT_DEVICE_LINKING');
+              await api.initializeAltDeviceLinking();
+              return await api.startAltLinkingFlow(phoneNumber, true);
+            }, phone);
+          }
+        } catch (callErr) {
+          code = await client.pupPage.evaluate(async (phoneNumber) => {
+            const api = window.require('WAWebAltDeviceLinkingApi');
+            api.setPairingType('ALT_DEVICE_LINKING');
+            await api.initializeAltDeviceLinking();
+            return await api.startAltLinkingFlow(phoneNumber, true);
+          }, phone);
+        }
+
+        if (!code) {
+          throw new Error('Gagal mendapatkan kode dari WhatsApp. Pastikan nomor benar.');
+        }
+
+        console.log(`🔑 Kode Tautan WhatsApp Berhasil Dibuat: ${code} (Berlaku 3 Menit)`);
+        pairingCode = code;
+        pairingCodeExpiry = Date.now() + 180000;
+
+        broadcastSSE({
+          type: 'code_received',
+          code: pairingCode,
+          expiry: pairingCodeExpiry
+        });
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ success: true, code: pairingCode, expiry: pairingCodeExpiry }));
+      } catch (err) {
+        console.error('Error saat request pairing code:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ success: false, error: err.message || 'Gagal meminta kode tautan.' }));
+      }
+    });
+    return;
   }
 
   // API Guests
