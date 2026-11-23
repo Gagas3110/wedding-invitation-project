@@ -103,10 +103,22 @@ function startTunnel() {
   }
 }
 
+function wipeAuthFolder() {
+  const authDir = path.join(__dirname, '.wwebjs_auth');
+  if (fs.existsSync(authDir)) {
+    try {
+      fs.rmSync(authDir, { recursive: true, force: true });
+      console.log('🧹 Folder sesi .wwebjs_auth berhasil dibersihkan.');
+    } catch (e) {
+      console.warn('⚠️ Gagal membersihkan folder .wwebjs_auth:', e.message);
+    }
+  }
+}
+
 function initWhatsApp() {
   waStatus = 'connecting';
   qrDataUrl = null;
-  broadcastSSE({ type: 'status', status: waStatus, qr: null });
+  broadcastSSE({ type: 'status', status: waStatus, qr: null, message: 'Memulai Chromium & menghubungkan ke WhatsApp...' });
 
   // Bersihkan stale lock file Chromium jika proses sebelumnya terhenti tiba-tiba
   const sessionDir = path.join(__dirname, '.wwebjs_auth', 'session');
@@ -205,17 +217,45 @@ function initWhatsApp() {
     console.log('✅ WhatsApp Siap Digunakan.');
     waStatus = 'ready';
     qrDataUrl = null;
+    initWhatsApp.retried = false;
     broadcastSSE({ type: 'status', status: waStatus, qr: null });
   });
 
-  client.on('disconnected', (reason) => {
+  client.on('auth_failure', async (msg) => {
+    console.error('❌ Gagal autentikasi WhatsApp (sesi tidak valid):', msg);
+    waStatus = 'error';
+    broadcastSSE({ type: 'status', status: 'error', error: 'Sesi WhatsApp lama tidak valid. Membersihkan sesi & membuat QR baru...' });
+    try {
+      await client.destroy();
+    } catch (e) {}
+    client = null;
+    wipeAuthFolder();
+    setTimeout(initWhatsApp, 2500);
+  });
+
+  client.on('disconnected', async (reason) => {
     console.log('❌ WhatsApp Terputus:', reason);
     waStatus = 'disconnected';
     qrDataUrl = null;
-    broadcastSSE({ type: 'status', status: waStatus, qr: null });
+    broadcastSSE({ type: 'status', status: waStatus, qr: null, reason });
+
+    // Jika perangkat dikeluarkan dari HP (LOGOUT), bersihkan sesi dan buat QR baru otomatis
+    if (reason === 'LOGOUT' || reason === 'NAVIGATION') {
+      console.log('🧹 Perangkat keluar (LOGOUT), otomatis membersihkan sesi & menyiapkan QR baru...');
+      try {
+        await client.destroy();
+      } catch (e) {}
+      client = null;
+      wipeAuthFolder();
+      initWhatsApp.retried = false;
+      setTimeout(initWhatsApp, 2000);
+    }
   });
 
-  client.on('loading_screen', (percent, msg) => console.log(`⏳ Loading WhatsApp Web: ${percent}% ${msg}`));
+  client.on('loading_screen', (percent, msg) => {
+    console.log(`⏳ Loading WhatsApp Web: ${percent}% ${msg}`);
+    broadcastSSE({ type: 'status', status: 'connecting', qr: null, message: `Memuat WhatsApp: ${percent}% ${msg}` });
+  });
 
   client.initialize().catch(async (err) => {
     console.error('Error saat inisialisasi WhatsApp:', err.message);
@@ -234,10 +274,22 @@ function initWhatsApp() {
     }
     waStatus = 'error';
     broadcastSSE({ type: 'status', status: 'error', error: err.message });
-    // Retry once after cleaning up the failed browser
+
+    // Retry once after cleaning up the failed browser and session if broken
     if (!initWhatsApp.retried) {
       initWhatsApp.retried = true;
-      client.destroy().catch(() => {}).finally(() => setTimeout(initWhatsApp, 5000));
+      const isCorruptSession = err.message.includes('Execution context was destroyed') || 
+                               err.message.includes('Session closed') || 
+                               err.message.includes('Evaluation failed') || 
+                               err.message.includes('auth');
+      if (isCorruptSession) {
+        console.log('🧹 Mendeteksi error sesi lama, membersihkan .wwebjs_auth...');
+        wipeAuthFolder();
+      }
+      client.destroy().catch(() => {}).finally(() => {
+        client = null;
+        setTimeout(initWhatsApp, 4000);
+      });
     }
   });
 }
@@ -665,17 +717,40 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // API Disconnect / Logout
-  if (parsedUrl.pathname === '/api/logout' && req.method === 'POST') {
+  // API Disconnect / Logout / Reset Session
+  if ((parsedUrl.pathname === '/api/logout' || parsedUrl.pathname === '/api/reset') && req.method === 'POST') {
+    console.log('🔄 Menerima permintaan Reset Sesi / Ganti Akun WhatsApp...');
+    waStatus = 'connecting';
+    qrDataUrl = null;
+    broadcastSSE({ type: 'status', status: 'connecting', qr: null, message: 'Membersihkan sesi WhatsApp lama...' });
+
     try {
       if (client) {
-        await client.logout();
-        await client.destroy();
+        try {
+          await client.logout();
+        } catch (logoutErr) {
+          console.warn('Catatan: Client logout dilewati:', logoutErr.message);
+        }
+        try {
+          await client.destroy();
+        } catch (destroyErr) {
+          console.warn('Catatan: Client destroy dilewati:', destroyErr.message);
+        }
+        client = null;
       }
-      initWhatsApp();
+
+      wipeAuthFolder();
+      initWhatsApp.retried = false;
+
+      // Beri jeda 1.5 detik agar port/process Chromium benar-benar release
+      setTimeout(() => {
+        initWhatsApp();
+      }, 1500);
+
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      return res.end(JSON.stringify({ success: true }));
+      return res.end(JSON.stringify({ success: true, message: 'Sesi dibersihkan. Memuat QR Code baru...' }));
     } catch (e) {
+      console.error('Error saat reset sesi:', e);
       res.writeHead(500, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ success: false, error: e.message }));
     }

@@ -62,14 +62,14 @@
         </div>
       </div>
 
-      <!-- WA STATUS PILL -->
+      <!-- WA STATUS PILL & RESET BUTTON -->
       <div class="flex items-center gap-2">
         <div id="statusPill" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 shadow-xs">
           <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
           <span id="statusText">Menghubungkan ke WhatsApp...</span>
         </div>
-        <button id="btnLogout" onclick="logoutWhatsApp()" class="hidden text-xs text-stone-500 hover:text-red-600 underline font-medium px-2 py-1">
-          Ganti Akun
+        <button id="btnReset" onclick="resetWhatsAppSession()" title="Ganti akun atau reset sesi jika stuck" class="text-xs bg-white hover:bg-stone-100 text-stone-700 border border-stone-300 font-semibold px-2.5 py-1.5 rounded-full transition-all active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs">
+          🔄 <span>Ganti Akun / Reset</span>
         </button>
       </div>
     </div>
@@ -77,6 +77,20 @@
 
   <!-- MAIN CONTAINER -->
   <main class="max-w-6xl mx-auto px-4 py-6 w-full flex-1">
+
+    <!-- ERROR / DISCONNECT ALERT -->
+    <div id="errorAlert" class="hidden mb-6 bg-rose-50 border-2 border-rose-300 rounded-3xl p-6 text-center max-w-md mx-auto shadow-sm animate-fade-in">
+      <div class="w-12 h-12 bg-rose-100 text-rose-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">
+        ⚠️
+      </div>
+      <h3 class="font-serif italic text-lg font-bold text-rose-950 mb-1" id="errorTitle">WhatsApp Terputus</h3>
+      <p class="text-xs text-rose-800 mb-4 leading-relaxed" id="errorMessage">
+        Sesi WhatsApp tidak valid atau perangkat telah dikeluarkan dari HP.
+      </p>
+      <button onclick="resetWhatsAppSession()" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow-xs transition-all active:scale-95 cursor-pointer flex items-center gap-2 mx-auto">
+        🔄 <span>Reset Sesi & Buat QR Baru</span>
+      </button>
+    </div>
 
     <!-- QR CODE ALERT / MODAL JIKA BELUM LOGIN -->
     <div id="qrContainer" class="hidden mb-6 bg-white border-2 border-emerald-500/40 rounded-3xl p-6 sm:p-8 shadow-xl text-center max-w-md mx-auto animate-fade-in">
@@ -443,7 +457,7 @@
 
     function handleServerEvent(data) {
       if (data.type === 'status') {
-        updateStatusPill(data.status, data.qr);
+        updateStatusPill(data.status, data.qr, data.message || data.error || data.reason);
         if (data.publicUrl) showTunnelBanner(data.publicUrl);
       } else if (data.type === 'tunnel_ready') {
         showTunnelBanner(data.publicUrl);
@@ -471,45 +485,78 @@
       }
     }
 
-    function updateStatusPill(status, qr) {
+    function updateStatusPill(status, qr, detail) {
       waState = status;
       const pill = document.getElementById('statusPill');
       const qrBox = document.getElementById('qrContainer');
       const qrImg = document.getElementById('qrImg');
-      const btnLogout = document.getElementById('btnLogout');
+      const errorBox = document.getElementById('errorAlert');
+      const errorTitle = document.getElementById('errorTitle');
+      const errorMessage = document.getElementById('errorMessage');
 
       if (status === 'ready') {
+        if (errorBox) errorBox.classList.add('hidden');
         pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-xs';
         pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-600"></span><span>WhatsApp Terhubung (Siap Kirim)</span>';
         qrBox.classList.add('hidden');
-        btnLogout.classList.remove('hidden');
       } else if (status === 'qr_ready' && qr) {
+        if (errorBox) errorBox.classList.add('hidden');
         pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-300 shadow-xs';
-        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span><span>Perlu Scan QR Code</span>';
+        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span><span>Scan QR Code di Bawah</span>';
         qrImg.src = qr;
         qrBox.classList.remove('hidden');
-        btnLogout.classList.add('hidden');
       } else if (status === 'authenticated') {
+        if (errorBox) errorBox.classList.add('hidden');
         pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-800 border border-blue-300 shadow-xs';
-        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span><span>Memuat Obrolan...</span>';
+        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span><span>Memuat Obrolan WhatsApp...</span>';
         qrBox.classList.add('hidden');
-        btnLogout.classList.remove('hidden');
+      } else if (status === 'disconnected') {
+        pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700 border border-stone-300 shadow-xs';
+        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-stone-400"></span><span>WhatsApp Terputus</span>';
+        qrBox.classList.add('hidden');
+        if (errorBox) {
+          errorBox.classList.remove('hidden');
+          errorTitle.innerText = 'Sesi WhatsApp Terputus';
+          errorMessage.innerText = 'Sesi WhatsApp terputus (kemungkinan perangkat telah dikeluarkan dari HP). Silakan klik tombol di bawah untuk membuat QR Code baru.';
+        }
+      } else if (status === 'error') {
+        pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-300 shadow-xs';
+        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-rose-500"></span><span>Gagal Memuat WhatsApp</span>';
+        qrBox.classList.add('hidden');
+        if (errorBox) {
+          errorBox.classList.remove('hidden');
+          errorTitle.innerText = 'Kendala Koneksi WhatsApp';
+          errorMessage.innerText = (detail || 'Sesi lama tidak valid atau gagal membuka WhatsApp di server.') + ' Silakan klik tombol di bawah untuk mereset sesi.';
+        }
       } else {
-        pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-600 border border-stone-300';
-        pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-stone-400"></span><span>Menghubungkan ke WhatsApp...</span>';
+        // connecting
+        if (errorBox) errorBox.classList.add('hidden');
+        pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 shadow-xs';
+        const msg = detail || 'Menghubungkan ke WhatsApp... (~30-60 dtk)';
+        pill.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span><span>${msg}</span>`;
         qrBox.classList.add('hidden');
-        btnLogout.classList.add('hidden');
       }
       updateSendButton();
     }
 
-    async function logoutWhatsApp() {
-      if (!confirm('Apakah Anda ingin keluar (logout) dari akun WhatsApp ini agar bisa scan nomor lain?')) return;
+    async function resetWhatsAppSession() {
+      if (!confirm('Apakah Anda ingin mereset sesi WhatsApp? Ini akan membersihkan sesi akun lama dan membuat QR Code baru agar Anda bisa scan ulang.')) return;
       try {
-        await fetch('/api/logout', { method: 'POST', headers: getAuthHeaders() });
-        location.reload();
+        const pill = document.getElementById('statusPill');
+        if (pill) {
+          pill.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 shadow-xs';
+          pill.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span><span>Membersihkan sesi & menyiapkan QR baru...</span>';
+        }
+        const errorBox = document.getElementById('errorAlert');
+        if (errorBox) errorBox.classList.add('hidden');
+
+        const res = await fetch('/api/reset', { method: 'POST', headers: getAuthHeaders() });
+        const json = await res.json();
+        if (!json.success) {
+          alert('Catatan: ' + (json.error || 'Silakan refresh browser Anda.'));
+        }
       } catch (e) {
-        alert('Gagal logout: ' + e.message);
+        alert('Gagal mereset sesi: ' + e.message);
       }
     }
 
