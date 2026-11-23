@@ -216,6 +216,32 @@ function initWhatsApp() {
     broadcastSSE({ type: 'status', status: waStatus, qr: qrDataUrl });
   });
 
+  // Fast DOM watcher: deteksi QR code langsung dari elemen DOM WhatsApp Web
+  const domQRWatcher = setInterval(async () => {
+    if (waStatus === 'ready' || waStatus === 'authenticated') {
+      clearInterval(domQRWatcher);
+      return;
+    }
+    if (client && client.pupPage) {
+      try {
+        const domQR = await client.pupPage.evaluate(() => {
+          const el = document.querySelector('div[data-ref]');
+          if (el) {
+            const val = el.getAttribute('data-ref');
+            return val ? (val.includes('#') ? val.split('#')[1] : val) : null;
+          }
+          return null;
+        });
+        if (domQR && !qrDataUrl) {
+          console.log('⚡ QR Code terdeteksi cepat langsung dari DOM WhatsApp Web!');
+          client.emit('qr', domQR);
+        }
+      } catch (e) {
+        // page navigating or frame changing
+      }
+    }
+  }, 1000);
+
   client.on('authenticated', () => {
     console.log('🔐 WhatsApp Terautentikasi.');
     waStatus = 'authenticated';
