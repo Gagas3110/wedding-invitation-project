@@ -97,14 +97,14 @@ export function RSVP({ onSuccessSubmit }: RSVPProps) {
                 <CheckCircle2 className="w-14 h-14 text-[#3B4420] mb-3 animate-bounce" />
                 <h4 className="font-serif text-2xl font-semibold text-[#1A1A1A] mb-2">Terima Kasih!</h4>
                 <p className="text-xs text-[#4A542C] max-w-xs leading-relaxed font-sans">
-                  Konfirmasi kehadiran dan ucapan doa Anda telah tersimpan di daftar tamu kami.
+                  Konfirmasi dan ucapan Anda sudah dikirim. Ingin mengirim ucapan lagi? Tekan tombol di bawah untuk membuka formulir kembali.
                 </p>
                 <Button
                   variant="outline"
                   className="mt-6 font-sans text-xs tracking-wider border-[#CAD4AA] text-[#2D3319] hover:bg-[#EEF2DF] cursor-pointer"
                   onClick={() => setIsSuccess(false)}
                 >
-                  Kirim Pembaharuan RSVP
+                  Kirim Ucapan Lagi
                 </Button>
               </div>
             ) : (
